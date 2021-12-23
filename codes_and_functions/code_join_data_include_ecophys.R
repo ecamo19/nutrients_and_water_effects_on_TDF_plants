@@ -1,203 +1,175 @@
-# Objective ----------------------------------------------------------------
+# Objective --------------------------------------------------------------------
 
-#This script join all the data sets with the objective of adding the 
-# harvested at the beginning treatment to the data
-# 
-# This code creates the data file called data_rda_leland.csv
+# This script join all trait and biomass data for posterior analysis
 
-# Packages ----------------------------------------------------------------
-
+# Packages ---------------------------------------------------------------------
 library(dplyr)
-library(knitr)
-library(ggplot2)
-library(tidyr)
-library(ggpubr) 
 library(janitor)
-library(textshape)
+#library(tidyr)
 
-#Load data ---------------------------------------------------------------
+#Load data ---------------------------------------------------------------------
+
+## Biomass data ---------------------------------------------------------------- 
+raw_data_biomass <- 
+	read.csv("raw_data/6_plant_dry_weights_data.csv", header = T) %>% 
+    clean_names()
+
+## Ecophys data ----------------------------------------------------------------
+raw_data_ecophys <- 
+    read.csv("raw_data/3_physiology_data.csv", header = T) %>% 
+    clean_names() %>% 
+    dplyr::select(- c(family))
+
+## Leaf trait data ------------------------------------------------------------- 
+raw_data_traits <- 
+    read.csv("raw_data/2_leaf_trait_data.csv", header = T) %>% 
+    clean_names()
+
+## Isotopes data ---------------------------------------------------------------
+raw_data_isotopes <- 
+    read.csv("raw_data/4_isotopes_data.csv",header = T) %>% 
+    clean_names()
+
+## Initial height data ---------------------------------------------------------
+raw_data_initheight <- 
+    read.csv("raw_data/data_heights.csv",header = T) %>% 
+    clean_names()
 
 
-# Biomass data ------------------------------------------------------------
+# Clean raw data sets ----------------------------------------------------------
 
-data_biomass <- 
-	read.csv("~/documents/projects/shade_house_exp/exploratory_figures_and_models/data/raw_data//6_plant_dry_weights_data.csv", header = T)
+## Biomass data----------------------------------------------------------------- 
+
+data_biomass_cleaned <- 
+	raw_data_biomass %>%
+        
+        # Delete Harvested at the beginning treatment 
+        filter(!treatment %in% 'Harvestatthebeginning') %>% 
+        
+        # Calculate biomass related variables
+        mutate(total_biomass = root_dry_weight + stem_dry_weight + whole_leaf_dry_weight,
+               
+            # Above ground biomass	
+            above_biomass = (stem_dry_weight + whole_leaf_dry_weight),
+            
+            # Below ground biomass
+            below_biom = (root_dry_weight),
+            # Mass fractions
+            # # % Root Mass Fraction
+            rmf = (root_dry_weight / total_biomass)*100,
+            
+            # % Stem Mass Fractions
+            smf = (stem_dry_weight / total_biomass)*100,
+            
+            # % Leaf Mass Fraction
+            lmf = (whole_leaf_dry_weight / total_biomass)*100) %>%
+    
+        # Order Columns
+        dplyr::select(id, spcode, treatment, rmf, smf, lmf,
+                      whole_leaf_dry_weight, everything()) %>% 
+        
+        # Convert character columns to factor
+        mutate(across(where(is.character), as.factor))
+
+## Ecophys data ----------------------------------------------------------------
+
+## Leaf traits data ------------------------------------------------------------
+
+data_leaftraits_cleaned <- 
+	raw_data_traits %>%
+    
+    	# Delete Harvested at the beginning treatment 
+    	filter(!treatment %in% 'Harvestatthebeginning') %>%
+    	dplyr::select(-c ()) %>% 
+        
+        # Convert traits to the right units
+        # Transform sla to cm2
+        mutate(sla_cm2_g = sla*10000) %>% 
+               
+        # Remove traits not used in the analysis
+        dplyr::select(-c(family, leaf_fresh_weight, leaf_dry_weight,leaf_density, 
+                         lt, lma, sla,ldmc))  %>%
+        # Convert character columns to factor
+        mutate(across(where(is.character), as.factor))
 
 
-#Clean total biomass
+## Isotopes data ---------------------------------------------------------------
 
-data_totalbiom <- 
-	data_biomass %>%
-	
-	#Total biomass
-	mutate(total_biomass = root_dry_weight + stem_dry_weight + 
-		   	whole_leaf_dry_weight) %>%
-	
-	# % Above ground biomass
-	mutate(above_biom = 
-		   	(stem_dry_weight + whole_leaf_dry_weight)) %>% 
-	
-	# % Below ground biomass
-	mutate(below_biom = (root_dry_weight)) %>% 
+data_isotopes_cleaned <-
+    raw_data_isotopes %>% 
 	
 	#Delete Harvested at the beginning treatment 
-	filter( !treatment %in% 'Harvestatthebegging') %>% 
+	filter(!treatment %in% 'Harvestatthebeginning') %>% 
+    dplyr::select(-family) %>% 
+    # Convert character columns to factor
+    mutate(across(where(is.character), as.factor))
+
+## Initial height data ---------------------------------------------------------
+
+data_initheight_cleaned <- 
+	raw_data_initheight	%>%
+        # Select columns
+        dplyr::select(1:5) %>%
+        
+        # Rename column
+        rename(init_height = x20150831) %>%
+        
+        #Delete Harvested at the beginning treatment 
+        filter(!treatment %in% 'Harvestatthebegging') %>% 
+        dplyr::select(-family) %>% 
+        
+        # Convert character columns to factor
+        mutate(across(where(is.character), as.factor))
+
+# Join data sets ---------------------------------------------------------------
+
+#data_complete <- 
 	
-	# Calculate mass fractions
-	mutate(rmf = (root_dry_weight / total_biomass)*100) %>% 
-	mutate(smf = (stem_dry_weight / total_biomass)*100) %>% 
-	mutate(lmf = (whole_leaf_dry_weight / total_biomass)*100) %>% 
-	
-	dplyr::select(id, spcode,treatment, rmf, smf,lmf,
-				  whole_leaf_dry_weight, everything())
-
-
-# Data ecophys ------------------------------------------------------------
-
-data_ecophys <- 
-	read.csv("~/documents/projects/shade_house_exp/exploratory_figures_and_models/data/raw_data/3_physiology_data.csv", header = T) %>% 
-	clean_names() %>% 
-	dplyr::select(- c(family))
-
-
-
-# Leaf trait data ---------------------------------------------------------
-
-data_traits <- read.csv("~/documents/projects/shade_house_exp/exploratory_figures_and_models/data/raw_data/2_leaf_trait_data.csv", header = T) 
-
-# Clean leaf traits data
-data_leaf_traits <- 
-
-	data_traits %>%
-	clean_names() %>% 
-	
-	#Delete Harvested at the beginning treatment 
-	filter( !treatment %in% 'Harvestatthebegging') %>%
-	dplyr::select(-c (family))
-
-
-# Isotopes data -----------------------------------------------------------
-
-data_isotopes <- read.csv("~/documents/projects/shade_house_exp/exploratory_figures_and_models/data/raw_data/4_isotopes_data.csv", 
-						  header = T) 
-
-# Clean Isotopes data
-data_nitrogen_carbon_d13c <- 
-	
-	data_isotopes %>% 
-	
-	clean_names() %>% 
-	
-	#Delete Harvested at the beginning treatment 
-	filter( !treatment %in% 'Harvestatthebegging') %>% 
-	
-	
-	dplyr::select(-c (d15n, family))
-
-
-# Initial height data -----------------------------------------------------
-
-data_initheight <- read.csv("~/documents/projects/shade_house_exp/exploratory_figures_and_models/data/raw_data/data_heights.csv", 
-						  header = T) 
-
-#Clean initial height data
-data_initheight <- 
-	data_initheight	%>% 
-	dplyr::select(1:5) %>% 
-	rename(init_height = X20150831) %>% 
-	#Delete Harvested at the beginning treatment 
-	filter( !treatment %in% 'Harvestatthebegging')  
-
-
-# Join data sets ----------------------------------------------------------
-data_complete <- 
-	
-	#Join biomass and leaf traits  
-	right_join(data_totalbiom, data_leaf_traits, by = c("id", "spcode"))  %>% 
-	dplyr::select(-c(treatment.y)) %>% 
-	rename(treatment = treatment.x) %>% 
-	
-	#Add leaf carbon and nitrogen 
-	right_join(., data_nitrogen_carbon_d13c , by = c("id", "spcode"))  %>% 
-	dplyr::select(-c(treatment.y)) %>% 
-	rename(treatment = treatment.x)  %>% 
-	
-	#Add plant initial height
-	right_join(., data_initheight , by = c("id", "spcode")) %>% 
-	dplyr::select(-c(treatment.y)) %>% 
-	rename(treatment = treatment.x) %>% 
-	clean_names() %>% 
-
-	#Add ecophys data
-	right_join(., data_ecophys , by = c("id", "spcode")) %>% 
-	dplyr::select(-c(treatment.y)) %>% 
-	rename(treatment = treatment.x) %>% 
-	clean_names() %>% 
-		
-	#I deleted 	leaf_density and leaf thickness because this data was not 
-	#available for harvested at beginning plants
-	
-	dplyr::select(-c(leaf_density,lt,lma)) %>% 
-	rename(totalbiom = total_biomass)  
+	# Join biomass and leaf traits   
+    data_biomass_cleaned %>% 
+        
+        # Add ecophys data
+        
+        # Add leaf traits
+	    inner_join(data_leaftraits_cleaned, by = c("id", "spcode", "treatment")) %>% 
+	    
+        #Add isotope data
+        inner_join(data_isotopes_cleaned, by = c("id", "spcode", "treatment")) %>% 
+        
+        # Add plant initial height
+        inner_join(data_initheight_cleaned, by = c("id", "spcode", "treatment")) %>%
+        clean_names()  
+        
 
 
 
-# Convert data to the right units -----------------------------------------
+# Add nfixer column and calculate Narea and Nmass ------------------------------
+    mutate(nfixer = ifelse(spcode == "ec" |
+                               spcode == "dr" |
+                               spcode == "gs","fixer", "nonfixer")) %>%
 
-data_complete <- 
-	
-	data_complete %>% 
-	#Transform sla to cm2
-	mutate(sla_cm2_g = sla*10000) %>% 
-	dplyr::select(-sla)
-	
-
-# Calculate Nmass and Narea -----------------------------------------------
-
-data_complete_final <- 
-	data_complete %>%
-	mutate(CN = perc_c/perc_n,
-		   N_g = leaf_dry_weight*(perc_n/100),
-		   N_mg = (leaf_dry_weight*(perc_n/100))*1000,
-		   Narea_g_m2 = N_g/la,
-		   Nmass_mg_g = N_mg/leaf_dry_weight,
-		   
-		   #Whole plant traits
-		   
-		   #Whole plant leaf area in m2
-		   #whole_leafarea_m2 = (whole_leaf_dry_weight*sla_cm2_g)/10000,
-		   
-		   #Whole leaf mass multiplied by Nmass
-		   totalleafmass_Nmass = whole_leaf_dry_weight*Nmass_mg_g) %>% 
-		   
-		   #Whole plant leaf area in m2 multiplied by Narea 
-		   #whole_leafarea_Narea_m2 = whole_leafarea_m2 * Narea_g_m2) %>%
-
-	dplyr::select(-c(leaf_fresh_weight,leaf_dry_weight,
-					 perc_n,perc_c,ratio_c_n,N_g,N_mg)) %>% 
-	mutate(nfixer = ifelse(spcode == "ec" |
-						   	spcode == "dr" |
-						   	spcode == "gs","fixer", "nonfixer")) %>%
-	dplyr::select(id,spcode,treatment,family,nfixer,init_height,
-				  everything()) %>% 
-	
-	drop_na()
+        # Transform Nitrogen to grams
+        N_g = leaf_dry_weight*(perc_n/100),
+    
+    # Transform Nitrogen to mg
+    N_mg = (leaf_dry_weight*(perc_n/100))*1000,
+    
+    # Calculate Nmass and Narea 
+    Narea_g_m2 = N_g/la,
+    Nmass_mg_g = N_mg/leaf_dry_weight
 
 
-
-# Order the factor treatments ---------------------------------------------
+# Order the factor treatments --------------------------------------------------
 
 data_complete_final$treatment <- factor(data_complete_final$treatment,
 					levels = c(
 							   "ambientrain", 
 							   "ambientrain_nutrients",
 							   "ambientrain_water",
-							   "ambientrain_water_nutrients"
-							   )
-					)
+							   "ambientrain_water_nutrients"))
 
-# Save file as .csv  ------------------------------------------------------
-#write.csv(data_complete_final,"~/documents/projects/shade_house_exp/exploratory_figures_and_models/data/data_ecophys_models.csv")
+# Save file as .csv  -----------------------------------------------------------
+#write.csv(data_complete_final,"/data/data_ecophys_models.csv")
 
 
 
