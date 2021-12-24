@@ -1,8 +1,8 @@
-# Packages ----------------------------------------------------------------
+# Packages ---------------------------------------------------------------------
 library(docstring)
 
 
-# Function RGR ------------------------------------------------------------
+# Function RGR -----------------------------------------------------------------
 
 rgr <- function(height, days){
 	#' This funtion calculates the Relative growth rate 
@@ -18,7 +18,7 @@ rgr <- function(height, days){
 }
 
 
-# Function AGR ------------------------------------------------------------
+# Function AGR -----------------------------------------------------------------
 
 agr <- function(height, days){
 	#' This funtion calculates the absulate growth rate 
