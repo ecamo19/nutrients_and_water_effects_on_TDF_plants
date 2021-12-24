@@ -71,6 +71,7 @@ data_biomass_cleaned <-
         # Convert character columns to factor
         mutate(across(where(is.character), as.factor))
 
+
 ## Ecophys data ----------------------------------------------------------------
 
 data_ecophys_cleaned <- 
@@ -86,6 +87,7 @@ data_ecophys_cleaned <-
         
             # Convert character columns to factor
             mutate(across(where(is.character), as.factor))
+
 
 ## Leaf traits data ------------------------------------------------------------
 
@@ -107,13 +109,12 @@ data_leaftraits_cleaned <-
         # Convert character columns to factor
         mutate(across(where(is.character), as.factor))
 
-
 ## Isotopes data ---------------------------------------------------------------
 
 data_isotopes_cleaned <-
     raw_data_isotopes %>% 
 	
-	#Delete Harvested at the beginning treatment 
+	# Delete Harvested at the beginning treatment 
 	filter(!treatment %in% 'Harvestatthebeginning') %>% 
     dplyr::select(-family) %>% 
     
@@ -132,9 +133,12 @@ data_initheight_cleaned <-
         rename(init_height = x20150831) %>%
         
         #Delete Harvested at the beginning treatment 
-        filter(!treatment %in% 'Harvestatthebegging') %>% 
+        #filter(!treatment %in% 'Harvestatthebegging') %>% 
         dplyr::select(-family) %>% 
         
+        # Delete Harvested at the beginning treatment 
+        filter(!treatment %in% 'Harvestatthebegging') %>%     
+    
         # Convert character columns to factor
         mutate(across(where(is.character), as.factor))
 
@@ -190,8 +194,6 @@ data_complete <-
 
 # Remove all unused data -------------------------------------------------------
 rm(list = ls()[c(1,3:11)]) 
-
-
 
 
 
