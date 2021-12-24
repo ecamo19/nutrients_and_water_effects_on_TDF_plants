@@ -5,7 +5,7 @@
 # Packages ---------------------------------------------------------------------
 library(dplyr)
 library(janitor)
-#library(tidyr)
+library(tidyr)
 
 #Load data ---------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ data_biomass_cleaned <-
             above_biomass = (stem_dry_weight + whole_leaf_dry_weight),
             
             # Below ground biomass
-            below_biom = (root_dry_weight),
+            below_biomass = (root_dry_weight),
             # Mass fractions
             # # % Root Mass Fraction
             rmf = (root_dry_weight / total_biomass)*100,
@@ -73,6 +73,20 @@ data_biomass_cleaned <-
 
 ## Ecophys data ----------------------------------------------------------------
 
+data_ecophys_cleaned <- 
+
+    raw_data_ecophys %>%
+    
+            # Recode treatment levels 
+            mutate(treatment = recode(treatment,
+                                      `ambient rain` = "ambientrain",			   
+                                      `ambientrain+nutrients`= "ambientrain_nutrients",
+                                      `ambientrain+water` = "ambientrain_water",
+                                      `ambientrain+water+nutrients` = "ambientrain_water_nutrients")) %>% 
+        
+            # Convert character columns to factor
+            mutate(across(where(is.character), as.factor))
+
 ## Leaf traits data ------------------------------------------------------------
 
 data_leaftraits_cleaned <- 
@@ -87,8 +101,9 @@ data_leaftraits_cleaned <-
         mutate(sla_cm2_g = sla*10000) %>% 
                
         # Remove traits not used in the analysis
-        dplyr::select(-c(family, leaf_fresh_weight, leaf_dry_weight,leaf_density, 
-                         lt, lma, sla,ldmc))  %>%
+        dplyr::select(-c(family, leaf_fresh_weight,leaf_density,lt, lma, sla,
+                         ldmc))  %>%
+    
         # Convert character columns to factor
         mutate(across(where(is.character), as.factor))
 
@@ -101,6 +116,7 @@ data_isotopes_cleaned <-
 	#Delete Harvested at the beginning treatment 
 	filter(!treatment %in% 'Harvestatthebeginning') %>% 
     dplyr::select(-family) %>% 
+    
     # Convert character columns to factor
     mutate(across(where(is.character), as.factor))
 
@@ -123,13 +139,14 @@ data_initheight_cleaned <-
 
 # Join data sets ---------------------------------------------------------------
 
-#data_complete <- 
+data_complete <- 
 	
 	# Join biomass and leaf traits   
     data_biomass_cleaned %>% 
         
         # Add ecophys data
-        
+        inner_join(data_ecophys_cleaned, by = c("id", "spcode", "treatment")) %>% 
+    
         # Add leaf traits
 	    inner_join(data_leaftraits_cleaned, by = c("id", "spcode", "treatment")) %>% 
 	    
@@ -141,35 +158,38 @@ data_initheight_cleaned <-
         clean_names()  
         
 
-
-
 # Add nfixer column and calculate Narea and Nmass ------------------------------
-    mutate(nfixer = ifelse(spcode == "ec" |
+
+data_complete <-
+    data_complete %>%
+        
+        # Create Nfixer category
+        mutate(nfixer = ifelse(spcode == "ec" |
                                spcode == "dr" |
-                               spcode == "gs","fixer", "nonfixer")) %>%
+                               spcode == "gs","fixer", "nonfixer"),
+               
+               # Transform Nitrogen to grams
+                N_g = leaf_dry_weight*(perc_n/100),
+               
+                # Transform Nitrogen to mg
+                N_mg = (leaf_dry_weight*(perc_n/100))*1000,
+               
+                # Calculate Nmass and Narea 
+                Narea_g_m2 = N_g/la,
+                Nmass_mg_g = N_mg/leaf_dry_weight,
+                
+                # Order the factor treatments
+               treatment = factor(treatment,levels = c("ambientrain",
+                                                       "ambientrain_nutrients",
+                                                       "ambientrain_water",
+                                                       "ambientrain_water_nutrients"))) %>% 
+        # remove la and leaf_dry_weight
+        dplyr::select(-c(la,leaf_dry_weight))
+        
 
-        # Transform Nitrogen to grams
-        N_g = leaf_dry_weight*(perc_n/100),
-    
-    # Transform Nitrogen to mg
-    N_mg = (leaf_dry_weight*(perc_n/100))*1000,
-    
-    # Calculate Nmass and Narea 
-    Narea_g_m2 = N_g/la,
-    Nmass_mg_g = N_mg/leaf_dry_weight
+# Remove all unused data -------------------------------------------------------
+rm(list = ls()[c(1,3:11)]) 
 
-
-# Order the factor treatments --------------------------------------------------
-
-data_complete_final$treatment <- factor(data_complete_final$treatment,
-					levels = c(
-							   "ambientrain", 
-							   "ambientrain_nutrients",
-							   "ambientrain_water",
-							   "ambientrain_water_nutrients"))
-
-# Save file as .csv  -----------------------------------------------------------
-#write.csv(data_complete_final,"/data/data_ecophys_models.csv")
 
 
 
