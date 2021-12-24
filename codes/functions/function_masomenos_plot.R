@@ -149,7 +149,7 @@ masomenos_boxplot <- function(data,xvar,yvar,color, n_treat){
 		
 		boxplot <- ggplot(aes(x = !! xvar, y = !! yvar,colour = !! color ), 
 						  data = data) +
-			geom_boxplot(position = position_dodge(width = .93 ))+
+			geom_boxplot(position = position_dodge(width = .93 )) +
 		
 			xlab("Levels of nfixer") +
 			ylab("") +
@@ -169,7 +169,23 @@ masomenos_boxplot <- function(data,xvar,yvar,color, n_treat){
 	
 }	
 
+## Boxplot for using it with pmap ----------------------------------------------
 
-
+boxplot_plot_pmap <-  function(x, y, fill, data) {
+    
+    xvar <- enquo(x)
+    yvar <- enquo(y)
+    fill <- enquo(fill)
+    
+    ggplot(data, aes(fill = !!fill, x = !!xvar, y = !!yvar )) +
+        geom_boxplot() +
+        scale_fill_manual(values = c("#F0E442","#009E73",
+                                       "#56B4E9","#0072B2")) +
+        
+        theme_classic() +
+        theme(legend.position = "bottom") +
+        theme(axis.text=element_text(size = 21),
+              axis.title=element_text(size = 21,face = "bold")) 
+}
 	
 
