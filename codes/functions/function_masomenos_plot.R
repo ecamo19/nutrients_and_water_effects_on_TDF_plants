@@ -1,6 +1,9 @@
+# Load packages -----------------------------------------------------------
+library(ggplot2)
 
-# Function: Plot with lines -----------------------------------------------
-masomenos_plot <- function(data,xvar,yvar,tvar,lcl,ucl,color,n_treat){
+# Function: Plot with lines ----------------------------------------------------
+
+masomenos_plot_lines <- function(data,xvar,yvar,tvar,lcl,ucl,color,n_treat){
 	xvar <- enquo(xvar)
 	yvar <- enquo(yvar)
 	tvar <- enquo(tvar)
@@ -9,31 +12,32 @@ masomenos_plot <- function(data,xvar,yvar,tvar,lcl,ucl,color,n_treat){
 	color <- enquo(color)
 		
 	if (n_treat == 4 ){	
-	plot <- ggplot(aes(x = !! xvar, y = !! yvar,
-					   group = !! tvar, colour = !! color ), 
-				   data = data,addDot=TRUE, dotSize=1)+
-		geom_point(position = position_dodge(width=0.5))+
-		geom_line(linetype = "dashed", position=position_dodge(width=0.5))+
+	plot_lines <- ggplot(aes(x = !! xvar, y = !! yvar,
+					   group = !! tvar, colour = !! color),
+					   data = data,
+					   addDot = TRUE, dotSize = 1) +
+	    
+		    geom_point(position = position_dodge(width=0.5))+
+		    geom_line(linetype = "dashed", position=position_dodge(width=0.5))+
 
-		geom_errorbar(aes(
-			ymin = !! lcl,
-			ymax = !! ucl),
-			width=.2,
-			position=position_dodge(0.5)) +
-		xlab("Levels of nfixer") + 
-		ylab("Linear prediction") +
+		    geom_errorbar(aes( ymin = !! lcl, ymax = !! ucl), width=.2,
+		                  position=position_dodge(0.5)) +
+		    
+	        xlab("Levels of nfixer") +
+	        ylab("Linear prediction") +
 			
-			#Harvestatthebegging = Black ("#000000")
-			#ambientrain = Yellow ("#F0E442")
-			#ambientrain_nutrients = Green ("#009E73") 
-			#ambientrain_water = Light blue ("#56B4E9")
-			#ambientrain_water_nutrients = Dark blue ("#0072B2")
-		scale_colour_manual(values = c("#F0E442",
-									   "#009E73","#56B4E9",
-									   "#0072B2"))+
-		theme_bw() +
+	        # Color codes
+			# Harvestatthebegging = Black ("#000000")
+			# ambientrain = Yellow ("#F0E442")
+			# ambientrain_nutrients = Green ("#009E73") 
+			# ambientrain_water = Light blue ("#56B4E9")
+			# ambientrain_water_nutrients = Dark blue ("#0072B2")
+		    
+	        scale_colour_manual(values = c("#F0E442","#009E73","#56B4E9", "#0072B2")) +
+		    
+	        theme_classic() +
 	
-			  theme(axis.text.y   = element_text(size= 14),
+			theme(axis.text.y   = element_text(size= 14),
 			  	  axis.text.x   = element_text(size= 14),
 			  	  axis.title.y  = element_text(size= 14),
 			  	  axis.title.x  = element_text(size= 14),
@@ -41,16 +45,15 @@ masomenos_plot <- function(data,xvar,yvar,tvar,lcl,ucl,color,n_treat){
 			  	  panel.grid.major = element_blank(), 
 			  	  panel.grid.minor = element_blank(),
 			  	  axis.line = element_line(size = .4,colour = "black"),
-			  	  panel.border = element_rect(colour = "black", fill= NA, 
-			  	  								size = 1.3)
-			  ) + 
-		guides(col = guide_legend(ncol = 1,title.position = "top",))
+			  	  panel.border = element_rect(colour = "black", fill= NA,size = 1.3)) + 
+		    
+	        guides(col = guide_legend(ncol = 1,title.position = "top",))
 		
-		return(plot)}}
+		return(plot_lines)}}
 	
 
 
-# Function: Plot no lines -------------------------------------------------
+# Function: Plot no lines ------------------------------------------------------
 masomenos_plot_no_lines <- 
    	function(data,xvar,yvar,tvar,lcl,ucl,color, n_treat){
 	xvar <- enquo(xvar)
@@ -62,16 +65,15 @@ masomenos_plot_no_lines <-
 	
 	if (n_treat == 4 ){
 		plot_nolines_4_treatments <- 
-			ggplot(aes(x = !! xvar, y = !! yvar,
-					   group = !! tvar, colour = !! color ),data = data) +
-		geom_point(position = position_dodge(width=0.5))+
-		geom_errorbar(aes(
-			ymin = !! lcl,
-			ymax = !! ucl),
-			width=.2,
+		    
+			ggplot(aes(x = !! xvar, y = !! yvar, group = !! tvar, colour = !! color ),
+			       data = data) +
+		    
+		    geom_point(position = position_dodge(width=0.5))+
+		    geom_errorbar(aes( ymin = !! lcl, ymax = !! ucl), width=.2,
 			position=position_dodge(0.5)) +
-		xlab("Levels of nfixer") + 
-		ylab("Linear prediction") +
+		    xlab("Levels of nfixer") + 
+		    ylab("Linear prediction") +
 		
 		#Harvestatthebegging = Black ("#000000")
 		#ambientrain = Yellow ("#F0E442")
@@ -79,10 +81,7 @@ masomenos_plot_no_lines <-
 		#ambientrain_water = Light blue ("#56B4E9")
 		#ambientrain_water_nutrients = Dark blue ("#0072B2")
 		
-		scale_colour_manual(values = c("#F0E442",
-									   "#009E73",
-									   "#56B4E9",
-									   "#0072B2"))+
+		scale_colour_manual(values = c("#F0E442","#009E73", "#56B4E9", "#0072B2"))+
 		theme_classic() +
 		theme(legend.position = "right") +
 		guides(col = guide_legend(ncol = 1,title.position = "top",))
@@ -108,9 +107,8 @@ masomenos_plot_no_lines <-
 		#ambientrain_water = Light blue ("#56B4E9")
 		#ambientrain_water_nutrients = Dark blue ("#0072B2")
 		
-		scale_colour_manual(values = c("#000000","#F0E442",
-									   "#009E73","#56B4E9",
-									   "#0072B2"))+
+		scale_colour_manual(values = c("#000000","#F0E442","#009E73","#56B4E9",
+		                               "#0072B2"))+
 		theme_classic() +
 		theme(legend.position = "right") +
 		guides(col = guide_legend(ncol = 1,title.position = "top",))
@@ -120,9 +118,7 @@ masomenos_plot_no_lines <-
 		
 
 	
-	
-
-# Boxplots ----------------------------------------------------------------
+# Boxplots ---------------------------------------------------------------------
 
 masomenos_boxplot <- function(data,xvar,yvar,color, n_treat){
 	xvar <- enquo(xvar)
@@ -171,15 +167,7 @@ masomenos_boxplot <- function(data,xvar,yvar,color, n_treat){
 			
 			return(boxplot)} 
 	
-}
-
-
-
-
-
-
-	
-		
+}	
 
 
 
