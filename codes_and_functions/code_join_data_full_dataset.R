@@ -44,7 +44,7 @@ data_biomass_cleaned <-
 	raw_data_biomass %>%
         
         # Delete Harvested at the beginning treatment 
-        filter(!treatment %in% 'Harvestatthebeginning') %>% 
+        filter(!treatment %in% 'Harvestatthebegging') %>% 
         
         # Calculate biomass related variables
         mutate(total_biomass = root_dry_weight + stem_dry_weight + whole_leaf_dry_weight,
@@ -124,6 +124,7 @@ data_isotopes_cleaned <-
 
 data_initheight_cleaned <- 
 	raw_data_initheight	%>%
+        
         # Select columns
         dplyr::select(1:5) %>%
         
