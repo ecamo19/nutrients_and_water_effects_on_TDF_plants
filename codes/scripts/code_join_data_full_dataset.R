@@ -39,7 +39,6 @@ raw_data_initheight <-
     read.csv(paste0(raw_data_path,"data_heights.csv"),header = T) %>% 
     clean_names()
 
-
 # Clean raw data sets ----------------------------------------------------------
 
 ## Biomass data----------------------------------------------------------------- 
@@ -83,11 +82,11 @@ data_ecophys_cleaned <-
     raw_data_ecophys %>%
     
             # Recode treatment levels 
-            mutate(treatment = recode(treatment,
-                                      `ambient rain` = "ambientrain",			   
+            mutate(treatment = dplyr::recode(treatment,
+                                      `ambientrain` = "ambientrain",			   
                                       `ambientrain+nutrients`= "ambientrain_nutrients",
                                       `ambientrain+water` = "ambientrain_water",
-                                      `ambientrain+water+nutrients` = "ambientrain_water_nutrients")) %>% 
+                                      `ambientrain+water+nutrients` = "ambientrain_water_nutrients")) %>%   
         
             # Convert character columns to factor
             mutate(across(where(is.character), as.factor))
@@ -192,13 +191,13 @@ data_complete <-
                                                        "ambientrain_nutrients",
                                                        "ambientrain_water",
                                                        "ambientrain_water_nutrients"))) %>% 
-        # remove la and leaf_dry_weight
-        dplyr::select(-c(la,leaf_dry_weight))
+        # Order data set columns
+        dplyr::select(id,spcode, nfixer, treatment,init_height, everything()) %>%  
+        
+        # remove unused columns
+        dplyr::select(-c(la,leaf_dry_weight,N_mg,N_g, whole_leaf_dry_weight,
+                         root_dry_weight,stem_dry_weight))
         
 
 # Remove all unused data -------------------------------------------------------
 rm(list = ls()[c(1,3:12)]) 
-
-
-
-
