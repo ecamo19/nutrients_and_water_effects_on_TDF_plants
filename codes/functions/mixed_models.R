@@ -3,7 +3,7 @@
 # house experiment 
 
 # Load packages ----------------------------------------------------------------
-library(lme4)
+library(nlme)
 
 
 # Models -----------------------------------------------------------------------
@@ -11,13 +11,13 @@ library(lme4)
 
 ## Model 1: random effect 1|spcode ---------------------------------------------
 
-mixed_model_1_spcode_random <-  function(response, data) {
-    
+mixed_model_1_spcode_random_lmer <-  function(response, data) {    
     #this function takes each response variable and join it to the formula
-    formula <-  paste(response, " ~ nfixer*treatment + init_height")
+    formula <-  paste(response, " ~ nfixer*treatment + init_height + (1 | spcode)")
     
     # Fit the model
-    lme(as.formula(formula),random = ~ 1|spcode, method = "REML",
+    lmer(as.formula(formula), 
+        #method = "REML",
         data = data)
 }
 
