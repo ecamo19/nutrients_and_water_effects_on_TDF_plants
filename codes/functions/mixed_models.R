@@ -5,63 +5,76 @@
 # Load packages ----------------------------------------------------------------
 library(nlme)
 
-
 # Models -----------------------------------------------------------------------
 
+## Objetive --------------------------------------------------------------------
 
-## Model 1: random effect 1|spcode ---------------------------------------------
+# This function was created for fitting a model with the fixed effects, treatment,
+# nfixer, their interaction and the covariate initial height (which takes into 
+# account that each seedling had a diferent height at the beginning of the 
+# experiment). This function was created for using it in combination with 
+# purrr::map to save time. 
 
-mixed_model_1_spcode_random_lmer <-  function(response, data) {    
+
+## Model 1: Base model, random effect (1|spcode) -------------------------------
+
+mixed_model_1 <-  function(response, data) {    
     #this function takes each response variable and join it to the formula
-    formula <-  paste(response, " ~ nfixer*treatment + init_height + (1 | spcode)")
+    fixed_effects <-  paste(response, " ~ nfixer*treatment + init_height")
     
     # Fit the model
-    lmer(as.formula(formula), 
-        #method = "REML",
+    lme(as.formula(fixed_effects),
+        random = ~ 1|spcode,
+        method = "REML",
         data = data)
 }
 
 
-## Model 1.1 VarIdent model -----------------------------------------------------
+## Model 2: VarIdent model -----------------------------------------------------
 
-model_1_1_varident <- function(response, data){
-            
-        #this function takes each response variable and join it to the formula
-        formula <-  paste(response, " ~ nfixer*treatment + init_height")
+# This function fit a mixed effect models with only random intercepts for the 
+# data set data_complete
+# The argument varident_variable is for comparing models with different weights
+
+mixed_model_2_varident <- function(response, data, varident_variable = c("nfixer,
+                                                                   treatment,
+                                                                   nfixer_treatment")){
+    # Specify fixed effects
+    fixed_effects <-  paste(response, " ~ nfixer*treatment + init_height")
+    
+    # Add option for change the weights parameter
+    if (!hasArg(varident_variable)) { 
+        print("Please select one of the options: nfixer, treatment or nfixer_treatment")
         
+        } else if(varident_variable == "nfixer") 
+        
+        {# Fit the model
+        lme(as.formula(fixed_effects),
+                random = ~ 1|spcode,
+                method = "REML",
+                weights = varIdent(form = ~ 1 | nfixer),
+                data = data)
+
+        } else if (varident_variable == "treatment") {
+
         # Fit the model
-        lme(as.formula(formula),random = ~ 1|spcode, method = "REML",
-            weights = varIdent(form = ~ 1 | treatment*nfixer),
-            data = data)
+        lme(as.formula(fixed_effects),
+                random = ~ 1|spcode,
+                method = "REML",
+                weights = varIdent(form = ~ 1 | treatment),
+                data = data)
+
+
+        }  else if (varident_variable == "nfixer_treatment") {
+
+        # Fit the model
+        lme(as.formula(fixed_effects),
+                random = ~ 1|spcode,
+                method = "REML",
+                weights = varIdent(form = ~ 1 | treatment*nfixer),
+                data = data)
+        }
+
 }
-
-## Model 2: random effect treatment|spcode -------------------------------------
-
-# mixed_model_2_treatment_spcode_random_lmer <-  function(response, data) {
-#     
-#     #this function takes each response variable and join it to the formula
-#     formula <-  
-#         paste(response, " ~ nfixer*treatment + init_height + (1 + spcode |treatment)")
-#     
-#     # Fit the model
-#     lmer(as.formula(formula), data = data)
-# }
-# 
-
-## Model 2.1 varIdent ----------------------------------------------------------
-
-# model_2_1_varident <- function(response, data){
-#     
-#     #this function takes each response variable and join it to the formula
-#     formula <-  paste(response, " ~ nfixer*treatment + init_height")
-#     
-#     # Fit the model
-#     lme(as.formula(formula),
-#         random = ~ treatment|spcode, 
-#         method = "REML",
-#         weights = varIdent(form = ~ 1 | treatment*nfixer),
-#         data = data)
-# }
-# 
 
 
