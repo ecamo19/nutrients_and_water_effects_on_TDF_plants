@@ -2,6 +2,15 @@
 library(ggplot2)
 
 # Function: Plot with lines ----------------------------------------------------
+## color scheme for the levels (treatments)  -----------------------------------
+# Harvestatthebegging = Black ("#000000")
+# ambientrain = Yellow ("#F0E442")
+# ambientrain_nutrients = Green ("#009E73") 
+# ambientrain_water = Light blue ("#56B4E9")
+# ambientrain_water_nutrients = Dark blue ("#0072B2")
+
+
+
 
 masomenos_plot_lines <- function(data,xvar,yvar,tvar,lcl,ucl,color,n_treat){
 	xvar <- enquo(xvar)
@@ -25,13 +34,6 @@ masomenos_plot_lines <- function(data,xvar,yvar,tvar,lcl,ucl,color,n_treat){
 		    
 	        xlab("Levels of nfixer") +
 	        ylab("Linear prediction") +
-			
-	        # Color codes
-			# Harvestatthebegging = Black ("#000000")
-			# ambientrain = Yellow ("#F0E442")
-			# ambientrain_nutrients = Green ("#009E73") 
-			# ambientrain_water = Light blue ("#56B4E9")
-			# ambientrain_water_nutrients = Dark blue ("#0072B2")
 		    
 	        scale_colour_manual(values = c("#F0E442","#009E73","#56B4E9", "#0072B2")) +
 		    
@@ -75,12 +77,6 @@ masomenos_plot_no_lines <-
 		    xlab("Levels of nfixer") + 
 		    ylab("Linear prediction") +
 		
-		#Harvestatthebegging = Black ("#000000")
-		#ambientrain = Yellow ("#F0E442")
-		#ambientrain_nutrients = Green ("#009E73") 
-		#ambientrain_water = Light blue ("#56B4E9")
-		#ambientrain_water_nutrients = Dark blue ("#0072B2")
-		
 		scale_colour_manual(values = c("#F0E442","#009E73", "#56B4E9", "#0072B2"))+
 		theme_classic() +
 		theme(legend.position = "right") +
@@ -100,13 +96,7 @@ masomenos_plot_no_lines <-
 			position=position_dodge(0.5)) +
 		xlab("Levels of nfixer") + 
 		ylab("Linear prediction") +
-		
-		#Harvestatthebegging = Black ("#000000")
-		#ambientrain = Yellow ("#F0E442")
-		#ambientrain_nutrients = Green ("#009E73") 
-		#ambientrain_water = Light blue ("#56B4E9")
-		#ambientrain_water_nutrients = Dark blue ("#0072B2")
-		
+
 		scale_colour_manual(values = c("#000000","#F0E442","#009E73","#56B4E9",
 		                               "#0072B2"))+
 		theme_classic() +
@@ -134,11 +124,7 @@ masomenos_boxplot <- function(data,xvar,yvar,color, n_treat){
 			
 			xlab("Levels of nfixer") + 
 			ylab("") +
-			
-			#ambientrain = Yellow ("#F0E442")
-			#ambientrain_nutrients = Green ("#009E73") 
-			#ambientrain_water = Light blue ("#56B4E9")
-			#ambientrain_water_nutrients = Dark blue ("#0072B2")
+		    
 			scale_colour_manual(values = c("#F0E442","#009E73",
 										   "#56B4E9","#0072B2"))+
 			theme_classic() +
@@ -154,11 +140,7 @@ masomenos_boxplot <- function(data,xvar,yvar,color, n_treat){
 			xlab("Levels of nfixer") +
 			ylab("") +
 				
-			#Harvestatthebegging = Black ("#000000")
-			#ambientrain = Yellow ("#F0E442")
-			#ambientrain_nutrients = Green ("#009E73") 
-			#ambientrain_water = Light blue ("#56B4E9")
-			#ambientrain_water_nutrients = Dark blue ("#0072B2")
+		
 			scale_colour_manual(values = c("#000000","#F0E442",
 										   "#009E73","#56B4E9","#0072B2"))+
 			theme_classic() +
