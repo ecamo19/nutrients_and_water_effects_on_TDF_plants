@@ -4,30 +4,35 @@
 
 # Load packages ----------------------------------------------------------------
 library(nlme)
+library(cowplot)
+library(lme4)
 
-# Models -----------------------------------------------------------------------
 
 ## Objetive --------------------------------------------------------------------
 
-# This function was created for fitting a model with the fixed effects, treatment,
-# nfixer, their interaction and the covariate initial height (which takes into 
-# account that each seedling had a diferent height at the beginning of the 
-# experiment). This function was created for using it in combination with 
-# purrr::map to save time. 
+# These functions were created for fitting a mixed model with the fixed effects, 
+# treatment, nfixer, their interaction and the covariate initial height 
+# (which takes into account that each seedling had a different height at the 
+# beginning of the experiment). These functions were created for using tehm in 
+# combination with purrr::map to save time. 
 
+# Model fitting ----------------------------------------------------------------
 
 ## Model 1: Base model, random effect (1|spcode) -------------------------------
 
 mixed_model_1 <-  function(response, data) {    
-    #this function takes each response variable and join it to the formula
-    fixed_effects <-  paste(response, " ~ nfixer*treatment + init_height")
+    
+    # Take each response variable and join it to the model formula
+    formula = paste(response, " ~ treatment * nfixer + init_height + (1|spcode)")
+    #fixed_effects <-  paste0(response, " ~ nfixer*treatment + init_height")
     
     # Fit the model
-    model_1_base <- lme(as.formula(fixed_effects),
-                            random = ~ 1|spcode,
-                            method = "REML",
-                            data = data)
+    model_1_base <- lmer(as.formula(formula),
+                            #random = ~ 1|spcode,
+                            #method = "REML",
+                            data = data) 
     return(model_1_base)
+    
 }
 
 
@@ -35,12 +40,13 @@ mixed_model_1 <-  function(response, data) {
 
 # This function fit a mixed effect models with only random intercepts for the 
 # data set data_complete
-# The argument varident_variable is for comparing models with different weights
+# The argument varident_variable is for fitting models with different weights
 
-mixed_model_2_varident <- function(response, data, varident_variable = c("nfixer,
-                                                                   treatment,
-                                                                   nfixer_treatment")){
-    # Specify fixed effects
+mixed_model_2_varident <- function(response, data, 
+                                   varident_variable = c("nfixer,treatment,
+                                                         nfixer_treatment")){
+    
+    # Take each response variable and join it to the model formula
     fixed_effects <-  paste(response, " ~ nfixer*treatment + init_height")
     
     # Add option for change the weights parameter
@@ -78,6 +84,40 @@ mixed_model_2_varident <- function(response, data, varident_variable = c("nfixer
         return(model_varident_3)
         }
 
+}
+
+
+# Model Validation -------------------------------------------------------------
+
+## Validation plots for model 1 ------------------------------------------------
+
+validation_plots <-  function(response, data) {    
+    
+    # This function takes each response variable and join it to the formula
+    fixed_effects <-  paste0(response, " ~ nfixer*treatment + init_height")
+    
+    # Fit the model
+    model_1_base <- lme(as.formula(fixed_effects),
+                        random = ~ 1|spcode,
+                        method = "REML",
+                        data = data) 
+    
+    p1 <- plot(model_1_base,which = c(1), col = data$treatment,add.smooth = T,
+               main = paste0( "Model residuals of ",response, 
+                              " by Treatment") )
+    
+    
+    p2 <- plot(model_1_base,which = c(1), col = data$nfixer,
+               add.smooth = T, main = paste0("Model residuals of ",response, 
+                                             " by Nfixer"))
+    
+    p3 <- qqnorm(model_1_base, ~ resid(., type = "p"), abline = c(0, 1),
+                 main = paste0("Model ",response))
+    
+    #p4 <- plot(model_1_base, resid(model_1_base, type = "p") ~ fitted(model_1_base),
+    #           type = c("p", "smooth"),main = paste0("Model ",response))
+    
+    return(cowplot::plot_grid(p1,p2,p3, ncol = 2))
 }
 
 
