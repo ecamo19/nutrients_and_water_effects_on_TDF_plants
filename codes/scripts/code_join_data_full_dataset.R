@@ -7,45 +7,35 @@ library(dplyr)
 library(janitor)
 library(tidyr)
 
-# Load raw data ----------------------------------------------------------------
+# Load data --------------------------------------------------------------------
 
-# This step was done because when I source this script, the connection cant
-# be opened
-
-#raw_data_path <- "~/Documents/projects/nutrients_and_water_effects_2022/raw_data/"
-
-## RGR and AGR data ------------------------------------------------------------
+## RGR and AGR data cleaned ----------------------------------------------------
 source("./codes/scripts/code_clean_and_calculate_growth_measurements.R")
 
 ## Biomass data ---------------------------------------------------------------- 
 raw_data_biomass <- 
     read.csv("./raw_data/6_plant_dry_weights_data.csv",header = T) %>% 
-	#read.csv(paste0(raw_data_path, "6_plant_dry_weights_data.csv"), header = T) %>% 
-    clean_names()
+	clean_names()
 
 ## Ecophys data ----------------------------------------------------------------
 raw_data_ecophys <- 
     read.csv("./raw_data/3_physiology_data.csv",header = T) %>%
-    #read.csv(paste0(raw_data_path,"3_physiology_data.csv"), header = T) %>% 
     clean_names() %>% 
     dplyr::select(- c(family))
 
 ## Leaf trait data ------------------------------------------------------------- 
 raw_data_traits <- 
     read.csv("./raw_data/2_leaf_trait_data.csv",header = T) %>%
-    #read.csv(paste0(raw_data_path,"2_leaf_trait_data.csv"), header = T) %>% 
     clean_names()
 
 ## Isotopes data ---------------------------------------------------------------
 raw_data_isotopes <- 
     read.csv("./raw_data/4_isotopes_data.csv",header = T) %>%
-    #read.csv(paste0(raw_data_path,"4_isotopes_data.csv"), header = T) %>% 
     clean_names()
 
 ## Initial height data ---------------------------------------------------------
 raw_data_initheight <- 
     read.csv("./raw_data/data_heights.csv",header = T) %>%
-    #read.csv(paste0(raw_data_path,"data_heights.csv"),header = T) %>% 
     clean_names()
 
 ## RGR and AGR -----------------------------------------------------------------
@@ -213,6 +203,5 @@ data_complete <-
         dplyr::select(-c(la,leaf_dry_weight,N_mg,N_g, whole_leaf_dry_weight,
                          root_dry_weight,stem_dry_weight))
         
-data_complete
 # Remove all unused data -------------------------------------------------------
 rm(list = ls()[c(1,3:12)]) 
