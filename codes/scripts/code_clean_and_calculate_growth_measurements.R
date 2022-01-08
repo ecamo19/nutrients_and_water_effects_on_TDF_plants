@@ -23,7 +23,7 @@ library(tidyr)
 library(purrr)
 
 # Load data --------------------------------------------------------------------
-raw_data_heigths <- read.csv("raw_data/data_heights.csv", header = TRUE) %>% 
+raw_data_heigths <- read.csv("./raw_data/data_heights.csv", header = TRUE) %>% 
     clean_names()
 
 
