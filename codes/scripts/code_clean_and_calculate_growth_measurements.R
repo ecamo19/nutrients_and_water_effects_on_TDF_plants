@@ -28,7 +28,6 @@ raw_data_heigths <- read.csv("raw_data/data_heights.csv", header = TRUE) %>%
 
 
 # Cleaning raw data ------------------------------------------------------------
-str(raw_data_heigths)
 
 # Remove x at the beginning of the colnames
 colnames(raw_data_heigths) <- sub("*x", "", colnames(raw_data_heigths))
@@ -134,66 +133,5 @@ data_rgr_agr_cleaned <-
 
 
 # Remove all files except clean data set ---------------------------------------
-rm(list = ls()[c(1:5, 7:12)])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+#ls()
+rm(list = ls()[c(1:4, 6:9)])
