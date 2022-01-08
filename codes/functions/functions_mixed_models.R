@@ -43,8 +43,10 @@ mixed_model_1 <-  function(response, data) {
 # The argument varident_variable is for fitting models with different weights
 
 mixed_model_2_varident <- function(response, data, 
-                                   varident_variable = c("nfixer,treatment,
-                                                         nfixer_treatment")){
+                                   varident_variable = c("nfixer,
+                                                         treatment,
+                                                         nfixer_treatment,
+                                                         spcode")){
     
     # Take each response variable and join it to the model formula
     fixed_effects <-  paste(response, " ~ nfixer*treatment + init_height")
@@ -55,14 +57,15 @@ mixed_model_2_varident <- function(response, data,
         
         } else if(varident_variable == "nfixer") 
         
-        {# Fit the model
-        model_varident_1 <- lme(as.formula(fixed_effects),
+        # Model with varIdent =  ~ 1 | nfixer
+        {model_varident_1 <- lme(as.formula(fixed_effects),
                                 random = ~ 1|spcode,
                                 method = "REML",
                                 weights = varIdent(form = ~ 1 | nfixer),
                                 data = data)
         return(model_varident_1)
-
+        
+        # Model with varIdent =  ~ 1 | treatment
         } else if (varident_variable == "treatment") {
 
         # Fit the model
@@ -72,7 +75,8 @@ mixed_model_2_varident <- function(response, data,
                                 weights = varIdent(form = ~ 1 | treatment),
                                 data = data)
         return(model_varident_2)
-
+        
+        # Model with varIdent =  ~ 1 | nfixer*treatment
         }  else if (varident_variable == "nfixer_treatment") {
 
         # Fit the model
@@ -82,42 +86,101 @@ mixed_model_2_varident <- function(response, data,
                                     weights = varIdent(form = ~ 1 | treatment*nfixer),
                                     data = data)
         return(model_varident_3)
-        }
+        
+        # Model with varIdent =  ~ 1 | spcode
+        } else if (varident_variable == "spcode") {
+        
+        # Fit the model
+        model_varident_4 <- lme(as.formula(fixed_effects),
+                                random = ~ 1|spcode,
+                                method = "REML",
+                                weights = varIdent(form = ~ 1 | spcode),
+                                data = data)
+        return(model_varident_4)
+    }
 
 }
 
 
-# Model Validation -------------------------------------------------------------
+# Model Validation plot varIdent model -----------------------------------------
 
-## Validation plots for model 1 ------------------------------------------------
+# The coplot generated here if for checking variance hetereogeneity
 
-validation_plots <-  function(response, data) {    
+validation_plot_varident_models <-  function(response, data, 
+                                              varident_variable = c("nfixer,
+                                                                    treatment,
+                                                                    nfixer_treatment,
+                                                                    spcode")){
     
-    # This function takes each response variable and join it to the formula
-    fixed_effects <-  paste0(response, " ~ nfixer*treatment + init_height")
+    # Take each response variable and join it to the model formula
+    fixed_effects <-  paste(response, " ~ nfixer*treatment + init_height")
     
-    # Fit the model
-    model_1_base <- lme(as.formula(fixed_effects),
-                        random = ~ 1|spcode,
-                        method = "REML",
-                        data = data) 
+    # Add option for change the weights parameter
+    if (!hasArg(varident_variable)) { 
+        print("Please select one of the options: nfixer,treatment or 
+              nfixer_treatment")
+        
+    } else if(varident_variable == "nfixer")  
+     
+        # Model with varIdent =  ~ 1 | nfixer
+        {model_varident_1 <- lme(as.formula(fixed_effects),
+                                    random = ~ 1|spcode,
+                                    method = "REML",
+                                    weights = varIdent(form = ~ 1 | nfixer),
+                                    data = data)
+        # Validation plot
+        return(
+        coplot(resid(model_varident_1,type = "normailized") ~ treatment | nfixer, 
+               data = data, 
+               ylab = "Normalised residuals" ))
+        
+    } else if (varident_variable == "treatment") {
+        
+        # Fit the model
+        model_varident_2 <- lme(as.formula(fixed_effects),
+                                random = ~ 1|spcode,
+                                method = "REML",
+                                weights = varIdent(form = ~ 1 | treatment),
+                                data = data)
+        
+        # Validation plot
+        return(coplot(resid(model_varident_2,
+                         type = "normailized") ~ treatment | nfixer,
+                   data = data, 
+                   ylab = "Normalised residuals" ))
+        
+    }  else if (varident_variable == "nfixer_treatment") {
+        
+        # Fit the model
+        model_varident_3 <- lme(as.formula(fixed_effects),
+                                random = ~ 1|spcode,
+                                method = "REML",
+                                weights = varIdent(form = ~ 1 | treatment*nfixer),
+                                data = data)
+        
+        # Validation plot
+        return(coplot(resid(model_varident_3,
+                            type = "normailized") ~ treatment | nfixer,
+                      data = data, 
+                      ylab = "Normalised residuals" ))
     
-    p1 <- plot(model_1_base,which = c(1), col = data$treatment,add.smooth = T,
-               main = paste0( "Model residuals of ",response, 
-                              " by Treatment") )
-    
-    
-    p2 <- plot(model_1_base,which = c(1), col = data$nfixer,
-               add.smooth = T, main = paste0("Model residuals of ",response, 
-                                             " by Nfixer"))
-    
-    p3 <- qqnorm(model_1_base, ~ resid(., type = "p"), abline = c(0, 1),
-                 main = paste0("Model ",response))
-    
-    #p4 <- plot(model_1_base, resid(model_1_base, type = "p") ~ fitted(model_1_base),
-    #           type = c("p", "smooth"),main = paste0("Model ",response))
-    
-    return(cowplot::plot_grid(p1,p2,p3, ncol = 2))
+    } else if (varident_variable == "spcode") {
+        
+        # Fit the model
+        model_varident_4 <- lme(as.formula(fixed_effects),
+                                random = ~ 1|spcode,
+                                method = "REML",
+                                weights = varIdent(form = ~ 1 | spcode),
+                                data = data)
+        
+        # Validation plot
+        return(coplot(resid(model_varident_4,
+                            type = "normailized") ~ treatment | nfixer,
+                      data = data, 
+                      ylab = "Normalised residuals"))
+        
+        
+    }
 }
 
 
