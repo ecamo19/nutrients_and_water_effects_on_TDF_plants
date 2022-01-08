@@ -7,42 +7,55 @@ library(dplyr)
 library(janitor)
 library(tidyr)
 
-#Load data ---------------------------------------------------------------------
+# Load raw data ----------------------------------------------------------------
 
-# This step was done because when I source the this script, the connection cant
+# This step was done because when I source this script, the connection cant
 # be opened
-raw_data_path <- "~/Documents/projects/nutrients_and_water_effects_2022/raw_data/"
+
+#raw_data_path <- "~/Documents/projects/nutrients_and_water_effects_2022/raw_data/"
+
+## RGR and AGR data ------------------------------------------------------------
+source("./codes/scripts/code_clean_and_calculate_growth_measurements.R")
 
 ## Biomass data ---------------------------------------------------------------- 
 raw_data_biomass <- 
-	read.csv(paste0(raw_data_path, "6_plant_dry_weights_data.csv"), header = T) %>% 
+    read.csv("./raw_data/6_plant_dry_weights_data.csv",header = T) %>% 
+	#read.csv(paste0(raw_data_path, "6_plant_dry_weights_data.csv"), header = T) %>% 
     clean_names()
 
 ## Ecophys data ----------------------------------------------------------------
 raw_data_ecophys <- 
-    read.csv(paste0(raw_data_path,"3_physiology_data.csv"), header = T) %>% 
+    read.csv("./raw_data/3_physiology_data.csv",header = T) %>%
+    #read.csv(paste0(raw_data_path,"3_physiology_data.csv"), header = T) %>% 
     clean_names() %>% 
     dplyr::select(- c(family))
 
 ## Leaf trait data ------------------------------------------------------------- 
 raw_data_traits <- 
-    read.csv(paste0(raw_data_path,"2_leaf_trait_data.csv"), header = T) %>% 
+    read.csv("./raw_data/2_leaf_trait_data.csv",header = T) %>%
+    #read.csv(paste0(raw_data_path,"2_leaf_trait_data.csv"), header = T) %>% 
     clean_names()
 
 ## Isotopes data ---------------------------------------------------------------
 raw_data_isotopes <- 
-    read.csv(paste0(raw_data_path,"4_isotopes_data.csv"), header = T) %>% 
+    read.csv("./raw_data/4_isotopes_data.csv",header = T) %>%
+    #read.csv(paste0(raw_data_path,"4_isotopes_data.csv"), header = T) %>% 
     clean_names()
 
 ## Initial height data ---------------------------------------------------------
 raw_data_initheight <- 
-    read.csv(paste0(raw_data_path,"data_heights.csv"),header = T) %>% 
+    read.csv("./raw_data/data_heights.csv",header = T) %>%
+    #read.csv(paste0(raw_data_path,"data_heights.csv"),header = T) %>% 
     clean_names()
 
-# Clean raw data sets ----------------------------------------------------------
+## RGR and AGR -----------------------------------------------------------------
+# No raw data file loaded here because this data set was cleaned in the file 
+# called code_clean_and_calculate_growth_measurements.R 
+ 
+
+# Cleaned data sets ------------------------------------------------------------
 
 ## Biomass data----------------------------------------------------------------- 
-
 data_biomass_cleaned <- 
 	raw_data_biomass %>%
         
@@ -50,7 +63,8 @@ data_biomass_cleaned <-
         filter(!treatment %in% 'Harvestatthebegging') %>% 
         
         # Calculate biomass related variables
-        mutate(total_biomass = root_dry_weight + stem_dry_weight + whole_leaf_dry_weight,
+        mutate(total_biomass = root_dry_weight + stem_dry_weight + 
+                               whole_leaf_dry_weight,
                
             # Above ground biomass	
             above_biomass = (stem_dry_weight + whole_leaf_dry_weight),
@@ -76,7 +90,6 @@ data_biomass_cleaned <-
 
 
 ## Ecophys data ----------------------------------------------------------------
-
 data_ecophys_cleaned <- 
 
     raw_data_ecophys %>%
@@ -146,7 +159,6 @@ data_initheight_cleaned <-
         mutate(across(where(is.character), as.factor))
 
 # Join data sets ---------------------------------------------------------------
-
 data_complete <- 
 	
 	# Join biomass and leaf traits   
@@ -163,11 +175,14 @@ data_complete <-
         
         # Add plant initial height
         inner_join(data_initheight_cleaned, by = c("id", "spcode", "treatment")) %>%
+    
+        # Add plant RGR and AGR
+        inner_join(data_rgr_agr_cleaned, by = c("id", "spcode", "treatment")) %>%
+    
         clean_names()  
         
 
 # Add nfixer column and calculate Narea and Nmass ------------------------------
-
 data_complete <-
     data_complete %>%
         
@@ -198,6 +213,6 @@ data_complete <-
         dplyr::select(-c(la,leaf_dry_weight,N_mg,N_g, whole_leaf_dry_weight,
                          root_dry_weight,stem_dry_weight))
         
-
+data_complete
 # Remove all unused data -------------------------------------------------------
 rm(list = ls()[c(1,3:12)]) 
