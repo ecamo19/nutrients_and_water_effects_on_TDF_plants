@@ -152,7 +152,7 @@ validation_plot_varident_models <-  function(response, data,
                                     data = data)
         # Validation plot
         return(
-        coplot(resid(model_varident_1,type = "normailized") ~ treatment | nfixer, 
+        coplot(resid(model_varident_1,type = "normalized") ~ treatment | nfixer, 
                data = data, 
                ylab = "Normalised residuals" ))
         
@@ -167,7 +167,7 @@ validation_plot_varident_models <-  function(response, data,
         
         # Validation plot
         return(coplot(resid(model_varident_2,
-                         type = "normailized") ~ treatment | nfixer,
+                         type = "normalized") ~ treatment | nfixer,
                    data = data, 
                    ylab = "Normalised residuals" ))
         
@@ -182,7 +182,7 @@ validation_plot_varident_models <-  function(response, data,
         
         # Validation plot
         return(coplot(resid(model_varident_3,
-                            type = "normailized") ~ treatment | nfixer,
+                            type = "normalized") ~ treatment | nfixer,
                       data = data, 
                       ylab = "Normalised residuals" ))
     
@@ -197,7 +197,7 @@ validation_plot_varident_models <-  function(response, data,
         
         # Validation plot
         return(coplot(resid(model_varident_4,
-                            type = "normailized") ~ treatment | nfixer,
+                            type = "normalized") ~ treatment | nfixer,
                       data = data, 
                       ylab = "Normalised residuals"))
         
