@@ -191,17 +191,18 @@ data_complete <-
                 Narea_g_m2 = N_g/la,
                 Nmass_mg_g = N_mg/leaf_dry_weight,
                 
-                # Order the factor treatments
-               treatment = factor(treatment,levels = c("ambientrain",
-                                                       "ambientrain_nutrients",
-                                                       "ambientrain_water",
-                                                       "ambientrain_water_nutrients"))) %>% 
+                # Rename the factor levels
+               treatment = factor(recode(data_complete$treatment,ambientrain  = "no_additions",
+                                        ambientrain_water_nutrients = "plus_water_nutrients",
+                                        ambientrain_nutrients = "plus_nutrients",
+                                        ambientrain_water      = "plus_water"))) %>% 
+               
         # Order data set columns
         dplyr::select(id,spcode, nfixer, treatment,init_height, everything()) %>%  
         
         # remove unused columns
         dplyr::select(-c(la,leaf_dry_weight,N_mg,N_g, whole_leaf_dry_weight,
                          root_dry_weight,stem_dry_weight))
-        
+
 # Remove all unused data -------------------------------------------------------
 rm(list = ls()[c(1,3:12)]) 
