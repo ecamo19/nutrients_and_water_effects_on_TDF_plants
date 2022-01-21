@@ -1,5 +1,6 @@
 # Load packages -----------------------------------------------------------
 library(ggplot2)
+library(forcats)
 
 # Function: Plot with lines ----------------------------------------------------
 ## color scheme for the levels (treatments)  -----------------------------------
@@ -171,108 +172,100 @@ boxplot_plot_pmap <-  function(x, y, fill, data) {
 
 # Multiple comparisons plot ----------------------------------------------------
 
-# ## Get coefficients ----------------------------------------------------------
-# ## 
-# models_1
-# create_data_frame <- function(model_list){
-#     
-#     # get the response variable name from the model
-#     terms <- terms(model_list)
-#     vars <- as.character(attr(terms, "variables"))[-1] 
-#     response <- attr(terms, "response") 
-#     
-#     # Create the data frame
-#     data.frame(#variable = rownames(summary(model_list)$tTable),
-#         
-#         # Get coefs from summary
-#         coefficient = summary(model_list)$tTable[, 1],
-#         
-#         # Get standard error from model
-#         SE = summary(model_list)$tTable[, 2], 
-#         
-#         # Set model name
-#         model_name = paste0("model_", vars[response])) %>% 
-#         rownames_to_column("variable") 
-# } 
-# 
-# map_df(models_1, create_data_frame)
-# model1Frame <- data.frame(variable = rownames(summary(models_1$rmf)$tTable),
-# 
-#                           # Get coefs from summary
-#                           coefficient = summary(models_1$rmf)$tTable[, 1],
-# 
-#                           # Get standard error from model
-#                           SE = summary(models_1$rmf)$tTable[, 2],
-#                           modelName = "South Indicator")
-# 
-# # 
-# model2Frame <- data.frame(variable = rownames(summary(models_1$lmf)$tTable),
-# 
-#                           coefficient = summary(models_1$lmf)$tTable[, 1],
-#                           SE = summary(models_1$lmf)$tTable[, 2],
-#                           modelName= "Age Interaction")
-# # 
-# # model3Frame <- data.frame(variable = rownames(summary(model3)$tTable),
-# #                           coefficient = summary(model3)$tTable[, 1],
-# #                           SE = summary(model3)$tTable[, 2],
-# #                           modelName = "Univariate")
-# 
-# ## Join the coefficients into single data frame --------------------------------
-# emmip(models_1$lmf)
-# emm1_1 <- emmeans(models_1$total_biomass, specs = pairwise ~ treatment|nfixer,adjust = "bonf", )$contrast
-# 
-# 
-# 
-# allModelFrame <- data.frame(rbind(model1Frame, model2Frame)) 
-# 
-# model1Frame
-# 
-# 
-# #data <- map_df(models_2_varident_treat_nfixer,create_data_frame)
-# 
-# # Specify the width of your confidence intervals -------------------------------
-# 
-# ## 90% multiplier -------------------------------------------------------------- 
-# interval1 <- -qnorm((1-0.9)/2)  
-# 
-# ## 95% multiplier --------------------------------------------------------------
-# interval2 <- -qnorm((1-0.95)/2)  
-# 
-# # Plot the coefficients --------------------------------------------------------
-# 
-# ## Base plot -------------------------------------------------------------------
-# #zp1 <- ggplot(allModelFrame, aes(colour = modelName))
-# 
-# zp1 <- ggplot(data = allModelFrame,aes(colour = modelName))
-# 
-# ## Add line at x = 0 -----------------------------------------------------------
-# zp1 <- zp1 + geom_hline(yintercept = 0, colour = gray(1/2), lty = 2)
-# 
-# 
-# zp1 <- zp1 + geom_linerange(aes(x = variable, 
-#                                 ymin = coefficient - SE*interval1,
-#                                 ymax = coefficient + SE*interval1),
-#                             lwd = 1, position = position_dodge(width = 1/2))
-# 
-# 
-# 
-# zp1 <- zp1 + geom_pointrange(aes(x = variable, y = coefficient, 
-#                                  ymin = coefficient - SE*interval2,
-#                                  ymax = coefficient + SE*interval2),
-#                              lwd = 1/2, position = position_dodge(width = 1/2),
-#                              shape = 21, fill = "WHITE")
-# 
-# ## Flip the plot ---------------------------------------------------------------
-# zp1 <- zp1 + coord_flip() + theme_bw()
-# zp1 <- zp1 + ggtitle("Comparing several models")
-# 
-# # The trick to these is position_dodge().
-# print(zp1)  
-
-
-
-
+# ## Join the coefficients into single data frame ------------------------------
  
+plot_multiple_comparisons <- function(x, y, color, fill, se, shape, data){
+    xvar <- enquo(x)
+    yvar <- enquo(y)
+    color <- enquo(color)
+    fill <- enquo(fill)
+    se   <- enquo(se)
+    shape   <- enquo(shape)
+    
+    #Specify the width of your confidence intervals
+    interval1 <- -qnorm((1-0.95)/2)   
+    interval2 <- -qnorm((1-0.99)/2) 
+    
+    
+    ggplot(data = data, aes(x = !!xvar, y = !!yvar,
+                            group = !!yvar,
+                            color = !!color,
+                            fill = !!fill)) +
+        
+        # Add vertical line
+        geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
+        
+        geom_point(position = position_dodge(width = .9), 
+                   aes(shape = !!shape), size = 3) +
+        
+        geom_linerange(aes(fatten = .1,
+                           ymin = !!yvar - !!se * interval1,
+                           ymax = !!yvar + !!se * interval1),
+                       lwd = 1, position = position_dodge(width = .9)) +
+        
+        geom_pointrange(aes(fatten = .1,
+                            ymin = !!yvar - !!se * interval2,
+                            ymax = !!yvar + !!se * interval2),
+                        lwd = 1, position = position_dodge(width = .9)) +
+        
+        #coord_flip() + 
+        theme_bw()
+    
+}
 
+
+# -------------------------------------------------------------------------
+## https://stackoverflow.com/questions/57452215/extracting-name-from-nested-data-to-use-as-plot-label-in-purrrmap-ggplot-call
+
+plot_multiple_comparisons_simple <- function(x, y, se, shape, color = NULL,
+                                             plot_name = NULL,
+                                             data = NULL){
+    xvar <- enquo(x)
+    yvar <- enquo(y)
+    se   <- enquo(se)
+    shape <- enquo(shape)
+    color <- enquo(color)
+    #plot_name <- enquo(plot_name)
+    
+    #Specify the width of your confidence intervals
+    interval1 <- -qnorm((1-0.95)/2)   
+    interval2 <- -qnorm((1-0.99)/2) 
+    
+    
+    ggplot(data = data, aes(x = fct_rev(!!xvar), y = !!yvar,
+                            group = !!yvar, color = !!color)) +
+        
+        geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
+        geom_point(position = position_dodge(width = .9), aes(shape = !!shape), 
+                   size = 4) +
+        
+        geom_linerange(aes(ymin = !!yvar - !!se * interval1,
+                           ymax = !!yvar + !!se * interval1),
+                       lwd = 1, position = position_dodge(width = .9)) +
+        
+        geom_linerange(aes(ymin = !!yvar - !!se * interval2,
+                           ymax = !!yvar + !!se * interval2),
+                       lwd = 1/2, position = position_dodge(width = .9)) +
+        
+        theme_bw() +
+        
+        theme(legend.position="bottom",
+              axis.text.y   = element_text(size= 15),
+              axis.text.x   = element_text(size= 15),
+              axis.title.y  = element_text(size= 15),
+              axis.title.x  = element_text(size= 15),
+              panel.grid.major.y = element_blank(), 
+              panel.grid.minor = element_blank(),
+              axis.line = element_line(size = .4,colour = "black"),
+              panel.border = element_rect(colour = "black", fill= NA, 
+                                          size = 1.3)) +
+        # Add name
+        labs(title =  first(data$var)) +
+        scale_colour_manual(values=c("black", "gray")) +
+        ylab("Estimated difference between treatments") +
+        xlab("") +
+       
+        coord_flip()
+}
 
 
