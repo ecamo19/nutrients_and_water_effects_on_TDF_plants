@@ -9,27 +9,29 @@ library(emmeans)
 # Model inference --------------------------------------------------------------
 
 ## Anova Table -----------------------------------------------------------------
-
+## For lme4 models
 # First, get and customize anova table from model 
 anova_table_df <- function(model){
     
     # get the response variable name from the model
     terms <- terms(model)
     response_var <- as.character(attr(terms, "variables"))[2] 
+    trait_var <- as.character(attr(terms, "variables"))[5]
     
     # Generate anova table
-    anova.lme(model, type = "marginal") %>% 
+    car::Anova(model, type = "III", test.statistic="F") %>% 
         
         data.frame() %>%
         rownames_to_column("fixed_effects") %>% 
         
         # create column with the name of the response variable
-        add_column(response_variable = response_var) %>% 
-        clean_names() %>%
+        add_column(response_variable = paste0(response_var, "-", trait_var)) %>% 
+        clean_names() %>% 
         
         # Round p and f values
-        mutate(f_value = round(f_value,3),
-               p_value = round(p_value,6)) %>% 
+        mutate(f = round(f,3),
+               pr_f = round(pr_f,6),
+               df_res = round(pr_f,5)) %>% 
         select(response_variable, fixed_effects, everything())
 }
 
@@ -43,32 +45,32 @@ anova_table_tidy <- function(model, single_model = FALSE, model_list = FALSE){
     
     else if(model_list == TRUE) {
         
-    reactable(map_df(model, anova_table_df),
-              
-              groupBy = "response_variable",
-              
-              rowStyle = JS("function(rowInfo) {
+        reactable(map_df(model, anova_table_df),
+                  
+                  groupBy = "response_variable",
+                  
+                  rowStyle = JS("function(rowInfo) {
                         if (rowInfo.level > 0) {
                         return { background: '#eee', 
                         borderLeft: '2px solid #ffa62d' }} 
                         else {return { borderLeft: '2px solid transparent' }}}"),
-              
-              columns = list(
                   
-                  # Adjust columns width
-                  response_variable = colDef(minWidth = 165),
-                  fixed_effects = colDef(minWidth = 125),
-                  num_df = colDef(minWidth = 70),
-                  den_df = colDef(minWidth = 65),
-                  f_value = colDef(minWidth = 70),
-                
-                  
-                  # Color p_value if it is less than 0.05
-                  p_value = colDef(style = function(value) {
+                  columns = list(
+                      
+                      # Adjust columns width
+                      response_variable = colDef(minWidth = 165),
+                      fixed_effects = colDef(minWidth = 125),
+                      f = colDef(minWidth = 65),
+                      df = colDef(minWidth = 70),
+                      df_res = colDef(minWidth = 70),
+                      
+                      
+                      # Color p_value if it is less than 0.05
+                      pr_f = colDef(style = function(value) {
                           if (value >= 0.05) {color <- "black"}
                           else {color <- "#008000"} 
                           list(color = color)})))
-        } 
+    } 
     else 
         reactable(anova_table_df(model),
                   
@@ -85,22 +87,23 @@ anova_table_tidy <- function(model, single_model = FALSE, model_list = FALSE){
                       # Adjust columns width
                       response_variable = colDef(minWidth = 165),
                       fixed_effects = colDef(minWidth = 125),
-                      num_df = colDef(minWidth = 70),
-                      den_df = colDef(minWidth = 65),
-                      f_value = colDef(minWidth = 70),
+                      f = colDef(minWidth = 70),
+                      df = colDef(minWidth = 70),
+                      df_res = colDef(minWidth = 65),
                       
                       
                       # Color p_value if it is less than 0.05
-                      p_value = colDef(style = function(value) {
+                      pr_f = colDef(style = function(value) {
                           if (value >= 0.05) {color <- "black"}
                           else {color <- "#008000"} 
                           list(color = color)})))
     
 }
 
+
 ## Multiple comparisons table --------------------------------------------------
 
-# First, get multiple comparisons
+# First, get multiple comparisons as data frame
 tukey_table_df <- function(model,formula){
   
   # get the response variable name from the model
@@ -138,7 +141,7 @@ tukey_table_df <- function(model,formula){
 } 
 
 
-# Second, generate final table 
+# Second, tidy table 
 tukey_table_tidy <- function(model,single_model = FALSE, model_list = FALSE, 
                              formula = NULL){
     
@@ -210,11 +213,16 @@ tukey_table_tidy <- function(model,single_model = FALSE, model_list = FALSE,
 }
 
 
-
 # Get emmeans ------------------------------------------------------------------
 
-emmeans_df <- function(model,formula, grouping_var){
-  var <- sym(grouping_var)
+emmeans_df <- function(model,formula, grouping_var = NULL){
+  
+  if (is_empty(grouping_var) == TRUE) {
+    var = NULL
+  } else (
+    var <- ensym(grouping_var) 
+  )
+  #var <- sym(ifelse(is_empty(grouping_var) == TRUE, NA, grouping_var))
   
   # get the response variable name from the model
   terms <- terms(model)
@@ -226,7 +234,7 @@ emmeans_df <- function(model,formula, grouping_var){
   else
     formula <- formula(paste0("pairwise ~ ", formula))
   
-  # Get contrasts
+  # Get contrasts tukey
   # estimate: of the effect size, that is the difference 
   # between the two emmeans (estimated marginal means)
   as.data.frame(emmeans(model,
@@ -237,6 +245,7 @@ emmeans_df <- function(model,formula, grouping_var){
     clean_names() %>% 
     dplyr::select(response, everything(),
                   -c(df,lower_cl, upper_cl,se)) %>%
+    
     
     group_by(!!(var)) %>%
     
@@ -287,7 +296,6 @@ emmeans_table_tidy <- function(model, grouping_var = NULL, single_model = FALSE,
   }
   
   else if (single_model == TRUE) {
-    
     
     reactable(emmeans_df(model, formula, grouping_var),
               

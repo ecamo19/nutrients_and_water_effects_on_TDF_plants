@@ -179,7 +179,7 @@ data_complete <-
         # Create Nfixer category
         mutate(nfixer = factor(ifelse(spcode == "ec" |
                                spcode == "dr" |
-                               spcode == "gs","fixer", "nonfixer")),
+                               spcode == "gs" ,"fixer", "nonfixer")),
                
                # Transform Nitrogen to grams
                 N_g = leaf_dry_weight*(perc_n/100),
