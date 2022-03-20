@@ -1,4 +1,4 @@
-# Load packages -----------------------------------------------------------
+# Load packages ----------------------------------------------------------------
 library(ggplot2)
 library(forcats)
 
@@ -172,7 +172,7 @@ boxplot_plot_pmap <-  function(x, y, fill, data) {
 
 # Multiple comparisons plot ----------------------------------------------------
 
-# ## Join the coefficients into single data frame ------------------------------
+### Join all the coef from multiple models into single data frame --------------
  
 plot_multiple_comparisons <- function(x, y, color, fill, se, shape, data){
     xvar <- enquo(x)
@@ -214,7 +214,7 @@ plot_multiple_comparisons <- function(x, y, color, fill, se, shape, data){
 }
 
 
-# -------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 ## https://stackoverflow.com/questions/57452215/extracting-name-from-nested-data-to-use-as-plot-label-in-purrrmap-ggplot-call
 
 plot_multiple_comparisons_simple <- function(x, y, se, shape, color = NULL,
@@ -268,4 +268,204 @@ plot_multiple_comparisons_simple <- function(x, y, se, shape, color = NULL,
         coord_flip()
 }
 
+# Plot coefs bootstraped -------------------------------------------------------
+
+# First build data frame
+
+bootstraped_coefs <- function(model, interaction_3way = FALSE ){
+    
+    set.seed(666)
+    
+    # Recognize 3way interaction
+    if (interaction_3way == TRUE) {
+        
+        # Words to remove from labels
+        pattern <- c('\\+.*|nfixer|treatment|_')
+        
+        # Get response variable name for add it as title
+        response_variable <- as.character(attr(terms(model), "variables"))[2]
+        response_variable <- stringr::str_to_title(stringr::str_replace_all(response_variable,
+                                                                            pattern = '_', 
+                                                                            replacement = ' '))
+        
+        FEsim(model, 5000) %>%
+            mutate(lower =  median - 1.96 * sd,
+                   upper =  median + 1.96 * sd) %>% 
+            
+            # Remove unnecessary terms
+            filter(!term %in% c("(Intercept)","init_height" )) %>% 
+            
+            # Create significance column
+            mutate(significance = if_else((lower > 0 & upper > 0 | lower < 0 & upper < 0), 
+                                          TRUE, FALSE)) %>% 
+            
+            # Filter unwanted terms
+            
+            filter(!term %in% c("treatmentplus_nutrients","treatmentplus_water",
+                                   "treatmentplus_water_nutrients", "nfixerfixer",
+                                   
+                                   "treatmentplus_nutrients:nfixerfixer",
+                                   "treatmentplus_water:nfixerfixer",
+                                   "treatmentplus_water_nutrients:nfixerfixer",
+                                   
+                                   "amax_log", "d13c", "d15n", "gs_sqrt", "wue_log",
+                                   "pnue_log",
+                                   
+                                   "nfixerfixer:amax_log","nfixerfixer:d13c",
+                                   "nfixerfixer:d15n","nfixerfixer:gs_sqrt",
+                                   "nfixerfixer:wue_log", "nfixerfixer:pnue_log",
+                                   
+                                   "treatmentplus_nutrients:amax_log","treatmentplus_nutrients:d13c",
+                                   "treatmentplus_nutrients:d15n","treatmentplus_nutrients:gs_sqrt",
+                                   "treatmentplus_nutrients:wue_log", "treatmentplus_nutrients:pnue_log",
+                                   
+                                   "treatmentplus_water:amax_log","treatmentplus_water:d13c",
+                                   "treatmentplus_water:d15n","treatmentplus_water:gs_sqrt",
+                                   "treatmentplus_water:wue_log", "treatmentplus_water:photo_nitrogen_use_log",
+                                   
+                                   "treatmentplus_water_nutrients:amax_log","treatmentplus_water_nutrients:d13c",
+                                   "treatmentplus_water_nutrients:d15n","treatmentplus_water_nutrients:gs_sqrt",
+                                   "treatmentplus_water_nutrients:wue_log", "treatmentplus_water_nutrients:pnue_log"
+                                   
+                                   
+            )) %>%  
+            
+            arrange(term) %>% 
+            
+            # Edit factor levels
+            mutate(term = stringr::str_replace_all(term, pattern, replacement = ' ')) %>%
+            mutate(term = stringr::str_replace_all(term, pattern = ' ', replacement = '')) %>%
+            add_column(response_variable) %>% 
+            dplyr::select(response_variable, term, everything(), -mean)
+        
+        
+    } else if(interaction_3way == FALSE){
+        
+        # Words to remove from labels
+        pattern <- c('\\+.*|nfixer|treatment|_')
+     
+        response_variable <- as.character(attr(terms(model), "variables"))[2]
+        
+        set.seed(666)
+        FEsim(model, 5000) %>%
+            mutate(lower =  median - 1.96 * sd,
+                   upper =  median + 1.96 * sd) %>% 
+            
+            # Remove unnecessary terms
+            filter(!term %in% c("(Intercept)","init_height" )) %>% 
+            
+            # Create significance column
+            mutate(significance = if_else((lower > 0 & upper > 0 | lower < 0 & upper < 0), 
+                                          TRUE, FALSE)) %>% 
+            
+            # Filter unwanted terms
+            
+            arrange(term) %>% 
+            
+            # Edit factor levels
+            mutate(term = stringr::str_replace_all(term, pattern, replacement = ' ')) %>% 
+            mutate(term = stringr::str_replace_all(term, pattern = ' ', replacement = '')) %>%
+            add_column(response_variable) %>% 
+            dplyr::select(response_variable,term, everything(), -mean)
+        
+    }
+}
+
+
+# Second, plot coefs
+
+plot_bootstrap_conf_int <- function(model, interact_3way = F ){
+    
+    if(interact_3way == F) {
+        
+        # Plot
+        ggplot(data = map_dfr(model, ~ bootstraped_coefs(., interaction_3way = F)), 
+               # Highlight significant terms
+               aes(x = reorder(term, -median), y = median, color = significance)) +
+
+            
+            geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
+            geom_point(position = position_dodge(width = .9)) +
+            
+            # 95% C.I
+            geom_linerange(aes(ymin = lower,
+                               ymax = upper),
+                           lwd = 1, position = position_dodge(width = .9)) +
+            
+            # 99% C.I
+            #geom_linerange(aes(ymin = !!yvar - !!se * interval2,
+            #                   ymax = !!yvar + !!se * interval2),
+            #               lwd = 1/2, position = position_dodge(width = .9)) +
+            
+            theme_bw() +
+            
+            theme(legend.position = "none",
+                  axis.text.y   = element_text(size= 15),
+                  axis.text.x   = element_text(size= 15),
+                  axis.title.y  = element_text(size= 15),
+                  axis.title.x  = element_text(size= 15),
+                  panel.grid.major.y = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  axis.line = element_line(size = .4,colour = "black"),
+                  panel.border = element_rect(colour = "black", fill= NA, 
+                                              size = 1.3)) +
+            # Add name
+            #labs(title = paste0(response_variable)) +
+            
+            # Significance colors
+            scale_colour_manual(values = c("gray","black")) +
+            ylab("Estimated effects of treatments (median +/- CI)") +
+            xlab("") +
+            
+            facet_wrap(~ response_variable, scales = "free_x", ncol = 3) +
+            
+            
+            coord_flip()
+        
+    } else if (interact_3way == T) {
+        
+        # Plot
+        ggplot(data = map_dfr(model, ~ bootstraped_coefs(., interaction_3way = T)),
+               
+               # Highlight significant terms
+               aes(x = fct_rev(term), y = median,color = significance)) +
+            
+            geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
+            geom_point(position = position_dodge(width = .9)) +
+            
+            # 95% C.I
+            geom_linerange(aes(ymin = lower,
+                               ymax = upper),
+                           lwd = 1, position = position_dodge(width = .9)) +
+            
+            # 99% C.I
+            #geom_linerange(aes(ymin = !!yvar - !!se * interval2,
+            #                   ymax = !!yvar + !!se * interval2),
+            #               lwd = 1/2, position = position_dodge(width = .9)) +
+            
+            theme_bw() +
+            
+            theme(legend.position = "none",
+                  axis.text.y   = element_text(size= 15),
+                  axis.text.x   = element_text(size= 15),
+                  axis.title.y  = element_text(size= 15),
+                  axis.title.x  = element_text(size= 15),
+                  panel.grid.major.y = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  axis.line = element_line(size = .4,colour = "black"),
+                  panel.border = element_rect(colour = "black", fill= NA, 
+                                              size = 1.3)) +
+            # Add name
+            #labs(title = paste0(response_variable)) +
+            
+            # Significance colors
+            scale_colour_manual(values = c("gray","black")) +
+            ylab("Estimated effects of treatments (median +/- CI)") +
+            xlab("") +
+            
+            facet_wrap(~ response_variable, scales = "free_x", nrow = 2) +
+            
+            coord_flip()
+        }
+}
 

@@ -172,7 +172,8 @@ data_complete <-
         clean_names()  
         
 
-# Add nfixer column and calculate Narea and Nmass ------------------------------
+# Complete dataset -------------------------------------------------------------
+
 data_complete <-
     data_complete %>%
         
@@ -198,11 +199,44 @@ data_complete <-
                                         ambientrain_water      = "plus_water"))) %>% 
                
         # Order data set columns
-        dplyr::select(id,spcode, nfixer, treatment,init_height, everything()) %>%  
+        dplyr::select(id, spcode, nfixer, treatment,init_height, everything()) %>%  
         
         # remove unused columns
         dplyr::select(-c(la,leaf_dry_weight,N_mg,N_g, whole_leaf_dry_weight,
                          root_dry_weight,stem_dry_weight))
 
+
+# Data set use for fitting the models ------------------------------------------
+
+data_for_models <- 
+    data_complete %>%
+    
+    # Calculate nitrogen use efficiency column
+    # I followed Leaf traits explaining the growth of tree 
+    # species planted in a Central Amazonian disturbed area
+    mutate(pnue = (amax*sla_cm2_g*0.1)/perc_n) %>% 
+    
+    # select variables that are going to be used in the models
+    dplyr::select(id, spcode, treatment,nfixer, init_height, 
+                  
+                  # Plant preformance
+                  total_biomass, above_biomass, below_biomass, 
+                  agr, rgr, rgr_slope,
+                  
+                  # Traits
+                  amax, gs, wue, d13c, d15n, pnue) %>%
+    
+    # add id to rownames for keep track of the rows
+    column_to_rownames("id") %>% 
+    mutate(nfixer = factor(nfixer, levels = c("nonfixer","fixer")))
+
+
 # Remove all unused data -------------------------------------------------------
-rm(list = ls()[c(1,3:12)]) 
+items <- c("data_biomass_cleaned", "data_ecophys_cleaned", "data_initheight_cleaned",
+           "data_isotopes_cleaned", "data_leaftraits_cleaned", "data_rgr_agr_cleaned",
+           "data_heights_clean", "raw_data_biomass", "raw_data_ecophys", 
+           "raw_data_initheight", "raw_data_heigths"  , "rgr", "rgr_model_coef",
+           "rgr_slope","raw_data_isotopes", "raw_data_traits")
+remove(items, list = items)
+
+ls()

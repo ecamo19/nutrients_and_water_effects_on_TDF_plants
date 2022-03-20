@@ -69,7 +69,7 @@ data_heights_clean <-
         mutate(number_of_days_int = as.integer(number_of_days)) %>% 
     
         # Order the dataframe
-        select(id,spcode,treatment,nfixer, everything(),-family) 
+        dplyr::select(id,spcode,treatment,nfixer, everything(),-family) 
 
 
 # Calculate RGR and AGR --------------------------------------------------------
@@ -93,20 +93,26 @@ data_rgr_agr <-
 
 
 ## Nest data -------------------------------------------------------------------
+
 data_height_by_id <- 
     data_heights_clean %>% 
         group_by(id) %>% 
-        select(id,height_cm,number_of_days_int) %>% 
+        dplyr::select(id,height_cm,number_of_days_int) %>%   
         nest()
+        
 
 ## Create model ----------------------------------------------------------------
 
 # This model only returns the slope of each id plant
+
 rgr_model_coef <- function(data) {
-    coef(lm(log(height_cm) ~ number_of_days_int, data = data))[[2]]
+    
+    # Constant added for preventing log(0)
+    coef(lm(log(height_cm) ~ log(number_of_days_int + 1), data = data))[[2]]
 }
 
 ## map -------------------------------------------------------------------------
+
 rgr_slope <- 
     data_height_by_id %>% 
         
@@ -117,7 +123,7 @@ rgr_slope <-
         unnest(rgr_slope) %>% 
         
         # Remove col data
-        select(-data)
+        dplyr::select(-data)
 
 # Join data sets and create data for models ------------------------------------
 
@@ -129,7 +135,7 @@ data_rgr_agr_cleaned <-
     inner_join(., rgr_slope, by = "id") %>% 
     
     # Remove unused colunms
-    select(-c(date,height_cm, number_of_days,number_of_days_int))
+    dplyr::select(-c(date,height_cm, number_of_days,number_of_days_int))
 
 
 # Remove all files except clean data set ---------------------------------------
