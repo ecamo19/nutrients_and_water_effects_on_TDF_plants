@@ -1,5 +1,3 @@
-# Original Code developer https://gist.github.com/dsparks/4332698
-
 # Load packages ----------------------------------------------------------------
 library(ggplot2)
 library(tibble)
