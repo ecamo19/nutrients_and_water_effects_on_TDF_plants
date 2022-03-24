@@ -1,39 +1,15 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ecamo19/water_and_nutrients_effects/HEAD)
 
 
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nutrients_and_water_effects_2022
+# Project: Nutrients and water effects over growth and biomass acumulation of Nitrogen Fixing species from the Tropical Dry Forest 
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of nutrients_and_water_effects_2022 is to …
+This repo contains all the code for performing the data analysis for the project.
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+All code can be fully reproduced by pressing the Binder bottom. 
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-![](README_files/figure-gfm/pressure-1.png)<!-- -->
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub.
+This bottom will take you to a Jupyter lab environment where you can open a Rstudio instance where you can enter any line of code form any of the HTML files found in the Notebooks folder.    
