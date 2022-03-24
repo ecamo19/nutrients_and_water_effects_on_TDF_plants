@@ -1,3 +1,6 @@
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ecamo19/water_and_nutrients_effects/HEAD)
+
+
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
