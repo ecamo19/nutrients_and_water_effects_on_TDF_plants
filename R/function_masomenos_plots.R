@@ -88,14 +88,14 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
             dplyr::mutate(lower =  median - 1.96 * sd, upper =  median + 1.96 * sd) %>% 
             
             # Remove unnecessary terms
-            stats::filter(!term %in% c("(Intercept)","init_height" )) %>% 
+            dplyr::filter(!term %in% c("(Intercept)","init_height" )) %>% 
             
             # Create significance column
             dplyr::mutate(significance = if_else((lower > 0 & upper > 0 | lower < 0 & upper < 0), 
                                           TRUE, FALSE)) %>% 
             
-            # Filter unwanted terms
-            stats::filter(!term %in% c("treatmentplus_nutrients","treatmentplus_water",
+            # Filter unwanted treatments
+            dplyr::filter(!term %in% c("treatmentplus_nutrients","treatmentplus_water",
                                    "treatmentplus_water_nutrients", "nfixerfixer",
                                    
                                    "treatmentplus_nutrients:nfixerfixer",
@@ -151,7 +151,7 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
                    upper =  median + 1.96 * sd) %>% 
             
             # Remove unnecessary terms
-            stats::filter(!term %in% c("(Intercept)","init_height" )) %>% 
+            dplyr::filter(!term %in% c("(Intercept)","init_height" )) %>% 
             
             # Create significance column
             dplyr::mutate(significance = if_else((lower > 0 & upper > 0 | lower < 0 & upper < 0), 
@@ -194,7 +194,6 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
 #'}
 #'
 #' @export
-
 
 plot_simulate_conf_int <- function(model, iter, interact_3way = F ){
     
@@ -251,7 +250,7 @@ plot_simulate_conf_int <- function(model, iter, interact_3way = F ){
                                                                       interaction_3way = T)),
                         
                         # Highlight significant terms
-                        aes(x = fct_rev(term), y = median,color = significance)) +
+                        aes(x = reorder(term, -median), y = median,color = significance)) +
             
             ggplot2::geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
             ggplot2::geom_point(position = position_dodge(width = .9)) +
