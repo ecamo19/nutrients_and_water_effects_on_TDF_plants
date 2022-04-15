@@ -1,0 +1,128 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r}
+library(dplyr)
+# For tables appearance
+library(reactablefmtr)
+# For cleaning colnames
+library(janitor)
+# For add column function
+library(tibble)
+library(purrr)
+library(performance)
+# For bootstrap confidence intervals
+library(merTools)
+# For model comparison
+library(MuMIn)
+# For get preditions
+library(modelr)
+# For reporting results
+library(report)
+```
+
+```{r}
+# Load dataset for adding predictions
+sys.source("./scripts/code_join_data_full_dataset.R", envir = knitr::knit_global())
+```
+
+
+```{r}
+# Load functions
+
+## Inference
+sys.source("./R/functions_inference_anova_and_tukey_tables.R", envir = knitr::knit_global())
+
+## Plots
+sys.source("./R/function_masomenos_plots.R", envir = knitr::knit_global())
+```
+
+
+```{r}
+# Load models
+models_q1_q2 <- readRDS("./processed_data/models_q1_q2.RData")
+
+models_q3 <- readRDS("./processed_data/models_q3_3_way_interaction.RData")
+
+models_nodule_count <- readRDS("./processed_data/models_list_nodule_count.RData")
+```
+
+
+```{r}
+# Step done for getting predictions
+
+data_for_models_transformed <- 
+    data_for_models %>% 
+        
+        mutate(
+            # Plant's performance
+            
+            # NO TRANSFORMATION variable already in log-log
+          
+            
+            # NO TRANSFORMATION variable already in log-log
+          
+            # Traits
+            amax_log = log(amax),
+            gs_sqrt = sqrt(gs),
+            wue_log = log(wue),
+            
+            # d13 and d15 where not transformed because the data has negative values
+            pnue_log = log(data_for_models$pnue),
+          
+            # Covariate
+            init_height = log(init_height)) %>%   
+            
+        # Remove original variables (non-transformed)
+        dplyr::select(spcode, treatment, nfixer, init_height, everything(),
+               -c(5:8,11:13,16))    
+```
+
+# Q1 and Q2
+## Model comparison
+
+
+```{r}
+model.sel(models_q1_q2$rgr,
+                    models_q1_q2$d13c,
+                    models_q1_q2$d15n,
+                    models_q1_q2$total_biomass,
+                    models_q1_q2$above_biomass,
+                    models_q1_q2$below_biomass,
+                    models_q1_q2$amax_log,
+                    models_q1_q2$wue_log,
+                    models_q1_q2$pnue_log) %>% 
+    reactable()
+```
+
+```{r}
+models_q1_q2 %>% 
+    
+    # Remove models
+    purrr::list_modify("rgr_slope" = NULL, "agr_log" = NULL, "gs_sqrt" = NULL) %>%  
+    map(., report)
+```
+
+```{r message=FALSE, warning=FALSE}
+anova_table_tidy(models_q1_q2, model_list = T)
+```
+
+
+
+```{r message=FALSE, warning=FALSE}
+tukey_table_tidy(models_q1_q2, model_list = T, formula = "treatment|nfixer")
+```
+
+
+
+```{r message=FALSE, warning=FALSE}
+emmeans_table_tidy(models_q1_q2, model_list = T, 
+                        formula = "treatment|nfixer", 
+                        grouping_var = "nfixer")
+```
+
