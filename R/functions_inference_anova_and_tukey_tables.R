@@ -130,7 +130,7 @@ tukey_table_df <- function(model,formula){
         mutate(response_variable = factor(response_variable),
                contrast = factor(contrast)) %>%
           
-        select(response_variable, everything(),-c(df, t_ratio)) %>% 
+        dplyr::select(response_variable, everything(),-c(df)) %>% 
         
         mutate_if(is.numeric, round, 4)
     
@@ -265,7 +265,7 @@ emmeans_table_tidy <- function(model, grouping_var = NULL, single_model = FALSE,
   
   if(model_list == TRUE) {
     
-    reactable(map_df(model, ~ emmeans_df(.x, formula, !!grouping_var)),
+    reactable(map_df(model, ~ emmeans_df(.x, formula, grouping_var)),
               
               groupBy = "response",
               
