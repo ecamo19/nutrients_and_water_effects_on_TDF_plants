@@ -1,0 +1,367 @@
+---
+title: 'Model fitting and validation'
+author: "Erick Calderon-Morales"
+date: ' Fall 2021'
+due_date: ""
+output:
+  prettydoc::html_pretty:
+    highlight: pygments
+    theme: cayman
+    toc: yes
+    number_sections: no
+    toc_depth: 1
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,comment = "", fig.align = 'center',
+					  fig.width = 11, fig.height = 7)
+```
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      cache.comments = TRUE,
+                      
+                      # Include code?
+                      echo           = TRUE,
+                      
+                      error          = FALSE,
+                      fig.align      = "center",
+                      
+                      # Path to where to store pdf single figures 
+                      fig.path       = paste0("./figures_model_validation_lmer", "/"),
+                      fig.width      = 11,
+                      fig.height     = 7,
+                      message        = FALSE,
+                      warning        = FALSE)
+```
+
+
+```{r cleanup-docs, cache = FALSE,echo = FALSE}
+
+# # save a html copy file in a specific place
+# doc.files <- c(list.files(pattern = "pdf"),
+#                list.files(pattern = "html"),
+#                list.files(pattern = "docx"))
+# 
+# for (file in doc.files) {
+#   cambiar nombre
+#     file.rename(file, file.path("../../hw1/", file))
+# }
+```
+
+
+```{r libaries, message=FALSE, warning=FALSE, cache=FALSE}
+library(dplyr)
+# For Model fitting
+library(lme4)
+library(purrr)
+# For diagnostics
+library(performance)
+# For adding new columns
+library(tibble)
+library(caret)
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load data
+sys.source("./scripts/code_join_data_full_dataset.R", envir = knitr::knit_global())
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Load functions
+## Models
+sys.source("./R/functions_models.R", envir = knitr::knit_global())
+```
+
+# Select performance and traits variables 
+
+
+## Transform variables
+[Backtranformation info](http://www.biostathandbook.com/transformation.html#:~:text=Square%2Droot%20transformation.,to%20make%20them%20all%20positive.)
+
+## Back transformation
+
+Even though you've done a statistical test on a transformed variable, such as 
+the log of fish abundance, it is not a good idea to report your means, standard 
+errors, etc. in transformed units. A graph that showed that the mean of the log 
+of fish per 75 meters of stream was 1.044 would not be very informative for 
+someone who can't do fractional exponents in their head. Instead, you should 
+back-transform your results. This involves doing the opposite of the mathematical 
+function you used in the data transformation. For the log transformation, you 
+would back-transform by raising 10 to the power of your number. For example, the 
+log transformed data above has a mean of 1.044 and a 95% confidence 
+interval of ±0.344 log-transformed fish. The back-transformed mean would 
+be 101.044=11.1 fish. The upper confidence limit would be 10(1.044+0.344)=24.4 
+fish, and the lower confidence limit would be 10(1.044-0.344)=5.0 fish. 
+Note that the confidence interval is not symmetrical; the upper limit is 13.3 
+fish above the mean, while the lower limit is 6.1 fish below the mean. Also note 
+that you can't just back-transform the confidence interval and add or subtract 
+that from the back-transformed mean; you can't take 100.344 and add or subtract that.
+
+
+Square-root transformation. This consists of taking the square root of each 
+observation. The back transformation is to square the number. If you have 
+negative numbers, you can't take the square root; you should add a constant to 
+each number to make them all positive.
+
+People often use the square-root transformation when the variable is a count of 
+something, such as bacterial colonies per petri dish, blood cells going through 
+a capillary per minute, mutations per generation, etc.
+
+
+
+```{r}
+# Box-Cox transformation was previously run 
+
+data_for_models_transformed <- 
+    data_for_models %>% 
+        
+        mutate(
+            # Plant's performance
+            #total_biomass_sqrt = sqrt(total_biomass),
+            #above_biomass_sqrt = sqrt(above_biomass),
+            #below_biomass_log = log(below_biomass),
+            #agr_log = log(agr),
+            
+            # NO TRANSFORMATION variable already in log-log
+            #rgr = rgr,
+            
+            # NO TRANSFORMATION variable already in log-log
+            #rgr_slope = rgr_slope,
+          
+            # Traits
+            amax_log = log(amax),
+            gs_log = log(gs),
+            wue_log = log(wue),
+            
+            # d13 and d15 where not transformed because the data has negative values
+            pnue_log = log(data_for_models$pnue),
+          
+            # Covariate
+            init_height = log(init_height)) %>%   
+            
+        # Remove original variables (non-transformed)
+        dplyr::select(spcode, treatment, nfixer, init_height, everything(),
+               -c(8,10,11:13,16))    
+
+```
+
+
+
+# Models: Questions 1 and 2   
+
+$$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
+
+```{r}
+# Take response variables' names 
+response_vars_q1_q2 <- 
+    set_names(names(data_for_models_transformed)[5:(ncol(data_for_models_transformed))])
+```
+
+
+
+```{r}
+#data_for_models_transformed[data_for_models_transformed$id == 48,]
+models_list_q1_q2 <- map(response_vars_q1_q2, ~ mixed_model_1(response = .x, 
+                                                              data = data_for_models_transformed))
+```
+
+## Models Nodule count
+
++ Chapter 9 Mixed models in ecology check glmmML package for count data
++ GOOD ref https://www.dataquest.io/blog/tutorial-poisson-regression-in-r/
++ #https://www.flutterbys.com.au/stats/tut/tut11.2a.html
+
+```{r}
+# Load data
+# This step was done like this because I am working with a subset of the data
+# source cleaned data
+source("./scripts/code_clean_data_nodules.R")
+
+# Delete unused variables
+data_nodules_cleaned <-
+    data_nodules_cleaned %>%
+        
+        # add id to rownames for keep track of the rows
+        column_to_rownames("id") %>% 
+        dplyr::select(spcode,treatment, everything())
+
+```
+
+
+### m4 lmer gaussian      
+
+```{r}
+lmer_gaussian <- lmer(number_of_root_nodulation ~ treatment + init_height + 
+                           (1 |spcode),
+                       data = data_nodules_cleaned)
+```
+
+
+```{r}
+lmer_gaussian_log <-  lmer(log(number_of_root_nodulation) ~ treatment + init_height + 
+                           (1 |spcode),
+                       data = data_nodules_cleaned)
+```
+
+### m5 glmer poisson
+
+```{r}
+glmer_poisson <-  glmer(number_of_root_nodulation ~ treatment + init_height + 
+                           (1 |spcode), family = "poisson",
+                       data = data_nodules_cleaned)
+```
+
+```{r}
+models_list_nodule_count <- list(lmer_gaussian, lmer_gaussian_log, glmer_poisson)
+names(models_list_nodule_count) <- c("lmer_gaussian",
+                                     "lmer_gaussian_log",
+                                     "glmer_poisson")
+```
+
+
+## Mycorrhizal colonization
+
+```{r, eval = FALSE}
+I decided not to include it, because I want to focus on Nfixing vrs non-Fixing, 
+also I don't trust on the data
+```
+
+
+# Models: Question 3
+
+$$performance\sim treatment*\ fixer*\ scale(log(trait)\ + initial\ height + random( 1|\ specie)$$
+
+## Scale preditors
+
+```{r}
+data_for_models_transformed_scaled <-         
+    data_for_models_transformed %>% 
+    
+    # test for being sure that I select the traits
+    #select(c(4,7,8,13:16))
+
+        # scale only the predictors traits
+         mutate(across(c(4,9:14), scale))
+```
+
+
+```{r}
+# Select traits (x_vars)
+traits_names <- 
+    set_names(names(data_for_models_transformed_scaled)
+                          [c(9:14)])
+traits_names
+```
+
+
+```{r}
+# Select plants performance vars (y_vars)
+performance_names <- 
+    set_names(names(data_for_models_transformed_scaled)[c(5:8)])
+
+performance_names
+```
+
+
+```{r}
+models_lmer_formulas <- model_combinations_formulas(performance_names, traits_names)
+
+length(models_lmer_formulas)
+models_lmer_formulas[1]
+```
+
+```{r}
+models_list_q3 <- map(models_lmer_formulas, 
+                       ~ lmer(.x, data = data_for_models_transformed_scaled))
+```
+
+# Validation plots 
+
+# Collinearity
+
+```{r collinearity_q1_q2}
+map(models_list_q1_q2, check_collinearity)
+```
+
+```{r}
+map(models_list_nodule_count, check_collinearity)
+```
+
+```{r collinearity_q3}
+
+#Warning: Model has interaction terms. VIFs might be inflated. You may check 
+#multicollinearity among predictors of a model without interaction terms.
+
+#map(models_list_q3, check_mul)
+```
+
+
+# Bolker's plots
+
+```{r}
+bolker_validation <- function(model) {
+    
+    
+    a <- plot(model, type = c("p", "smooth"))
+    
+    ## heteroscedasticity
+    b <-     plot(model,sqrt(abs(resid(.))) ~ fitted(.), type = c("p", "smooth"))
+   
+    cowplot::plot_grid(a,b,nrow = 1)
+}
+```
+
+## Models for questions 1,2 
+
+```{r bolker_plots_q1_q2,fig.height = 8, fig.width = 15}
+map(models_list_q1_q2, bolker_validation)
+```
+
+## Models for nodule count
+
+```{r, bolker_plots_q3, fig.height = 8, fig.width = 15}
+map(models_list_nodule_count, bolker_validation)
+```
+
+## Models for question 3
+```{r, bolker_plots_nodule_count, fig.height = 8, fig.width = 15}
+map(models_list_q3, bolker_validation)
+```
+
+
+# Performance package
+
+## Models for questions 1,2 
+```{r validation_plots_q1_q2,fig.height = 15, fig.width = 10}
+map(models_list_q1_q2, check_model)
+```
+
+
+## Models for nodule count
+```{r validation_plots_nodule_count,fig.height = 15, fig.width = 10}
+map(models_list_nodule_count, check_model)
+```
+
+
+## Models for question 3
+```{r validation_plots_3_way_interact,fig.height = 15, fig.width = 10}
+map(models_list_q3, check_model)
+```
+
+
+
+# Save lists with the models 
+
+```{r}
+saveRDS(models_list_q1_q2, file = "./processed_data/models_q1_q2.RData") 
+saveRDS(models_list_q3, file = "./processed_data/models_q3_3_way_interaction.RData") 
+saveRDS(models_list_nodule_count, file = "./processed_data/models_list_nodule_count.RData") 
+```
