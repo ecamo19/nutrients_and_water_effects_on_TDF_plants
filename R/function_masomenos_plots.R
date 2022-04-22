@@ -68,8 +68,6 @@ boxplot_plot_pmap <-  function(x, y, fill, data) {
 
 simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
     
-    set.seed(666)
-    
     # Recognize 3way interaction
     if (interaction_3way == TRUE) {
         
@@ -143,7 +141,6 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
      
         response_variable <- as.character(attr(terms(model), "variables"))[2]
         
-        set.seed(666)
         merTools::FEsim(model, iter) %>%
             
             # Get CIs
