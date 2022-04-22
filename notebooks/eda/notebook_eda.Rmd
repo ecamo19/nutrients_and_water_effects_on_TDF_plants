@@ -1,0 +1,303 @@
+---
+title: 'EDA'
+author: "Erick Calderon-Morales"
+date: ' Fall 2021'
+due_date: ""
+output:
+  prettydoc::html_pretty:
+    highlight: pygments
+    theme: cayman
+    toc: yes
+    number_sections: no
+    toc_depth: 1
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "", fig.align = 'center',
+					  fig.width = 20, fig.height = 25)
+
+# Nrows displayed by datatable
+options(DT.options = list(pageLength = 7))  
+```
+
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      cache.comments = TRUE,
+                      
+                      # Include code?
+                      echo           = TRUE,
+                      
+                      error          = FALSE,
+                      fig.align      = "center",
+                      
+                      # Path to where to store pdf single figures 
+                      fig.path       = paste0("./eda_figures", "/"),
+                      fig.width      = 11,
+                      fig.height     = 7,
+                      message        = FALSE,
+                      warning        = FALSE)
+```
+
+
+```{r cleanup-docs, cache = FALSE,echo = FALSE}
+
+# save a html copy file in a specific place
+# doc.files <- c(list.files(pattern = "pdf"),
+#                list.files(pattern = "html"),
+#                list.files(pattern = "docx"))
+# 
+# for (file in doc.files) {
+#   cambiar nombre
+#     file.rename(file, file.path("../../hw1/", file))
+# }
+```
+
+
+```{r libaries, message=FALSE, warning=FALSE, cache=FALSE}
+# For EDA
+library(dlookr)
+# For tables
+library(DT)
+# For map plots
+library(purrr)
+library(dplyr)
+library(ggplot2)
+# For joining plots
+library(cowplot) 
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load data
+sys.source("./scripts/code_join_data_full_dataset.R", envir = knitr::knit_global())
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load functions
+sys.source("./R/function_masomenos_plots.R", envir = knitr::knit_global())
+```
+
+# Dataset for generating plots
+
+```{r}
+vars <-  
+  crossing(
+    
+    # Get all numeric variables to plot (all y)
+    as_tibble(t(combn(select(data_complete, where(is.numeric)) %>% names, 1))),
+    
+    # Select factor variables to plot
+    x_axis_var = select(data_complete, nfixer) %>%  names,
+    group_var = select(data_complete, treatment) %>%  names)
+
+```
+
+# Diagnose
+
+```{r genaral_data_info}
+diagnose(data_complete) %>%   
+  mutate_if(is.numeric, round, 2) %>%  
+  datatable()
+```
+
+
+```{r category_varaibles}
+diagnose_category(data_complete) %>% 
+  mutate_if(is.numeric, round, 2) %>%  
+  datatable() 
+```
+
+
+## Table Plant's performace measures
+
+```{r mean_values_nfixer_by_treateatment_performace_measures, message=FALSE, warning=FALSE}
+data_complete %>% 
+  select(-id) %>% 
+  select(treatment, nfixer,
+         
+         # Mass fractions
+         rmf, smf, lmf, 
+         
+         # Growth rates
+         rgr, agr, rgr_slope,
+         
+         # Dry weights 
+         total_biomass, above_biomass,below_biomass) %>% 
+  
+  group_by(treatment, nfixer) %>% 
+  describe() %>% 
+  select(nfixer,treatment, everything()) %>% 
+  mutate_if(is.numeric, round, 2)  %>% 
+  select(1:9, 17,20,23,28) %>% 
+  datatable(class = 'cell-border stripe') 
+```
+
+
+## Boxplots Plant's performace measures
+
+```{r plant_performace_boxplots, fig.width = 20, fig.height = 25} 
+vars %>%
+      filter(V1 %in% c("rmf", "smf", "lmf",
+                       
+                       # Growth rates
+                       "agr","rgr", "rgr_slope",
+                       
+                        # Dry weights 
+                       "total_biomass", "above_biomass","below_biomass")) %>% 
+      
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_complete,
+                                y = !!sym(..1), x = !!sym(..2), 
+                                fill = !!sym(..3))) %>% 
+      cowplot::plot_grid(plotlist = ., ncol = 2)
+```
+
+
+## Table Ecophys traits
+
+```{r mean_values_nfixer_by treatment_ecophys_measures, message=FALSE, warning=FALSE}
+
+data_complete %>% 
+  select(-id) %>% 
+  select(treatment, nfixer,
+         
+         # Ecophys traits
+         amax,gs,wue) %>%  
+  
+  group_by(treatment, nfixer) %>% 
+  describe() %>% 
+  select(nfixer,treatment, everything()) %>% 
+  mutate_if(is.numeric, round, 2)  %>% 
+  select(1:9, 17,20,23,28) %>% 
+  
+  datatable(class = 'cell-border stripe') 
+
+```
+
+
+```{r ecophys_traits_boxplots, fig.width = 20, fig.height = 7}
+vars %>%
+      filter(V1 %in% c( "amax", "gs","wue")) %>% 
+      
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_complete,
+                                y = !!sym(..1), x = !!sym(..2), 
+                                fill = !!sym(..3))) %>% 
+      cowplot::plot_grid(plotlist = ., ncol = 3)
+```
+
+## Table Isotopes
+
+
+```{r mean_values_nfixer_by_treateatment_isotope_data, message=FALSE, warning=FALSE}
+
+data_complete %>% 
+  select(-id) %>% 
+  select(treatment, nfixer,
+         
+         # Isotopes traits
+         d13c,d15n) %>%  
+  
+  group_by(treatment, nfixer) %>% 
+  describe() %>% 
+  select(nfixer,treatment, everything()) %>% 
+  mutate_if(is.numeric, round, 2)  %>% 
+  select(1:9, 17,20,23,28) %>% 
+  
+  datatable(class = 'cell-border stripe') 
+
+```
+
+
+```{r isotopes_traits_boxplots, fig.width = 15, fig.height = 7}
+vars %>%
+      filter(V1 %in% c( "d13c", "d15n")) %>% 
+      
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_complete,
+                                y = !!sym(..1), x = !!sym(..2), 
+                                fill = !!sym(..3))) %>% 
+      cowplot::plot_grid(plotlist = ., ncol = 2)
+```
+
+## Table leaf traits
+
+```{r Mean_values_nfixer_by_treateatment_leaftraits , message=FALSE, warning=FALSE}
+data_complete %>% 
+  select(-id) %>% 
+  select(treatment, nfixer,
+         
+         # Leaf traits
+         perc_c,perc_n, ratio_c_n,
+         Narea_g_m2, Nmass_mg_g,sla_cm2_g) %>%  
+  
+  group_by(treatment, nfixer) %>% 
+  describe() %>% 
+  select(nfixer,treatment, everything()) %>% 
+  mutate_if(is.numeric, round, 2)  %>% 
+  select(1:9, 17,20,23,28) %>% 
+  
+  datatable(class = 'cell-border stripe') 
+```
+
+```{r leaf_traits_boxplots, fig.width = 12, fig.height = 15}
+vars %>%
+      filter(V1 %in% c("perc_c", "perc_n", "ratio_c_n",
+                       "Narea_g_m2", "Nmass_mg_g", "sla_cm2_g")) %>% 
+      
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_complete,
+                                y = !!sym(..1), x = !!sym(..2), 
+                                fill = !!sym(..3))) %>% 
+      cowplot::plot_grid(plotlist = ., ncol = 2)
+```
+
+## Outliers
+```{r}
+
+data_complete %>% 
+  select(-id) %>% 
+  diagnose_numeric() %>% 
+  select(1:7,10) %>% 
+  mutate_if(is.numeric, round, 2)  %>% 
+  arrange(desc(outlier)) %>% 
+  datatable(class = 'cell-border stripe') 
+```
+
+```{r outlier_plot,fig.show = 'hide'}
+outlier_plots_list <- 
+    data_complete %>%
+      plot_outlier(amax,perc_c,perc_n,Narea_g_m2, Nmass_mg_g)
+```
+
+
+```{r outlier_plots_panel, fig.height = 20, fig.width = 15}
+cowplot::plot_grid(plotlist = outlier_plots_list, ncol = 2)
+```
+
+# Normality
+
+Check the distribution of variable
+
+```{r normality_plots,fig.show = 'hide'}
+
+normality_plot_list <- 
+    data_complete %>%
+      select(-c(id, init_height)) %>% 
+      select_if(., is.numeric) %>% 
+      plot_normality()
+```
+
+
+```{r normality_plots_panel, echo = FALSE, fig.height = 40, fig.width = 20}
+cowplot::plot_grid(plotlist = normality_plot_list, ncol = 2)
+```
+
+
+
