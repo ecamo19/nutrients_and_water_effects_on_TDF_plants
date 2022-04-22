@@ -96,7 +96,7 @@ model_combinations_formulas <- function(y_var, x_var){
     
     
     # Model
-    models <- paste0(variables$y_var,"~treatment*nfixer*",
+    models <- paste0(variables$y_var,"~treatment:nfixer:",
                      variables$x_var,"+init_height+(1|spcode)")
     
     formulas <- purrr::map(models, as.formula)
