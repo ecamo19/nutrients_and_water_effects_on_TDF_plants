@@ -72,7 +72,7 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
     if (interaction_3way == TRUE) {
         
         # Words to remove from labels
-        pattern <- c('\\+.*|nfixer|treatment|_')
+        #pattern <- c('\\+.*|nfixer|treatment|_')
         
         # Get response variable name for add it as title
         response_variable <- as.character(attr(terms(model), "variables"))[2]
@@ -93,43 +93,43 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
                                           TRUE, FALSE)) %>% 
             
             # Filter unwanted treatments
-            dplyr::filter(!term %in% c("treatmentplus_nutrients","treatmentplus_water",
-                                   "treatmentplus_water_nutrients", "nfixerfixer",
-                                   
-                                   "treatmentplus_nutrients:nfixerfixer",
-                                   "treatmentplus_water:nfixerfixer",
-                                   "treatmentplus_water_nutrients:nfixerfixer",
-                                   
-                                   "amax_log", "d13c", "d15n", "gs_sqrt", "wue_log",
-                                   "pnue_log",
-                                   
-                                   "nfixerfixer:amax_log","nfixerfixer:d13c",
-                                   "nfixerfixer:d15n","nfixerfixer:gs_sqrt",
-                                   "nfixerfixer:wue_log", "nfixerfixer:pnue_log",
-                                   
-                                   "treatmentplus_nutrients:amax_log","treatmentplus_nutrients:d13c",
-                                   "treatmentplus_nutrients:d15n","treatmentplus_nutrients:gs_sqrt",
-                                   "treatmentplus_nutrients:wue_log", "treatmentplus_nutrients:pnue_log",
-                                   
-                                   "treatmentplus_water:amax_log","treatmentplus_water:d13c",
-                                   "treatmentplus_water:d15n","treatmentplus_water:gs_sqrt",
-                                   "treatmentplus_water:wue_log", "treatmentplus_water:photo_nitrogen_use_log",
-                                   
-                                   "treatmentplus_water_nutrients:amax_log","treatmentplus_water_nutrients:d13c",
-                                   "treatmentplus_water_nutrients:d15n","treatmentplus_water_nutrients:gs_sqrt",
-                                   "treatmentplus_water_nutrients:wue_log", "treatmentplus_water_nutrients:pnue_log"
-                                   
-                                   
-            )) %>%  
-            
+            # dplyr::filter(!term %in% c("treatmentplus_nutrients","treatmentplus_water",
+            #                        "treatmentplus_water_nutrients", "nfixerfixer",
+            #                        
+            #                        "treatmentplus_nutrients:nfixerfixer",
+            #                        "treatmentplus_water:nfixerfixer",
+            #                        "treatmentplus_water_nutrients:nfixerfixer",
+            #                        
+            #                        "amax_log", "d13c", "d15n", "gs_sqrt", "wue_log",
+            #                        "pnue_log",
+            #                        
+            #                        "nfixerfixer:amax_log","nfixerfixer:d13c",
+            #                        "nfixerfixer:d15n","nfixerfixer:gs_sqrt",
+            #                        "nfixerfixer:wue_log", "nfixerfixer:pnue_log",
+            #                        
+            #                        "treatmentplus_nutrients:amax_log","treatmentplus_nutrients:d13c",
+            #                        "treatmentplus_nutrients:d15n","treatmentplus_nutrients:gs_sqrt",
+            #                        "treatmentplus_nutrients:wue_log", "treatmentplus_nutrients:pnue_log",
+            #                        
+            #                        "treatmentplus_water:amax_log","treatmentplus_water:d13c",
+            #                        "treatmentplus_water:d15n","treatmentplus_water:gs_sqrt",
+            #                        "treatmentplus_water:wue_log", "treatmentplus_water:photo_nitrogen_use_log",
+            #                        
+            #                        "treatmentplus_water_nutrients:amax_log","treatmentplus_water_nutrients:d13c",
+            #                        "treatmentplus_water_nutrients:d15n","treatmentplus_water_nutrients:gs_sqrt",
+            #                        "treatmentplus_water_nutrients:wue_log", "treatmentplus_water_nutrients:pnue_log"
+            #                        
+            #                        
+            # )) %>%  
+            # 
             arrange(term) %>% 
             
             # Edit factor levels
-            dplyr::mutate(term = stringr::str_replace_all(term, pattern, 
-                                                          replacement = ' ')) %>%
+            #dplyr::mutate(term = stringr::str_replace_all(term, pattern, 
+            #                                              replacement = ' ')) %>%
             
-            dplyr::mutate(term = stringr::str_replace_all(term, pattern = ' ', 
-                                                          replacement = '')) %>%
+            #dplyr::mutate(term = stringr::str_replace_all(term, pattern = ' ', 
+            #                                              replacement = '')) %>%
             tibble::add_column(response_variable) %>% 
             dplyr::select(response_variable, term, everything(), -mean)
         
@@ -235,7 +235,7 @@ plot_simulate_conf_int <- function(model, iter, interact_3way = F ){
             ggplot2::ylab("Estimated effects of treatments (median +/- CI)") +
             ggplot2::xlab("") +
             
-            ggplot2::facet_wrap(~ response_variable, scales = "free_x", ncol = 3) +
+            ggplot2::facet_wrap(~ response_variable, scales = "free_x", ncol = 2) +
             
             
             ggplot2::coord_flip()

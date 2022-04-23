@@ -82,13 +82,12 @@ library(report)
 ```
 
 
-
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Load dataset for adding predictions
 sys.source("./scripts/code_join_data_full_dataset.R", envir = knitr::knit_global())
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Load functions
 
 ## Inference
@@ -107,29 +106,20 @@ models_q3 <- readRDS("./processed_data/models_q3_3_way_interaction.RData")
 models_nodule_count <- readRDS("./processed_data/models_list_nodule_count.RData")
 ```
 
-
 ```{r}
-# Step done for getting predictions
+set.seed(666)
+```
 
+```{r echo=FALSE}
+#Step done for getting predictions from models
 data_for_models_transformed <- 
     data_for_models %>% 
         
         mutate(
-            # Plant's performance
-            total_biomass_sqrt = sqrt(total_biomass),
-            above_biomass_sqrt = sqrt(above_biomass),
-            below_biomass_log = log(below_biomass),
-            agr_log = log(agr),
-            
-            # NO TRANSFORMATION variable already in log-log
-            rgr = rgr,
-            
-            # NO TRANSFORMATION variable already in log-log
-            rgr_slope = rgr_slope,
-          
+
             # Traits
             amax_log = log(amax),
-            gs_sqrt = sqrt(gs),
+            gs_log = log(gs),
             wue_log = log(wue),
             
             # d13 and d15 where not transformed because the data has negative values
@@ -140,94 +130,28 @@ data_for_models_transformed <-
             
         # Remove original variables (non-transformed)
         dplyr::select(spcode, treatment, nfixer, init_height, everything(),
-               -c(5:8,11:13,16))    
+               -c(5:8,11:13,16))   
 ```
 
-# Q1 and Q2
+# Q1 Growth and biomass accumulation
 
-## Model comparison
+## Plot 
 
 ```{r}
-model.sel(models_q1_q2$rgr,
-                    models_q1_q2$d13c,
-                    models_q1_q2$d15n,
-                    models_q1_q2$total_biomass_sqrt,
-                    models_q1_q2$above_biomass_sqrt,
-                    models_q1_q2$below_biomass_log,
-                    models_q1_q2$amax_log,
-                    models_q1_q2$wue_log,
-                    models_q1_q2$pnue_log) %>% 
-    reactable()
-```
-
-## Report
-
-For example, the log transformed data above has a mean of 1.044 and a 95% 
-confidence interval of ±0.344 log-transformed fish. The back-transformed mean 
-would be 101.044=11.1 fish. The upper confidence limit would be 10(1.044+0.344)=24.4 fish, 
-and the lower confidence limit would be 10(1.044-0.344)=5.0 fish
-
-
-```{r}
-models_q1_q2 %>% 
-    
-    # Remove models
-    purrr::list_modify("rgr_slope" = NULL, "agr_log" = NULL, "gs_sqrt" = NULL) %>%  
-    map(., report)
-
-```
-
-```{r}
-models_q1_q2 %>% 
-    
-    # Remove models
-    purrr::list_modify("rgr_slope" = NULL, "agr_log" = NULL, "gs_sqrt" = NULL) %>%  
-    map(., report_effectsize)
-
-```
-
-```{r}
-#simulate_coefs(models_q1_q2$total_biomass_sqrt, iter = 100, interaction_3way = FALSE)
-```
-
-
-```{r fig.height = 12, fig.width = 12}
-models_q1_q2 %>% 
-    
-    # Remove models
-    purrr::list_modify("rgr_slope" = NULL, "agr_log" = NULL, "gs_sqrt" = NULL) %>% 
-    plot_simulate_conf_int(., iter = 100, interact_3way = F)
-```
-
-
-```{r}
-#as.data.frame(fitted(models_q1_q2$total_biomass_sqrt)) %>% 
-#    rename(total_biomass_sqrt = "fitted(models_q1_q2$total_biomass_sqrt)" ) %>%
-#    mutate(total_biomas = (total_biomass_sqrt)^2)
-```
-
-
-## Return data set with predicted values for backtranformations
-
-```{r}
-# Pattern to remove
 string <- c("models_q1_q2")
 
-#data_with_predictions_q1_q2_backtrans <- 
+data_pred_biomass_growth <- 
         
         # Get models prediction
         gather_predictions(data_for_models_transformed,
                            
                            # Return predictions 
                             models_q1_q2$rgr,
-                            models_q1_q2$d13c,
-                            models_q1_q2$d15n,
-                            models_q1_q2$total_biomass_sqrt,
-                            models_q1_q2$above_biomass_sqrt,
-                            models_q1_q2$below_biomass_log,
-                            models_q1_q2$amax_log,
-                            models_q1_q2$wue_log,
-                            models_q1_q2$pnue_log) %>% 
+                       
+                            models_q1_q2$total_biomass,
+                            models_q1_q2$above_biomass,
+                            models_q1_q2$below_biomass) %>% 
+                       
             
             
             pivot_wider(names_from = model, values_from = pred) %>% 
@@ -239,37 +163,140 @@ string <- c("models_q1_q2")
                 
                 # Remove dollar sing    
                 gsub("\\$", "", .)
-                )) %>%
+                )) %>% 
     
         # Remove original vars
-        dplyr::select(-c(4:16))  %>% 
-        
-        # Backtransform vars
-        mutate(
-            
-            # sqrt transform by x^2
-            pred_total_biomass_2 = (pred_total_biomass_sqrt)^2  ,
-            pred_above_biomass_2 = (pred_above_biomass_sqrt)^2 ,
-            
-            # log transform by e^x
-            pred_below_biomass_exp  = exp(pred_below_biomass_log),
-            pred_amax_exp = exp(pred_amax_log),
-            pred_wue_exp  = exp(pred_wue_log),
-            pred_pnue_exp = exp(pred_pnue_log)) %>% 
-            
-            # Remove non-transformed vars from model
-            dplyr::select(-c(7:12))  %>% 
-        group_by(treatment, nfixer) %>% 
-        summarise(across(where(is.numeric), mean)) %>% 
-        arrange(nfixer)  %>% 
-        mutate(across(4:10, round, 3)) %>% 
-        reactable()
-        
+        dplyr::select(-c(4:12))  
 ```
 
 ```{r}
-map(models_q1_q2, r2)
+vars_q1 <-  
+  crossing(
+    
+    # Get all numeric variables to plot (all y)
+    as_tibble(t(combn(dplyr::select(data_pred_biomass_growth, where(is.numeric)) %>% names, 1))),
+    
+    # Select factor variables to plot
+    x_axis_var = dplyr::select(data_pred_biomass_growth, nfixer) %>%  names,
+    group_var = dplyr::select(data_pred_biomass_growth, treatment) %>%  names)
 ```
+
+
+```{r biomass_growth_q1_boxplot, fig.height = 7, fig.width = 7, fig.align = 'center'}
+vars_q1 %>% 
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_pred_biomass_growth,
+                                y = !!sym(..1), x = !!sym(..2), 
+                                fill = !!sym(..3))) %>% 
+      cowplot::plot_grid(plotlist = ., ncol = 2)
+    
+```
+
+
+## Report performance variables 
+
+For example, the log transformed data above has a mean of 1.044 and a 95% 
+confidence interval of ±0.344 log-transformed fish. The back-transformed mean 
+would be 101.044=11.1 fish. The upper confidence limit would be 10(1.044+0.344)=24.4 fish, 
+and the lower confidence limit would be 10(1.044-0.344)=5.0 fish
+
+
+```{r}
+models_q1_q2 %>% 
+    
+    # Remove traits models
+    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax_log" = NULL, 
+                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>%  
+    map(., report)
+
+```
+
+```{r}
+models_q1_q2 %>% 
+    
+    # Remove traits models
+    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax_log" = NULL, 
+                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>%  
+    map(., report_effectsize)
+
+```
+
+```{r}
+models_q1_q2 %>%
+    
+    # Remove traits models
+    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax_log" = NULL, 
+                       "gs_log" = NULL,"wue_log" = NULL, "pnue_log" = NULL) %>% 
+    anova_table_tidy(., model_list = T)
+```
+
+```{r}
+models_q1_q2 %>%
+    
+    # Remove traits models
+    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax_log" = NULL, 
+                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
+```
+```{r message=FALSE, warning=FALSE}
+models_q1_q2 %>%
+    
+    # Remove traits models
+    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax_log" = NULL, 
+                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    
+    # Percentage difference
+    emmeans_table_tidy(., model_list = T, 
+                        formula = "treatment|nfixer", 
+                        grouping_var = "nfixer")
+```
+
+
+```{r}
+
+models_q1_q2 %>%
+    
+    # Remove traits models
+    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax_log" = NULL, 
+                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>%
+    
+    map(., r2)
+```
+
+# Q2 Traits and Nodule count
+
+## Traits
+
+```{r}
+models_q1_q2 %>% 
+    
+    # Remove performance variables
+    purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL) %>% 
+    map(., report)
+```
+
+
+```{r}
+models_q1_q2 %>% 
+    
+    # Remove performance variables
+    purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL) %>%
+    
+    map(., report_effectsize)
+```
+```{r traits_coef_plot, fig.height = 7, fig.width = 7, fig.align = 'center'}
+models_q1_q2 %>% 
+    
+    # Remove performance variables
+    purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL) %>%
+    
+    plot_simulate_conf_int(., iter = 1000, interact_3way = F)
+```
+
+
 
 ## Nodule count
 
@@ -281,13 +308,14 @@ model.sel(models_nodule_count$lmer_gaussian,
 
 
 
-## r2
-
 ```{r}
 models_nodule_count %>% 
     #purrr::list_modify("rgr_slope" = NULL, "agr_log" = NULL, "gs_sqrt" = NULL) %>%
     map(., r2)
 ```
+
+
+
 # Q3
 
 ## Model comparisons
@@ -295,25 +323,25 @@ models_nodule_count %>%
 ### Aboveground biomass
 
 ```{r}
-model.sel(models_q3$`abovebiomasssqrt~amaxlog`,
-                    models_q3$`abovebiomasssqrt~d13c`,
-                    models_q3$`abovebiomasssqrt~d15n`,
-                    models_q3$`abovebiomasssqrt~gssqrt`,
-                    models_q3$`abovebiomasssqrt~pnuelog`,
-                    models_q3$`abovebiomasssqrt~wuelog`)[,30:34]
+model.sel(models_q3$`abovebiomass~amaxlog`,
+                    models_q3$`abovebiomass~d13c`,
+                    models_q3$`abovebiomass~d15n`,
+                    models_q3$`abovebiomass~gslog`,
+                    models_q3$`abovebiomass~pnuelog`,
+                    models_q3$`abovebiomass~wuelog`)[,9:13]
 
 ```
 
 
-## Belowgraound Biomass
+### Belowgraound Biomass
 
 ```{r}
-model.sel(models_q3$`belowbiomasslog~amaxlog`,
-                    models_q3$`belowbiomasslog~d13c`,
-                    models_q3$`belowbiomasslog~d15n`,
-                    models_q3$`belowbiomasslog~gssqrt`,
-                    models_q3$`belowbiomasslog~pnuelog`,
-                    models_q3$`belowbiomasslog~wuelog`)[,30:34]
+model.sel(models_q3$`belowbiomass~amaxlog`,
+                    models_q3$`belowbiomass~d13c`,
+                    models_q3$`belowbiomass~d15n`,
+                    models_q3$`belowbiomass~gslog`,
+                    models_q3$`belowbiomass~pnuelog`,
+                    models_q3$`belowbiomass~wuelog`)[,9:13]
 ```
 
 ### rgr
@@ -322,9 +350,9 @@ model.sel(models_q3$`belowbiomasslog~amaxlog`,
 model.sel(models_q3$`rgr~amaxlog`,
                     models_q3$`rgr~d13c`,
                     models_q3$`rgr~d15n`,
-                    models_q3$`rgr~gssqrt`,
+                    models_q3$`rgr~gslog`,
                     models_q3$`rgr~pnuelog`,
-                    models_q3$`rgr~wuelog`)[,30:34]
+                    models_q3$`rgr~wuelog`)[,9:13]
 
 ```
 
@@ -332,47 +360,108 @@ model.sel(models_q3$`rgr~amaxlog`,
 ### Total Biomass
 
 ```{r}
-model.sel(models_q3$`totalbiomasssqrt~amaxlog`,
-                    models_q3$`totalbiomasssqrt~d13c`,
-                    models_q3$`totalbiomasssqrt~d15n`,
-                    models_q3$`totalbiomasssqrt~gssqrt`,
-                    models_q3$`totalbiomasssqrt~pnuelog`,
-                    models_q3$`totalbiomasssqrt~wuelog`)[,30:34]
+model.sel(models_q3$`totalbiomass~amaxlog`,
+                    models_q3$`totalbiomass~d13c`,
+                    models_q3$`totalbiomass~d15n`,
+                    models_q3$`totalbiomass~gslog`,
+                    models_q3$`totalbiomass~pnuelog`,
+                    models_q3$`totalbiomass~wuelog`)[,9:13]
 ```
 
 ## Plots
 
 __Los intervalos coinciden con los pvalues????__
+```{r}
+anova_table_tidy(models_q3$`abovebiomass~amaxlog`, single_model = T)
+#coef(models_q3$`abovebiomass~amaxlog`)
+```
 
-```{r, fig.width = 10, fig.height = 7}
-names(models_q3)
+```{r, fig.width = 18, fig.height = 20, fig.align = 'center'}
+
 models_q3 %>% 
     # Remove models
-    purrr::list_modify("abovebiomasssqrt~gssqrt" = NULL, 
-                       "belowbiomasslog~gssqrt" = NULL,
-                       "totalbiomasssqrt~gssqrt" = NULL,
-                       
-                       "agrlog~gssqrt" = NULL,
-                       "agrlog~pnuelog" = NULL,
-                       "agrlog~wuelog" = NULL,
-                       "agrlog~amaxlog" = NULL,
-                       "agrlog~d13c" = NULL,
-                       "agrlog~d15n" = NULL,
-                       "rgr~gssqrt" = NULL,
-                      
-                       "rgrslope~amaxlog"   = NULL,         
-                       "rgrslope~d13c"      = NULL,         
-                       "rgrslope~d15n"      = NULL,         
-                       "rgrslope~gssqrt"    = NULL,
-                       "rgrslope~pnuelog"   = NULL,
-                       "rgrslope~wuelog"    = NULL) %>% 
-
-    plot_simulate_conf_int(. , interact_3way = T, iter = 100)
+    plot_simulate_conf_int(. , interact_3way = T, iter = 1000)
 ```
 
 
-```{r}
 
 
 
+```{r fig.width = 18, fig.height = 20, fig.align = 'center'}
+pattern <- c('\\:')
+colmn <- paste0("col_", 1:3)
+test <-  purrr::map_dfr(models_q3, ~ simulate_coefs(., iter = 100, 
+                                                    interaction_3way = T))  
+
+test_2 <- 
+tidyr::separate(
+        data = test,
+        col = term,
+        sep = ":",
+        into = colmn,
+        remove = T) %>% 
+         
+       
+    mutate(col_1 = case_when(
+            col_1 == "treatmentno_additions" ~ "no_additions",
+            col_1 == "treatmentplus_nutrients" ~ "plus_nutrients",
+            col_1 == "treatmentplus_water" ~ "plus_water",
+            col_1 == "treatmentplus_water_nutrients" ~ "plus_water_nutrients",
+            
+            TRUE ~ col_1)) %>% 
+    
+    mutate(col_2 = case_when(
+            col_2 == "nfixerfixer" ~ "fixer",
+            col_2 == "nfixernonfixer" ~ "nonfixer",
+
+            TRUE ~ col_2)) %>%    
+    arrange(col_2,col_1) %>%
+    unite("term", 2:4, sep = ":",remove = TRUE) %>% 
+    mutate(term = factor(term))
+
+levels(test_2$term)
+
+ggplot2::ggplot(data = test_2, 
+               # Highlight significant terms
+               aes(x = term, y = median, color = significance)) +
+
+            
+            ggplot2::geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
+            ggplot2::geom_point(position = position_dodge(width = .9)) +
+            
+            # 95% C.I
+            ggplot2::geom_linerange(aes(ymin = lower,ymax = upper),
+                                    lwd = 1, position = position_dodge(width = .9)) +
+            
+            # 99% C.I
+            #geom_linerange(aes(ymin = !!yvar - !!se * interval2,
+            #                   ymax = !!yvar + !!se * interval2),
+            #               lwd = 1/2, position = position_dodge(width = .9)) +
+            
+            ggplot2::theme_bw() +
+            
+            ggplot2::theme(legend.position = "none",
+                           axis.text.y   = element_text(size= 15),
+                           axis.text.x   = element_text(size= 15),
+                           axis.title.y  = element_text(size= 15),
+                           axis.title.x  = element_text(size= 15),
+                           panel.grid.major.y = element_blank(), 
+                           panel.grid.minor = element_blank(),
+                           axis.line = element_line(size = .4,colour = "black"),
+                           panel.border = element_rect(colour = "black", fill= NA, 
+                                                       size = 1.3)) +
+            # Add name
+            #labs(title = paste0(response_variable)) +
+            
+            # Significance colors
+            ggplot2::scale_colour_manual(values = c("gray","black")) +
+            ggplot2::ylab("Estimated effects of treatments (median +/- CI)") +
+            ggplot2::xlab("") +
+            
+            ggplot2::facet_wrap(~ response_variable, scales = "free_x", ncol = 2) +
+            
+            
+            ggplot2::coord_flip()
+
+```
 
