@@ -118,6 +118,7 @@ tukey_table_df <- function(model,formula){
     # between the two emmeans (estimated marginal means)
         as.data.frame(emmeans(model,
                               formula,
+                              type = "response", 
                               adjust ="tukey")$contrast) %>%
         clean_names() %>% 
         
@@ -235,6 +236,7 @@ emmeans_df <- function(model,formula, grouping_var = NULL){
   # between the two emmeans (estimated marginal means)
   as.data.frame(emmeans(model,
                         formula,
+                        type = "response",
                         adjust = "tukey")$emmeans) %>% 
     
     add_column(response = response_var) %>% 
@@ -320,4 +322,54 @@ emmeans_table_tidy <- function(model, grouping_var = NULL, single_model = FALSE,
   } 
 }
  
+
+# Bootstrap function -----------------------------------------------------------
+
+bootstrap_model_df <- function(model, iter = 100){
     
+    # get the response variable name from the model
+    terms <- terms(model)
+    response_var <- as.character(attr(terms, "variables"))[2] 
+    #trait_var <- as.character(attr(terms, "variables"))[5] 
+    colmn <- paste0("col_", 1:3)
+    
+    # Generate anova table
+    boot.pval::boot_summary(model, type = "perc", R = iter) %>% 
+        
+        
+        # create column with the name of the response variable
+        tibble::add_column(response_var = response_var) %>%
+        tibble::rownames_to_column("terms") %>% 
+        janitor::clean_names()  %>% 
+        
+        filter(!terms %in% c("(Intercept)","init_height")) %>% 
+        dplyr::select(-p_value) %>% 
+        
+        tidyr::separate(data = ., col = terms, sep = ":",into = colmn, 
+                        remove = T) %>% 
+        
+        mutate(col_1 = case_when(
+            col_1 == "treatmentno_additions" ~ "no_additions",
+            col_1 == "treatmentplus_nutrients" ~ "plus_nutrients",
+            col_1 == "treatmentplus_water" ~ "plus_water",
+            col_1 == "treatmentplus_water_nutrients" ~ "plus_water_nutrients",
+            
+            TRUE ~ col_1)) %>%
+        
+        mutate(col_2 = case_when(
+            col_2 == "nfixerfixer" ~ "fixer",
+            col_2 == "nfixernonfixer" ~ "nonfixer",
+            
+            TRUE ~ col_2)) %>%  
+        
+        filter(!col_1 %in% "no_additions") %>% 
+        arrange(col_1, col_2) %>%  
+        unite("terms", 1:3, sep = ":",remove = TRUE) %>% 
+        mutate(terms = forcats::fct_inorder(terms)) %>% 
+        
+        # Create significance column
+        dplyr::mutate(significance = if_else((lower_bound > 0 & upper_bound > 0 | lower_bound < 0 & upper_bound < 0),TRUE, FALSE)) 
+    
+}
+
+

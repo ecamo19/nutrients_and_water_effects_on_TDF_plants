@@ -95,40 +95,40 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
             # Filter unwanted treatments
             # dplyr::filter(!term %in% c("treatmentplus_nutrients","treatmentplus_water",
             #                        "treatmentplus_water_nutrients", "nfixerfixer",
-            #                        
+            # 
             #                        "treatmentplus_nutrients:nfixerfixer",
             #                        "treatmentplus_water:nfixerfixer",
             #                        "treatmentplus_water_nutrients:nfixerfixer",
-            #                        
+            # 
             #                        "amax_log", "d13c", "d15n", "gs_sqrt", "wue_log",
             #                        "pnue_log",
-            #                        
+            # 
             #                        "nfixerfixer:amax_log","nfixerfixer:d13c",
             #                        "nfixerfixer:d15n","nfixerfixer:gs_sqrt",
             #                        "nfixerfixer:wue_log", "nfixerfixer:pnue_log",
-            #                        
+            # 
             #                        "treatmentplus_nutrients:amax_log","treatmentplus_nutrients:d13c",
             #                        "treatmentplus_nutrients:d15n","treatmentplus_nutrients:gs_sqrt",
             #                        "treatmentplus_nutrients:wue_log", "treatmentplus_nutrients:pnue_log",
-            #                        
+            # 
             #                        "treatmentplus_water:amax_log","treatmentplus_water:d13c",
             #                        "treatmentplus_water:d15n","treatmentplus_water:gs_sqrt",
             #                        "treatmentplus_water:wue_log", "treatmentplus_water:photo_nitrogen_use_log",
-            #                        
+            # 
             #                        "treatmentplus_water_nutrients:amax_log","treatmentplus_water_nutrients:d13c",
             #                        "treatmentplus_water_nutrients:d15n","treatmentplus_water_nutrients:gs_sqrt",
             #                        "treatmentplus_water_nutrients:wue_log", "treatmentplus_water_nutrients:pnue_log"
-            #                        
-            #                        
-            # )) %>%  
             # 
-            arrange(term) %>% 
-            
+
+            #)) %>%
+
+            #arrange(term) %>% 
+
             # Edit factor levels
-            #dplyr::mutate(term = stringr::str_replace_all(term, pattern, 
+            #dplyr::mutate(term = stringr::str_replace_all(term, #pattern,
             #                                              replacement = ' ')) %>%
-            
-            #dplyr::mutate(term = stringr::str_replace_all(term, pattern = ' ', 
+
+            #dplyr::mutate(term = stringr::str_replace_all(term, pattern = ' ',
             #                                              replacement = '')) %>%
             tibble::add_column(response_variable) %>% 
             dplyr::select(response_variable, term, everything(), -mean)
@@ -151,7 +151,7 @@ simulate_coefs <- function(model,iter, interaction_3way = FALSE ){
             dplyr::filter(!term %in% c("(Intercept)","init_height" )) %>% 
             
             # Create significance column
-            dplyr::mutate(significance = if_else((lower > 0 & upper > 0 | lower < 0 & upper < 0), 
+            dplyr::mutate(significance = if_else((lower_bound > 0 & upper__bound > 0 | lower_bound < 0 & upper_bound < 0), 
                                           TRUE, FALSE)) %>% 
             
             # Filter unwanted terms

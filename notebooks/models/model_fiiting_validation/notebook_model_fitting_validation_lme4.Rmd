@@ -242,6 +242,7 @@ $$performance\sim treatment*\ fixer*\ scale(log(trait)\ + initial\ height + rand
 ## Scale preditors
 
 ```{r}
+
 data_for_models_transformed_scaled <-         
     data_for_models_transformed %>% 
     
@@ -249,7 +250,7 @@ data_for_models_transformed_scaled <-
     #select(c(4,7,8,13:16))
 
         # scale only the predictors traits
-         mutate(across(c(4,9:14), scale))
+         mutate(across(c(9:14), scale))
 ```
 
 
