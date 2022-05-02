@@ -88,23 +88,54 @@ mixed_model_1 <-  function(response, data) {
 #'}
 #'@return list 
 
-model_combinations_formulas <- function(y_var, x_var){
+model_combinations_formulas <- function(y_var, x_var, nlme = FALSE){
     
     variables <- tidyr::crossing(y_var, x_var)
     # Strings to remove from original names
     pattern <- c('\\+.*|nfixer|treatment|[[:punct:]]| ')
     
+    if(nlme == FALSE){
+        
+        # Model for lme4 
+        models <- paste0(variables$y_var,"~treatment:nfixer:",
+                         variables$x_var,"+init_height+(1|spcode)")
+    }
     
-    # Model
-    models <- paste0(variables$y_var,"~treatment:nfixer:",
-                     variables$x_var,"+init_height+(1|spcode)")
-    
+    if (nlme == TRUE) {
+        # Model for nlme
+        models <- paste0(variables$y_var,"~treatment:nfixer:",
+                         variables$x_var,"+init_height")
+    }
+        
+        
     formulas <- purrr::map(models, as.formula)
     
     # Add name to the list 
     names(formulas) <- stringr::str_replace_all(formulas, pattern, replacement = '')
     return(formulas)
 }
+
+
+# ------------------------------------------------------------------------------
+# nlme model
+# ------------------------------------------------------------------------------
+
+
+model_nlme <- function(formula, data){
+    model_nlme <-lme(formula, 
+                     random = ~1|spcode,
+                     weights = varIdent(form = ~1|spcode),
+                     data = data)
+    
+    # Step done for modifying the fixed term in the summary
+    resp_var <- as.character(attr(terms(model_nlme), "variables"))[2]
+    trait <- as.character(attr(terms(model_nlme), "variables"))[5]
+    
+    model_nlme$call$fixed <- stringr::str_glue(resp_var, " ~ init_height + treament:nfixer:",trait)
+    return(model_nlme)
+}
+
+
 
 #' @importFrom magrittr %>%
 #' 
@@ -133,7 +164,7 @@ model_combinations_formulas <- function(y_var, x_var){
 mixed_model_2 <-  function(response, trait, data) {    
     
     # Take each response variable and join it to the model formula
-    formula = paste0(response, " ~ treatment * nfixer * ", trait, " + init_height + (1|spcode)")
+    formula <- paste0(response, " ~ treatment * nfixer * ", trait, " + init_height + (1|spcode)")
     
     # Fit the model
     model_1_base <- lme4::lmer(as.formula(formula), 
@@ -142,4 +173,9 @@ mixed_model_2 <-  function(response, trait, data) {
     return(model_1_base)
     
 }
+
+
+
+
+
 
