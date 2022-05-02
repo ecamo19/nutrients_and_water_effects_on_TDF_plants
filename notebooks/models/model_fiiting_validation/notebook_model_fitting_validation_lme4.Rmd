@@ -253,7 +253,7 @@ map(models_q1_q2, check_collinearity)
 ```
 
 ```{r}
-map(models_nodule_count, check_collinearity)
+# map(models_nodule_count, check_collinearity)
 ```
 
 ```{r collinearity_q3}
