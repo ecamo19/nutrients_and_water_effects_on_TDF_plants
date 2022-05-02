@@ -16,8 +16,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,comment = "", fig.align = 'center',
 					  fig.width = 11, fig.height = 7)
-options(knitr.graphics.auto_pdf = TRUE, scipen = 9999)
 
+options(knitr.graphics.auto_pdf = TRUE, scipen = 9999)
 ```
 
 
@@ -79,6 +79,7 @@ library(MuMIn)
 library(modelr)
 # For reporting results
 library(report)
+library(emmeans)
 ```
 
 
@@ -103,8 +104,42 @@ models_q1_q2 <- readRDS("./processed_data/models_q1_q2.RData")
 
 models_q3 <- readRDS("./processed_data/models_q3_3_way_interaction.RData")
 
+models_q3_nlme <- readRDS("./processed_data/models_q3_3_way_interaction_nlme.RData")
+
 models_nodule_count <- readRDS("./processed_data/models_list_nodule_count.RData")
 ```
+
+# Models selected according validation plots for answering questions
+
+## Models Q1 and Q2
+
+```{r}
+models_q1_q2 <-     
+    models_q1_q2 %>%
+        
+        # Remove traits models
+        purrr::list_modify("wue" = NULL, "pnue"  = NULL)
+```
+
+
+```{r}
+models_nodule_count <- 
+    models_nodule_count %>%
+        
+        # Remove traits models
+        purrr::list_modify("lmer_gaussian_log" = NULL, "glmer_poisson"  = NULL)
+```
+
+
+## Models Q3 
+
+```{r}
+models_q3_nlme <- models_q3_nlme
+```
+
+
+
+# Load data
 
 ```{r}
 set.seed(666)
@@ -112,42 +147,23 @@ set.seed(666)
 
 ```{r echo=FALSE}
 # Step done for getting predictions from models
-data_for_models_transformed <- 
+data_for_models <- 
     data_for_models %>% 
         
-        mutate(
-          
-            # Traits
-            amax_log = log(amax),
-            gs_log = log(gs),
-            wue_log = log(wue),
-            
-            # d13 and d15 where not transformed because the data has negative values
-            pnue_log = log(data_for_models$pnue),
-          
-            # Covariate
-            init_height = log(init_height)) %>%   
-            
-        # Remove original variables (non-transformed)
+        # Remove unused variables 
         dplyr::select(spcode, treatment, nfixer, init_height, everything(),
-               -c(8,10,11:13,16))  
+               -c(8,10))  
+
 ```
 
-
 # Q1 Growth and biomass accumulation
-
-For example, the log transformed data above has a mean of 1.044 and a 95% 
-confidence interval of ±0.344 log-transformed fish. The back-transformed mean 
-would be 101.044=11.1 fish. The upper confidence limit would be 10(1.044+0.344)=24.4 fish, 
-and the lower confidence limit would be 10(1.044-0.344)=5.0 fish
-
 
 ```{r}
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax_log" = NULL, 
-                       "gs_log" = NULL,"wue_log" = NULL, "pnue_log" = NULL) %>% 
+    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax" = NULL, 
+                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
     anova_table_tidy(., model_list = T)
 ```
 
@@ -155,16 +171,37 @@ models_q1_q2 %>%
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax_log" = NULL, 
-                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax" = NULL, 
+                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
+```{r}
+
+
+emmeans_df(models_q1_q2$wue_log, formula = "treatment|nfixer") 
+```
+
+
+```{r}
+
+ emmeans_table_tidy(models_q1_q2$wue_log, single_model = T, 
+                        formula = "treatment|nfixer", 
+                        grouping_var = "nfixer")
+```
+
+
+
+
+
+
+
+
 ```{r message=FALSE, warning=FALSE}
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax_log" = NULL, 
-                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax" = NULL, 
+                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
     
     # Percentage difference
     emmeans_table_tidy(., model_list = T, 
@@ -179,33 +216,33 @@ string <- c("models_q1_q2")
 data_pred_biomass_growth <- 
         
         # Get models prediction
-        gather_predictions(data_for_models_transformed,
+        gather_predictions(data_for_models,
                            
-                           # Return predictions 
+                           # Return predictions of:
                             models_q1_q2$rgr,
-                       
                             models_q1_q2$total_biomass,
                             models_q1_q2$above_biomass,
-                            models_q1_q2$below_biomass) %>% 
-                       
+                            models_q1_q2$below_biomass) %>%
             
-            
+            # Get fitted values
             pivot_wider(names_from = model, values_from = pred) %>% 
              rename_all(
               funs(
+                  
                 # rename columns
                 stringr::str_to_lower(.) %>%
+                
+                # Remove string from name and replace it with pred_
                 stringr::str_replace(., c(string),"pred_") %>% 
                 
                 # Remove dollar sing    
-                gsub("\\$", "", .)
-                )) %>% 
+                gsub("\\$", "", .))) %>% 
     
-        # Remove original vars
+        # Select only pred variables
         dplyr::select(c(1:3,15:18))  
 ```
 
-```{r}
+```{r warning=FALSE}
 vars_q1 <-  
   crossing(
     
@@ -228,38 +265,19 @@ vars_q1 %>%
 ```
 
 
-
-
 ```{r}
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax_log" = NULL, 
-                       "gs_log" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>%
+    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax" = NULL, 
+                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>%
     
     map(., r2)
 ```
 
 # Q2 Traits and Nodule count
 
-## Traits
-
-__Step done for backtransforming the emmeans__
-```{r}
-m1_amax_log <- lmer(log(amax) ~ treatment*nfixer + log(init_height) + (1|spcode), data = data_for_models)
-```
-```{r}
-m1_gs_log <- lmer(log(gs) ~ treatment*nfixer + log(init_height) + (1|spcode), data = data_for_models)
-```
-
-```{r}
-m1_wue_log <- lmer(log(wue) ~ treatment*nfixer + log(init_height) + (1|spcode), data = data_for_models)
-```
-
-```{r}
-m1_pnue_log <- lmer(log(pnue) ~ treatment*nfixer + log(init_height) + (1|spcode), data = data_for_models)
-```
-
+## Anova and Tuckey comparisons 
 
 ```{r}
 models_q1_q2 %>% 
@@ -270,6 +288,7 @@ models_q1_q2 %>%
     
     anova_table_tidy(., model_list = T)
 ```
+
 ```{r}
 models_q1_q2 %>% 
     
@@ -277,120 +296,117 @@ models_q1_q2 %>%
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
                        "below_biomass" = NULL, "rgr" = NULL, 
                        
-                       # This trait did not reponded to the treatments this is
-                       # why I excluded
+                       # No interaction
                        "d13c" = NULL,
                        
                        # This only responded to the treatments 
-                       "pnue_log" = NULL) %>%
+                       "pnue_log" = NULL, "gs" = NULL ) %>%
     
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
-```{r}
-emmeans(m1_amax_log,
-         pairwise ~ treatment|nfixer,
-         type = "response",
-         adjust ="tukey")$contrast
-```
-
-
-```{r}
-emmeans(m1_gs_log,
-         pairwise ~ treatment|nfixer,
-         type = "response",
-         adjust ="tukey")$contrast
-```
-
-```{r}
-emmeans(m1_wue_log,
-         pairwise ~ treatment|nfixer,
-         type = "response",
-         adjust ="tukey")$contrast
-```
-
 
 ```{r message=FALSE, warning=FALSE}
-tukey_table_tidy(models_q1_q2$pnue_log, single_model = T, formula = "treatment")
+models_q1_q2 %>% 
+    
+    # Remove performance variables
+    purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, 
+                       
+                     
+                       "amax" = NULL, "d15n" = NULL, "wue_log" = NULL
+                       , "d13c" = NULL ) %>%
+    
+    tukey_table_tidy(., model_list = T, formula = "treatment")
 ```
 ```{r}
-emmeans(m1_pnue_log,
-         pairwise ~ treatment,
-         type = "response",
-         adjust ="tukey")$contrast
+models_q1_q2 %>% 
+    
+    # Remove performance variables
+    purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, 
+                       
+                     
+                       "amax" = NULL, "d15n" = NULL, 
+                       "wue_log" = NULL, "d13c" = NULL, "pnue_log" = NULL) %>%
+    
+    tukey_table_tidy(., model_list = T, formula = "nfixer")
 ```
+
+## Percentanfe change
 
 ```{r}
 models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL,
+                       "below_biomass" = NULL, "rgr" = NULL, 
                        
-                       # This trait did not reponded to the treatments this is
-                       # why I excluded
-                       "d13c" = NULL,
+                       # No interaction
+                       "d13c" = NULL, "wue_log" = NULL,
                        
                        # This only responded to the treatments 
-                       "pnue_log" = NULL) %>% 
+                       "pnue_log" = NULL, "gs" = NULL ) %>%
     
     # Percentage difference
     emmeans_table_tidy(., model_list = T, 
                         formula = "treatment|nfixer", 
                         grouping_var = "nfixer")
 ```
+
+
 ```{r}
-as.data.frame(emmeans(m1_gs_log,
-                        pairwise ~ treatment|nfixer,
-                        type = "response",
-                        adjust = "tukey")$emmeans) %>% 
-    
-    clean_names() %>% 
-    dplyr::select(-c(df,lower_cl, upper_cl,se)) %>% 
-    
-    
-    group_by(nfixer) %>%
-    
-    mutate(difference = ((response - first(response))),
-           perc_difference =((response - first(response) )/first(response))*100) %>% 
-    mutate_if(is.numeric, round, 3)
+# as.data.frame(emmeans(models_q1_q2$wue_log,
+#                         pairwise ~ treatment|nfixer,
+#                         type = "response",
+#                         adjust = "tukey")$emmeans)
+# 
+#     clean_names() %>%
+#     dplyr::select(-c(df,lower_cl, upper_cl,se)) %>%
+# 
+# 
+#     group_by(nfixer) %>%
+# 
+#     mutate(difference = ((response - first(response))),
+#            perc_difference =((response - first(response) )/first(response))*100) %>%
+#     mutate_if(is.numeric, round, 3)
 ```
 
 ```{r}
-as.data.frame(emmeans(m1_wue_log,
-                        pairwise ~ treatment|nfixer,
-                        type = "response",
-                        adjust = "tukey")$emmeans) %>% 
-    
-    clean_names() %>% 
-    dplyr::select(-c(df,lower_cl, upper_cl,se)) %>% 
-    
-    
-    group_by(nfixer) %>%
-    
-    mutate(difference = ((response - first(response))),
-           perc_difference =((response - first(response) )/first(response))*100) %>% 
-    mutate_if(is.numeric, round, 3)
+# as.data.frame(emmeans(m1_wue_log,
+#                         pairwise ~ treatment|nfixer,
+#                         type = "response",
+#                         adjust = "tukey")$emmeans) %>% 
+#     
+#     clean_names() %>% 
+#     dplyr::select(-c(df,lower_cl, upper_cl,se)) %>% 
+#     
+#     
+#     group_by(nfixer) %>%
+#     
+#     mutate(difference = ((response - first(response))),
+#            perc_difference =((response - first(response) )/first(response))*100) %>% 
+#     mutate_if(is.numeric, round, 3)
 ```
 
 ```{r}
-
-emmeans_table_tidy(models_q1_q2$pnue_log, single_model = T, 
-                        formula = "treatment")
+# emmeans_table_tidy(models_q1_q2$pnue_log, single_model = T, 
+#                         formula = "treatment")
 ```
 
 ```{r}
-as.data.frame(emmeans(m1_pnue_log,
-                        pairwise ~ treatment,
-                        type = "response",
-                        adjust = "tukey")$emmeans) %>% 
-    
-    clean_names() %>% 
-    dplyr::select(-c(df,lower_cl, upper_cl,se)) %>%
-    
-    mutate(difference = ((response - first(response))),
-           perc_difference =((response - first(response) )/first(response))*100) %>% 
-    mutate_if(is.numeric, round, 3)
+# as.data.frame(emmeans(m1_pnue_log,
+#                         pairwise ~ treatment,
+#                         type = "response",
+#                         adjust = "tukey")$emmeans) %>% 
+#     
+#     clean_names() %>% 
+#     dplyr::select(-c(df,lower_cl, upper_cl,se)) %>%
+#     
+#     mutate(difference = ((response - first(response))),
+#            perc_difference =((response - first(response) )/first(response))*100) %>% 
+#     mutate_if(is.numeric, round, 3)
 ```
+
 
 ## Plot Traits boxplot
 
@@ -400,15 +416,15 @@ string <- c("models_q1_q2")
 data_pred_traits <- 
         
         # Get models prediction
-        gather_predictions(data_for_models_transformed,
+        gather_predictions(data_for_models,
                            
                            # Return predictions
                             models_q1_q2$d15n,
-                            models_q1_q2$amax_log,
+                            models_q1_q2$amax,
                             models_q1_q2$d13c,
-                            models_q1_q2$gs_log,
-                            models_q1_q2$wue_log,
-                            models_q1_q2$pnue_log) %>% 
+                            models_q1_q2$gs,
+                            models_q1_q2$wue,
+                            models_q1_q2$pnue) %>% 
                        
             
             
@@ -421,16 +437,9 @@ data_pred_traits <-
                 
                 # Remove dollar sing    
                 gsub("\\$", "", .)
-                )) %>%
-        # Backtransform log vars
-        mutate(
+                )) %>% 
        
-        pred_pnue = exp(pred_pnue_log),    
-        pred_amax = exp(pred_amax_log),
-        pred_gs = exp(pred_gs_log),
-        pred_wue = exp(pred_wue_log)) %>% 
-        # Remove original vars
-        dplyr::select(c(1:3,15,17,21:24))  
+        dplyr::select(c(1:3,15:20))  
 ```
 
 ```{r}
@@ -503,13 +512,25 @@ After this I bootstrap the parameters for getting the Confidence intervals
 ### Aboveground biomass
 
 ```{r}
+models_q3
 
-model.sel(models_q3$`abovebiomass~amaxlog`,
-          models_q3$`abovebiomass~d15n`,
-          models_q3$`abovebiomass~d13c`,
-          models_q3$`abovebiomass~gslog`,
-          models_q3$`abovebiomass~pnuelog`,
-          models_q3$`abovebiomass~wuelog`)[,9:13]
+test <- nlme::lme(fixed = total_biomass ~ nfixer*treatment*amax + init_height,
+          random = ~1|spcode,
+          data = data_for_models)
+
+test_2 <- nlme::lme(fixed = total_biomass ~ nfixer*treatment*d13c + init_height,
+          random = ~1|spcode,
+          data = data_for_models)
+
+model.sel(test, test_2)
+
+
+model.sel(models_q3_nlme$`abovebiomass~amax`,
+          models_q3_nlme$`abovebiomass~d15n`,
+          models_q3_nlme$`abovebiomass~d13c`,
+          models_q3_nlme$`abovebiomass~gs`,
+          models_q3_nlme$`abovebiomass~pnue`,
+          models_q3_nlme$`abovebiomass~wue`)
 
 ```
 
@@ -517,23 +538,23 @@ model.sel(models_q3$`abovebiomass~amaxlog`,
 ### Belowgraound Biomass
 
 ```{r}
-model.sel(models_q3$`belowbiomass~amaxlog`,
+model.sel(models_q3$`belowbiomass~amax`,
                     models_q3$`belowbiomass~d15n`,
                     models_q3$`belowbiomass~d13c`,
-                    models_q3$`belowbiomass~gslog`,
-                    models_q3$`belowbiomass~pnuelog`,
-                    models_q3$`belowbiomass~wuelog`)[,9:13]
+                    models_q3$`belowbiomass~gs`,
+                    models_q3$`belowbiomass~pnue`,
+                    models_q3$`belowbiomass~wue`)[,9:13]
 ```
 
 ### rgr
 
 ```{r}
-model.sel(models_q3$`rgr~amaxlog`,
+model.sel(models_q3$`rgr~amax`,
                     models_q3$`rgr~d13c`,
                     models_q3$`rgr~d15n`,
-                    models_q3$`rgr~gslog`,
-                    models_q3$`rgr~pnuelog`,
-                    models_q3$`rgr~wuelog`)[,9:13]
+                    models_q3$`rgr~gs`,
+                    models_q3$`rgr~pnue`,
+                    models_q3$`rgr~wue`)[,9:13]
 ```
 
 
@@ -541,12 +562,12 @@ model.sel(models_q3$`rgr~amaxlog`,
 
 ```{r}
 
-model.sel(models_q3$`totalbiomass~amaxlog`,
+model.sel(models_q3$`totalbiomass~amax`,
                     models_q3$`totalbiomass~d15n`,
                     models_q3$`totalbiomass~d13c`,
-                    models_q3$`totalbiomass~gslog`,
-                    models_q3$`totalbiomass~pnuelog`,
-                    models_q3$`totalbiomass~wuelog`)[,9:13]
+                    models_q3$`totalbiomass~gs`,
+                    models_q3$`totalbiomass~pnue`,
+                    models_q3$`totalbiomass~wue`)[,9:13]
 ```
 
 ## r2
@@ -555,8 +576,8 @@ model.sel(models_q3$`totalbiomass~amaxlog`,
 map(models_q3, r2)
 ```
 
-
 ## Anova tables
+
 ```{r}
 models_q3 %>%
     anova_table_tidy(., model_list = T)
@@ -564,9 +585,142 @@ models_q3 %>%
 
 ## Bootstrap parameters for getting confidence intervals
 
-```{r cache = TRUE}
-three_way_param_bootstrap <- map_dfr(models_q3, ~bootstrap_model_df(., iter = 1000))
+```{r}
+qqq
+bootstrap_model_df <- function(model, iter = 100){
+    
+    # get the response variable name from the model
+    terms <- terms(model)
+    response_var <- as.character(attr(terms, "variables"))[2] 
+    #trait_var <- as.character(attr(terms, "variables"))[5] 
+    colmn <- paste0("col_", 1:3)
+    
+    # Get 95% CIs
+    
+    # Bootstrap fixed effects 
+    bootstrap_mer <- lme4::bootMer(model, fixef, nsim = iter)  
+    
+    param_coef_data <- 
+        stats::confint(bootstrap_mer) %>% 
+        
+            as.data.frame(.) %>% 
+        
+            # create column with the name of the response variable
+            tibble::add_column(response_var = response_var) %>%
+            tibble::rownames_to_column("terms") %>% 
+            janitor::clean_names()  %>% 
+            
+            filter(!terms %in% c("(Intercept)","init_height")) %>% 
+        
+            tidyr::separate(data = ., col = terms, sep = ":",into = colmn,
+                            remove = T) %>% 
+
+        mutate(col_1 = case_when(
+            col_1 == "treatmentno_additions" ~ "no_additions",
+            col_1 == "treatmentplus_nutrients" ~ "plus_nutrients",
+            col_1 == "treatmentplus_water" ~ "plus_water",
+            col_1 == "treatmentplus_water_nutrients" ~ "plus_water_nutrients",
+
+            TRUE ~ col_1)) %>% 
+
+        mutate(col_2 = case_when(
+            col_2 == "nfixerfixer" ~ "fixer",
+            col_2 == "nfixernonfixer" ~ "nonfixer",
+
+            TRUE ~ col_2)) %>% 
+
+        filter(!col_1 %in% "no_additions") %>%
+        arrange(col_1, col_2) %>%
+        unite("terms", 1:3, sep = ":",remove = TRUE) %>%
+        mutate(terms = forcats::fct_inorder(terms)) %>% 
+        
+        dplyr::rename(., lower_bound = x2_5_percent,
+                      upper_bound = x97_5_percent) %>% 
+        
+
+        # Create significance column
+        dplyr::mutate(significance = if_else((lower_bound > 0 & upper_bound > 0 | 
+                                                  lower_bound < 0 & upper_bound < 0),
+                                             TRUE, FALSE))
+    # get coefs from display
+    
+    coefs
+    #return(list(bootstrap_mer,param_coef_data))
+}
+
+names(coefficients(display(models_q3$`abovebiomass~amax`))) 
+    
+
+pivot_longer(!religion, names_to = "income", values_to = "count")
+bootstrap_model_df(models_q3$`abovebiomass~amax`, iter = 100)
 ```
+
+
+```{r}
+
+summary(models_q3_nlme$`abovebiomass~amax`)
+intervals(models_q3_nlme$`abovebiomass~amax`) 
+
+
+confint(bootMer(models_q3$`abovebiomass~amax`, fixef, nsim = 100)) %>% as.data.frame() %>%  clean_names())
+#     
+#         # create column with the name of the response variable
+#         #tibble::add_column(response_var = response_var) %>%
+#         tibble::rownames_to_column("terms") %>% 
+#         janitor::clean_names()  
+```
+
+```{r bootstrap_three_way_params, cache = TRUE}
+#three_way_param_bootstrap <- map_dfr(models_q3, ~ bootstrap_model_df(., iter = 9999))
+```
+
+```{r}
+confint(models_q3$`abovebiomass~amax`, oldNames = FALSE)
+
+t <- bootMer(models_q3$`abovebiomass~amax`, fixef, nsim = 999)
+plot(t)
+confint(bootMer(models_q3$`abovebiomass~amax`, fixef, nsim = 999))
+confint(t)
+plot(t$t0)
+
+```
+
+```{r}
+confint(models_q3$`abovebiomass~amax`, oldNames = TRUE, level = .95,)
+```
+
+
+
+```{r}
+library(robustlmm)
+
+test <- lmer(total_biomass ~ init_height + treatment:nfixer:amax_scaled + (1|spcode), 
+                         data = data_for_models_scaled)
+
+bootMer()
+par(mfow = c(2,2))
+plot(test)
+confint(bootMer(test, fixef, nsim = 100))
+
+  library(lmeresampler)
+
+lmeresampler::bootstrap(test, .f = fixef, type = "case", B = 100, resample = c(TRUE, FALSE))
+confint(test)
+bootstrap(model = test)
+
+
+library(nlme)
+test_2 <- lme(total_biomass ~ init_height + treatment:nfixer:amax_scaled,
+               random = ~1|spcode,
+               #weights = varIdent(1|spcode),
+               data = data_for_models_scaled)
+install.packages("sjPlot")
+sjPlot::plot_model(test_2)
+
+confint(lmeresampler::bootstrap(test_2, .f = fixef, type = "parametric", B = 9999))
+
+```
+
 
 ## Plot
 
@@ -579,6 +733,7 @@ three_way_param_bootstrap %>%
                     into = colmn,
                     remove = F) %>% 
     mutate(across(where(is.character), as.factor)) %>% 
+    filter(significance == TRUE) %>% 
 
 ggplot2::ggplot(data = .,
                # Highlight significant terms
@@ -614,7 +769,7 @@ ggplot2::ggplot(data = .,
             #labs(title = paste0(response_variable)) +
 
             # Significance colors
-            ggplot2::scale_colour_manual(values = c("gray","black")) +
+            ggplot2::scale_colour_manual(values = c("black","black")) +
             ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
             ggplot2::xlab("") +
 
@@ -624,7 +779,4 @@ ggplot2::ggplot(data = .,
             ggplot2::coord_flip()
 
 ```
-
-
-
 

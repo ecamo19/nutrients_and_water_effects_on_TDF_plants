@@ -20,7 +20,7 @@ merTools
 MuMIn
 modelr
 report
+emmeans
 tidyr
 lubridate
 ggplot2
-emmeans

@@ -100,7 +100,7 @@ anova_table_tidy <- function(model, single_model = FALSE, model_list = FALSE){
 ## Multiple comparisons table --------------------------------------------------
 
 # First, get multiple comparisons as data frame
-tukey_table_df <- function(model,formula){
+tukey_table_df <- function(model, formula){
   
   # get the response variable name from the model
     terms <- terms(model)
@@ -112,7 +112,6 @@ tukey_table_df <- function(model,formula){
     else
         formula <- formula(paste0("pairwise ~ ", formula))
     
-    
     # Get contrasts
     # estimate: of the effect size, that is the difference 
     # between the two emmeans (estimated marginal means)
@@ -123,7 +122,7 @@ tukey_table_df <- function(model,formula){
         clean_names() %>% 
         
         # Multiply estimate by -1 to improve interpretation
-        mutate(estimate = abs(estimate)) %>% 
+        #mutate(estimate = abs(estimate)) %>% 
           
         # create column with the name of the response variable
         add_column(response_variable = response_var) %>%
@@ -168,7 +167,7 @@ tukey_table_tidy <- function(model,single_model = FALSE, model_list = FALSE,
                       # Adjust columns width
                       response_variable = colDef(minWidth = 165),
                       contrast = colDef(minWidth = 185),
-                      estimate = colDef(minWidth = 75),
+                    
                       se = colDef(minWidth = 55),
                       
                       # Color p_value if it is less than 0.05
@@ -197,7 +196,6 @@ tukey_table_tidy <- function(model,single_model = FALSE, model_list = FALSE,
                       # Adjust columns width
                       response_variable = colDef(minWidth = 165),
                       contrast = colDef(minWidth = 185),
-                      estimate = colDef(minWidth = 75),
                       se = colDef(minWidth = 55),
                       
                       # Color p_value if it is less than 0.05
@@ -213,115 +211,117 @@ tukey_table_tidy <- function(model,single_model = FALSE, model_list = FALSE,
 # Get emmeans ------------------------------------------------------------------
 
 emmeans_df <- function(model,formula, grouping_var = NULL){
-  
-  if (is_empty(grouping_var) == TRUE) {
-    var = NULL
-  } else (
-    var <- ensym(grouping_var) 
-  )
-  #var <- sym(ifelse(is_empty(grouping_var) == TRUE, NA, grouping_var))
-  
-  # get the response variable name from the model
-  terms <- terms(model)
-  response_var <- as.character(attr(terms, "variables"))[2] 
-  
-  if(missing(formula)){
-    stop("Error: At least one var should be specified! Example A, B or A|B")
-  } 
-  else
-    formula <- formula(paste0("pairwise ~ ", formula))
-  
-  # Get contrasts tukey
-  # estimate: of the effect size, that is the difference 
-  # between the two emmeans (estimated marginal means)
-  as.data.frame(emmeans(model,
-                        formula,
-                        type = "response",
-                        adjust = "tukey")$emmeans) %>% 
     
-    add_column(response = response_var) %>% 
-    clean_names() %>% 
-    dplyr::select(response, everything(),
-                  -c(df,lower_cl, upper_cl,se)) %>%
+    if (is_empty(grouping_var) == TRUE) {
+        var = NULL
+    } else (
+        var <- ensym(grouping_var) 
+    )
+    #var <- sym(ifelse(is_empty(grouping_var) == TRUE, NA, grouping_var))
     
+    # get the response variable name from the model
+    terms <- terms(model)
+    response_var <- as.character(attr(terms, "variables"))[2] 
     
-    group_by(!!(var)) %>%
+    if(missing(formula)){
+        stop("Error: At least one var should be specified! Example A, B or A|B")
+    } 
+    else
+        formula <- formula(paste0("pairwise ~ ", formula))
     
-    mutate(difference = ((emmean - first(emmean))),
-           perc_difference =((emmean - first(emmean) )/first(emmean))*100) %>% 
-    mutate_if(is.numeric, round, 3)
-  
+    # Get contrasts tukey
+    # estimate: of the effect size, that is the difference 
+    # between the two emmeans (estimated marginal means)
+    as.data.frame(emmeans(model,
+                          formula,
+                          type = "response",
+                          adjust = "tukey")$emmeans) %>% 
+        
+        add_column(resp_var = response_var) %>% 
+        clean_names() %>% 
+        dplyr::select(resp_var, everything(),
+                      -c(df,lower_cl, upper_cl,se)) %>%
+        
+        # Rename response to emmean, this is done when models is log  
+        rename_all(funs(stringr::str_replace_all(., "response", "emmean"))) %>%
+        
+        group_by(!!(var)) %>%
+        
+        mutate(difference = ((emmean - first(emmean))),
+               perc_difference =((emmean - first(emmean) )/first(emmean))*100) %>% 
+        mutate_if(is.numeric, round, 3)
+    
 }
 
 emmeans_table_tidy <- function(model, grouping_var = NULL, single_model = FALSE, 
                                model_list = FALSE, formula = NULL){
-  
-  if(single_model == FALSE & model_list == FALSE |
-     single_model == TRUE & model_list == TRUE) {
-    stop("Error: single_model OR model_list arguments should be set to TRUE")
-  }
-  
-  if(missing(formula)){
-    stop("Error: At least one var should be specified! Example A, B or A|B")
-  } 
-  
-  if(model_list == TRUE) {
     
-    reactable(map_df(model, ~ emmeans_df(.x, formula, grouping_var)),
-              
-              groupBy = "response",
-              
-              rowStyle = JS("function(rowInfo) {
+    if(single_model == FALSE & model_list == FALSE |
+       single_model == TRUE & model_list == TRUE) {
+        stop("Error: single_model OR model_list arguments should be set to TRUE")
+    }
+    
+    if(missing(formula)){
+        stop("Error: At least one var should be specified! Example A, B or A|B")
+    } 
+    
+    if(model_list == TRUE) {
+        
+        reactable(map_df(model, ~ emmeans_df(.x, formula, grouping_var)),
+                  
+                  groupBy = "resp_var",
+                  
+                  rowStyle = JS("function(rowInfo) {
                         if (rowInfo.level > 0) {
                         return { background: '#eee', 
                         borderLeft: '2px solid #ffa62d' }} 
                         else {return { borderLeft: '2px solid transparent' }}}"),
-              
-              columns = list(
-                
-                # Adjust columns width
-                response = colDef(minWidth = 140),
-                treatment = colDef(minWidth = 185),
-                emmean = colDef(minWidth = 120),
-                difference = colDef(minWidth = 120),
-                
-                # Color p_value if it is less than 0.05
-                perc_difference = colDef(minWidth = 175,
-                                         style = function(value) {
-                                           if (value <= 0 ) {color <- "red"}
-                                           else {color <- "#008000"} 
-                                           list(color = color)})))
-  }
-  
-  else if (single_model == TRUE) {
+                  
+                  columns = list(
+                      
+                      # Adjust columns width
+                      resp_var = colDef(minWidth = 140),
+                      treatment = colDef(minWidth = 185),
+                      emmean = colDef(minWidth = 120),
+                      difference = colDef(minWidth = 120),
+                      
+                      # Color p_value if it is less than 0.05
+                      perc_difference = colDef(minWidth = 175,
+                                               style = function(value) {
+                                                   if (value <= 0 ) {color <- "red"}
+                                                   else {color <- "#008000"} 
+                                                   list(color = color)})))
+    }
     
-    reactable(emmeans_df(model, formula, grouping_var),
-              
-              groupBy = "response",
-              
-              rowStyle = JS("function(rowInfo) {
+    else if (single_model == TRUE) {
+        
+        reactable(emmeans_df(model, formula, grouping_var),
+                  
+                  groupBy = "resp_var",
+                  
+                  rowStyle = JS("function(rowInfo) {
                         if (rowInfo.level > 0) {
                         return { background: '#eee', 
                         borderLeft: '2px solid #ffa62d' }} 
                         else {return { borderLeft: '2px solid transparent' }}}"),
-              
-              columns = list(
-                
-                # Adjust columns width
-                response = colDef(minWidth = 140),
-                treatment = colDef(minWidth = 185),
-                emmean = colDef(minWidth = 120),
-                difference = colDef(minWidth = 120),
-                
-                # Color p_value if it is less than 0.05
-                perc_difference = colDef(minWidth = 175,
-                                 style = function(value) {
-                                   if (value <= 0 ) {color <- "red"}
-                                   else {color <- "#008000"} 
-                                   list(color = color)})))
-  } 
+                  
+                  columns = list(
+                      
+                      # Adjust columns width
+                      resp_var = colDef(minWidth = 140),
+                      treatment = colDef(minWidth = 185),
+                      emmean = colDef(minWidth = 120),
+                      difference = colDef(minWidth = 120),
+                      
+                      # Color p_value if it is less than 0.05
+                      perc_difference = colDef(minWidth = 175,
+                                               style = function(value) {
+                                                   if (value <= 0 ) {color <- "red"}
+                                                   else {color <- "#008000"} 
+                                                   list(color = color)})))
+    } 
 }
- 
+
 
 # Bootstrap function -----------------------------------------------------------
 
@@ -333,10 +333,14 @@ bootstrap_model_df <- function(model, iter = 100){
     #trait_var <- as.character(attr(terms, "variables"))[5] 
     colmn <- paste0("col_", 1:3)
     
-    # Generate anova table
-    boot.pval::boot_summary(model, type = "perc", R = iter) %>% 
-        
-        
+    # Bootstrap fixed effects 
+    # ref https://drewtyre.rbind.io/classes/NRES803/Week_12/Lab_12/ 
+    #bootMer(M0, myFunc, nsim = 1000, parallel = "multicore", ncpus = 4)
+    bootstrap_mer <- bootMer(model, fixef, nsim = iter,  parallel = "multicore", 
+                             ncpus = 8)  
+    
+    param_coef_data <- confint(bootstrap_mer) %>% 
+    
         # create column with the name of the response variable
         tibble::add_column(response_var = response_var) %>%
         tibble::rownames_to_column("terms") %>% 
@@ -369,7 +373,7 @@ bootstrap_model_df <- function(model, iter = 100){
         
         # Create significance column
         dplyr::mutate(significance = if_else((lower_bound > 0 & upper_bound > 0 | lower_bound < 0 & upper_bound < 0),TRUE, FALSE)) 
-    
+    return(list(bootstrap_mer, param_coef_data))
 }
 
 
