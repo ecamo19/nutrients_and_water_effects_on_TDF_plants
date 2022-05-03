@@ -303,8 +303,6 @@ models_q1_q2 %>%
 ```
 
 
-
-
 ```{r}
 models_q1_q2 %>% 
     
@@ -375,6 +373,7 @@ data_pred_traits <-
         dplyr::select(c(1:3,15:20))  
 ```
 
+
 ```{r}
 vars_q2 <-  
   crossing(
@@ -413,6 +412,10 @@ models_q1_q2 %>%
 
 ```{r}
 anova_table_tidy(models_nodule_count$lmer_gaussian, single_model = T)
+```
+```{r}
+arm::display(models_nodule_count$lmer_gaussian)
+sjPlot::plot_model(models_nodule_count$lmer_gaussian)
 ```
 
 ```{r}
@@ -489,16 +492,14 @@ model.sel(models_q3_nlme$`totalbiomass~amax`,
 ## r2
 
 ```{r}
-mur2
-r.squaredGLMM(models_q3_nlme$`abovebiomass~amax`)
-map(models_q3_nlme, r2)
+map(models_q3_nlme, r.squaredGLMM)
 ```
 
 ## Anova tables
 
 ```{r}
-models_q3 %>%
-    anova_table_tidy(., model_list = T)
+#models_q3 %>%
+#    anova_table_tidy(., model_list = T)
 ```
 
 ## Bootstrap parameters for getting confidence intervals
@@ -620,7 +621,7 @@ par(mfow = c(2,2))
 plot(test)
 confint(bootMer(test, fixef, nsim = 100))
 
-  library(lmeresampler)
+ 
 
 lmeresampler::bootstrap(test, .f = fixef, type = "case", B = 100, resample = c(TRUE, FALSE))
 confint(test)
