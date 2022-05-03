@@ -131,7 +131,7 @@ model_nlme <- function(formula, data){
     resp_var <- as.character(attr(terms(model_nlme), "variables"))[2]
     trait <- as.character(attr(terms(model_nlme), "variables"))[5]
     
-    model_nlme$call$fixed <- stringr::str_glue(resp_var, " ~ init_height + treament:nfixer:",trait)
+    model_nlme$call$fixed <- stringr::str_glue(resp_var, " ~ init_height + treatment:nfixer:",trait)
     return(model_nlme)
 }
 
