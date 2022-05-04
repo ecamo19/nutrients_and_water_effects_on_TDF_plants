@@ -324,8 +324,10 @@ emmeans_table_tidy <- function(model, grouping_var = NULL, single_model = FALSE,
 
 
 # Bootstrap function -----------------------------------------------------------
-
-bootstrap_model_df <- function(model, iter = 100){
+bootstrap_model_df <- function(model, iter = 100, category = "norm"){
+    
+    
+    cli::cli_alert("Available options for category are norm, basic, perc or all" )
     
     # get the response variable name from the model
     terms <- terms(model)
@@ -333,23 +335,26 @@ bootstrap_model_df <- function(model, iter = 100){
     #trait_var <- as.character(attr(terms, "variables"))[5] 
     colmn <- paste0("col_", 1:3)
     
-    # Bootstrap fixed effects 
-    # ref https://drewtyre.rbind.io/classes/NRES803/Week_12/Lab_12/ 
-    #bootMer(M0, myFunc, nsim = 1000, parallel = "multicore", ncpus = 4)
-    bootstrap_mer <- bootMer(model, fixef, nsim = iter,  parallel = "multicore", 
-                             ncpus = 8)  
+    # Get 95% CIs
     
-    param_coef_data <- confint(bootstrap_mer) %>% 
-    
+    # Bootstrap fixed effects
+    # 
+    bootstrap_nlme <- lmeresampler::bootstrap(model,.f = fixef, 
+                                              type = "parametric",
+                                              B = iter)
+    confidence_intervals_nlme_params <- 
+        stats::confint(bootstrap_nlme,type = category) %>%  
+        
+        as.data.frame(.) %>%
+        
         # create column with the name of the response variable
         tibble::add_column(response_var = response_var) %>%
-        tibble::rownames_to_column("terms") %>% 
+        
         janitor::clean_names()  %>% 
         
-        filter(!terms %in% c("(Intercept)","init_height")) %>% 
-        dplyr::select(-p_value) %>% 
+        filter(!term %in% c("(Intercept)","init_height")) %>% 
         
-        tidyr::separate(data = ., col = terms, sep = ":",into = colmn, 
+        tidyr::separate(data = ., col = term, sep = ":",into = colmn,
                         remove = T) %>% 
         
         mutate(col_1 = case_when(
@@ -358,22 +363,24 @@ bootstrap_model_df <- function(model, iter = 100){
             col_1 == "treatmentplus_water" ~ "plus_water",
             col_1 == "treatmentplus_water_nutrients" ~ "plus_water_nutrients",
             
-            TRUE ~ col_1)) %>%
+            TRUE ~ col_1)) %>% 
         
         mutate(col_2 = case_when(
             col_2 == "nfixerfixer" ~ "fixer",
             col_2 == "nfixernonfixer" ~ "nonfixer",
             
-            TRUE ~ col_2)) %>%  
+            TRUE ~ col_2)) %>% 
         
-        filter(!col_1 %in% "no_additions") %>% 
-        arrange(col_1, col_2) %>%  
-        unite("terms", 1:3, sep = ":",remove = TRUE) %>% 
-        mutate(terms = forcats::fct_inorder(terms)) %>% 
+        filter(!col_1 %in% "no_additions") %>%
+        arrange(col_1, col_2) %>%
+        unite("term", 1:3, sep = ":",remove = TRUE) %>%
+        mutate(term = forcats::fct_inorder(term)) %>%
         
         # Create significance column
-        dplyr::mutate(significance = if_else((lower_bound > 0 & upper_bound > 0 | lower_bound < 0 & upper_bound < 0),TRUE, FALSE)) 
-    return(list(bootstrap_mer, param_coef_data))
+        dplyr::mutate(significance = if_else((lower > 0 & upper > 0 | 
+                                                  lower < 0 & upper < 0),
+                                             TRUE, FALSE)) 
+    
+    results <- list(bootstrap_nlme,confidence_intervals_nlme_params)
+    return(results)
 }
-
-
