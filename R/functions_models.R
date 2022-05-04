@@ -120,7 +120,6 @@ model_combinations_formulas <- function(y_var, x_var, nlme = FALSE){
 # nlme model
 # ------------------------------------------------------------------------------
 
-
 model_nlme <- function(formula, data){
     model_nlme <-lme(formula, 
                      random = ~1|spcode,
@@ -131,7 +130,7 @@ model_nlme <- function(formula, data){
     resp_var <- as.character(attr(terms(model_nlme), "variables"))[2]
     trait <- as.character(attr(terms(model_nlme), "variables"))[5]
     
-    model_nlme$call$fixed <- stringr::str_glue(resp_var, " ~ init_height + treatment:nfixer:",trait)
+    model_nlme$call$fixed <- as.formula(paste0(resp_var, " ~ init_height + treatment:nfixer:",trait))
     return(model_nlme)
 }
 
