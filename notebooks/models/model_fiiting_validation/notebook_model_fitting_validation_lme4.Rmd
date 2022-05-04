@@ -239,6 +239,9 @@ models_nlme_formulas <- model_combinations_formulas(performance_names,
 length(models_nlme_formulas)
 models_nlme_formulas[1]
 ```
+
+
+
 ```{r}
 models_q3_nlme <- map(models_nlme_formulas, ~model_nlme(., data = data_for_models_scaled))
 ```
