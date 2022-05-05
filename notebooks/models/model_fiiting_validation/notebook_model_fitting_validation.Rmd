@@ -34,7 +34,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       fig.align      = "center",
                       
                       # Path to where to store pdf single figures 
-                      fig.path       = paste0("./figures_model_validation_lmer", "/"),
+                      fig.path       = paste0("./figures_models_validation", "/"),
                       fig.width      = 11,
                       fig.height     = 7,
                       message        = FALSE,
