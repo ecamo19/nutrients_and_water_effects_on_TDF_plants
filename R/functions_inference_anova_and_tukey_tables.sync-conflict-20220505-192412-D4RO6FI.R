@@ -324,10 +324,10 @@ emmeans_table_tidy <- function(model, grouping_var = NULL, single_model = FALSE,
 
 
 # Bootstrap function -----------------------------------------------------------
-bootstrap_model_ci_df <- function(model, iter = 100, category = "all"){
+bootstrap_model_df <- function(model, iter = 100, category = "norm"){
     
     
-    cli::cli_alert("Available options for category are norm, basic, perc or all")
+    cli::cli_alert("Available options for category are norm, basic, perc or all" )
     
     # get the response variable name from the model
     terms <- terms(model)
@@ -342,8 +342,8 @@ bootstrap_model_ci_df <- function(model, iter = 100, category = "all"){
     bootstrap_nlme <- lmeresampler::bootstrap(model,.f = fixef, 
                                               type = "parametric",
                                               B = iter)
-    
-    stats::confint(bootstrap_nlme,type = category) %>%  
+    confidence_intervals_nlme_params <- 
+        stats::confint(bootstrap_nlme,type = category) %>%  
         
         as.data.frame(.) %>%
         
@@ -381,4 +381,6 @@ bootstrap_model_ci_df <- function(model, iter = 100, category = "all"){
                                                   lower < 0 & upper < 0),
                                              TRUE, FALSE)) 
     
+    results <- list(bootstrap_nlme,confidence_intervals_nlme_params)
+    return(results)
 }

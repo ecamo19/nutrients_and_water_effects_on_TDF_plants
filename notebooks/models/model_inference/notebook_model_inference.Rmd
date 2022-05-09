@@ -39,7 +39,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       fig.align      = "center",
                       
                       # Path where figures are going to be store pdf single figures
-                      fig.path       = paste0("../model_inference/figures_model_inference_lmer", "/"),
+                      fig.path       = paste0("../model_inference/figures_model_inference", "/"),
                       fig.width      = 11,
                       fig.height     = 7,
                       message        = FALSE,
@@ -73,6 +73,8 @@ library(purrr)
 library(performance)
 # For bootstrap confidence intervals
 library(lmeresampler)
+library(nlme)
+library(lme4)
 # For model comparison
 library(MuMIn)
 # For get preditions
@@ -102,11 +104,11 @@ sys.source("./R/function_masomenos_plots.R", envir = knitr::knit_global())
 # Load models
 models_q1_q2 <- readRDS("./processed_data/models_q1_q2.RData")
 
-models_q3 <- readRDS("./processed_data/models_q3_3_way_interaction.RData")
+models_q3_lmer <- readRDS("./processed_data/models_q3_3_way_interaction_lmer.RData")
 
 models_q3_nlme <- readRDS("./processed_data/models_q3_3_way_interaction_nlme.RData")
 
-models_nodule_count <- readRDS("./processed_data/models_list_nodule_count.RData")
+models_nodule_count <- readRDS("./processed_data/models_nodule_count.RData")
 ```
 
 # Models selected according validation plots for answering questions
@@ -480,7 +482,6 @@ model.sel(models_q3_nlme$`rgr~amax`,
 ### Total Biomass
 
 ```{r}
-
 model.sel(models_q3_nlme$`totalbiomass~amax`,
                     models_q3_nlme$`totalbiomass~d15n`,
                     models_q3_nlme$`totalbiomass~d13c`,
@@ -504,63 +505,85 @@ map(models_q3_nlme, r.squaredGLMM)
 
 ## Bootstrap parameters for getting confidence intervals
 
-```{r}
-
-a <- bootstrap_model_df(model = models_q3_nlme$`abovebiomass~amax`, 
-                        category = "norm", iter = 100) 
-
-```
+```{r bootstrap__ci_three_way_params_models}
 
 
-```{r}
-#.f = fixef
-#
+# # #bootstrap_model_ci_df(model = models_q3_nlme$`abovebiomass~amax`,category = "all", iter = 100) 
+# bootstrap_ci_results <- map_dfr(models_q3_nlme,~ bootstrap_model_ci_df(model = .x,
+#                                                               category = "all",
+#                                                               iter = 9999))
+#  
+# saveRDS(bootstrap_ci_results, file = "./processed_data/bootstrap_ci_results.RData") 
 
-library(lmeresampler)
-
-lmeresampler::bootstrap(models_q3$`abovebiomass~amax`,.f = fixef, B = 100, type = "parametric")
-confint()
-```
-
-
-```{r}
-confint(parametric_bootstrap(models_q3_nlme$`abovebiomass~amax`,.f = fixef, B = 100))
-```
-
-```{r}
-library(lme4)
-vcmodA <- lme4::lmer(mathAge11 ~ mathAge8 + gender + class + (1 | school), data = jsp728)
-lmeresampler::bootstrap(vcmodA, .f = fixef, type = "parametric", B = 100)
-bootstrap(model = vcmodA, .f = fixef,B = 100 )
-```
-
-```{r bootstrap_three_way_params, cache = TRUE}
-#three_way_param_bootstrap <- map_dfr(models_q3, ~ bootstrap_model_df(., iter = 9999))
+bootstrap_ci_results <- readRDS("./processed_data/bootstrap_ci_results.RData")
 ```
 
 ## Plot
 
-```{r figure_3_three_way_q3, fig.width = 30, fig.height = 25, fig.align = 'center'}
+### Only significant terms
+
+```{r figure_3_three_way_q3, fig.width = 32, fig.height = 20, fig.align = 'center', echo = FALSE}
 
 colmn <- paste0("col_", 1:3)
-three_way_param_bootstrap %>% 
-    tidyr::separate(data = ., col = terms, 
+bootstrap_ci_results %>% 
+    tidyr::separate(data = ., col = term, 
                     sep = ":",
                     into = colmn,
                     remove = F) %>% 
     mutate(across(where(is.character), as.factor)) %>% 
-    filter(significance == TRUE) %>% 
+    filter(type == "norm" & significance == TRUE)  %>% 
+
+    ggplot2::ggplot(data = ., aes(x = term, y = estimate, color = significance,
+                                  shape = col_2)) +
+            ggplot2::geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
+            ggplot2::geom_point(size = 7, position = position_dodge(width = .9)) +
+
+            # 95% C.I
+            ggplot2::geom_linerange(aes(ymin = lower, ymax = upper),
+                                    lwd = 1, position = position_dodge(width = .9)) +
+
+            ggplot2::theme_bw() +
+
+            ggplot2::theme(legend.position = "none",
+                           strip.text.x = element_text(size = 25),
+                           axis.text.y   = element_text(size= 25),
+                           axis.text.x   = element_text(size= 25),
+                           axis.title.y  = element_text(size= 25),
+                           axis.title.x  = element_text(size= 25),
+                           panel.grid.major.y = element_blank(),
+                           panel.grid.minor = element_blank(),
+                           axis.line = element_line(size = .4,colour = "black"),
+                           panel.border = element_rect(colour = "black", fill= NA,
+                                                       size = 1.3)) +
+
+            # Significance colors
+            ggplot2::scale_colour_manual(values = c("black")) +
+            ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
+            ggplot2::xlab("") +
+
+            ggplot2::facet_wrap( ~ response_var, scales = "free", ncol = 2) +
+
+            ggplot2::coord_flip()
+
+```
+
+
+### All terms
+
+```{r supplementary_figure_3_three_way_q3, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
+bootstrap_ci_results %>% 
+    filter(type == "norm") %>% 
 
 ggplot2::ggplot(data = .,
                # Highlight significant terms
-               aes(x = terms, y = estimate, color = significance, shape = col_2)) +
+               aes(x = term, y = estimate, color = significance)) +
 
 
             ggplot2::geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
             ggplot2::geom_point(size = 6, position = position_dodge(width = .9)) +
 
             # 95% C.I
-            ggplot2::geom_linerange(aes(ymin = lower_bound,ymax = upper_bound),
+            ggplot2::geom_linerange(aes(ymin = lower, ymax = upper),
                                     lwd = 1, position = position_dodge(width = .9)) +
 
             # 99% C.I
@@ -585,7 +608,7 @@ ggplot2::ggplot(data = .,
             #labs(title = paste0(response_variable)) +
 
             # Significance colors
-            ggplot2::scale_colour_manual(values = c("black","black")) +
+            ggplot2::scale_colour_manual(values = c("grey","black")) +
             ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
             ggplot2::xlab("") +
 
@@ -595,4 +618,3 @@ ggplot2::ggplot(data = .,
             ggplot2::coord_flip()
 
 ```
-
