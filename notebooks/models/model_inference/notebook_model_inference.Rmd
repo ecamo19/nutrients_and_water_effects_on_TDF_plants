@@ -147,7 +147,7 @@ set.seed(666)
 ```
 
 ```{r echo=FALSE}
-# Step done for getting predictions from models
+# Step done for getting predictions from models for Q1 and Q2 
 data_for_models <- 
     data_for_models %>% 
         
@@ -222,7 +222,7 @@ data_pred_biomass_growth <-
                 gsub("\\$", "", .))) %>% 
     
         # Select only pred variables
-        dplyr::select(c(1:3,15:18))  
+        dplyr::select(c(1:3,13:16))  
 ```
 
 ```{r warning=FALSE}
@@ -248,7 +248,7 @@ vars_q1 %>%
 ```
 
 
-## Models r2
+## r2 models
 
 ```{r}
 models_q1_q2 %>%
@@ -274,6 +274,9 @@ models_q1_q2 %>%
     anova_table_tidy(., model_list = T)
 ```
 
+
+### Models with significant interaction
+
 ```{r}
 models_q1_q2 %>% 
     
@@ -289,6 +292,8 @@ models_q1_q2 %>%
     
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
+
+### Models with no significant interaction
 
 ```{r message=FALSE, warning=FALSE}
 models_q1_q2 %>% 
@@ -319,7 +324,9 @@ models_q1_q2 %>%
     tukey_table_tidy(., model_list = T, formula = "nfixer")
 ```
 
-## Percentanfe change
+## Percentange change
+
+### Models with significant interaction
 
 ```{r}
 models_q1_q2 %>% 
@@ -338,6 +345,43 @@ models_q1_q2 %>%
     emmeans_table_tidy(., model_list = T, 
                         formula = "treatment|nfixer", 
                         grouping_var = "nfixer")
+```
+
+### Models with no significant interaction
+
+```{r}
+models_q1_q2 %>% 
+    
+    # Remove performance variables
+    purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, 
+                       
+                     
+                       "amax" = NULL, "d15n" = NULL, "wue_log" = NULL
+                       , "d13c" = NULL ) %>%
+    
+    # Percentage difference
+    emmeans_table_tidy(., model_list = T, 
+                        formula = "treatment")
+    
+
+```
+```{r}
+# Percentage difference
+as.data.frame(emmeans(models_q1_q2$gs,
+                          specs = pairwise ~ "nfixer",
+                          type = "response",
+                          adjust = "tukey")$emmeans)  %>% 
+        
+        clean_names() %>%  
+        dplyr::select(-c(df,lower_cl, upper_cl,se)) %>% 
+        
+        # Rename response to emmean, this is done when models is log  
+        
+       
+        mutate(difference = ((emmean - first(emmean))),
+               perc_difference =((emmean - first(emmean) )/first(emmean))*100) %>% 
+        mutate_if(is.numeric, round, 3)
 ```
 
 
@@ -520,7 +564,11 @@ bootstrap_ci_results <- readRDS("./processed_data/bootstrap_ci_results.RData")
 
 ## Plot
 
+<<<<<<< HEAD
 ### Only significant terms
+=======
+### Only significant coefficients
+>>>>>>> fedbaf28935ac66ee660a78adf5b785f33f44292
 
 ```{r figure_3_three_way_q3, fig.width = 32, fig.height = 20, fig.align = 'center', echo = FALSE}
 
@@ -568,7 +616,11 @@ bootstrap_ci_results %>%
 ```
 
 
+<<<<<<< HEAD
 ### All terms
+=======
+### All coefficients
+>>>>>>> fedbaf28935ac66ee660a78adf5b785f33f44292
 
 ```{r supplementary_figure_3_three_way_q3, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
 bootstrap_ci_results %>% 
