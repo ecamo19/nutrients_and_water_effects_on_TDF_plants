@@ -17,7 +17,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE,comment = "", fig.align = 'center',
 					  fig.width = 11, fig.height = 7)
 
-options(knitr.graphics.auto_pdf = TRUE, scipen = 9999999)
+options(knitr.graphics.auto_pdf = TRUE, scipen = 9999)
 ```
 
 
@@ -543,8 +543,8 @@ map(models_q3_nlme, r.squaredGLMM)
 ## Anova tables
 
 ```{r}
-models_q3_nlme %>%
-    anova_table_tidy(., model_list = T)
+#models_q3 %>%
+#    anova_table_tidy(., model_list = T)
 ```
 
 ## Bootstrap parameters for getting confidence intervals
@@ -561,9 +561,6 @@ models_q3_nlme %>%
 
 bootstrap_ci_results <- readRDS("./processed_data/bootstrap_ci_results.RData")
 ```
-
-
-
 
 ## Plot
 
