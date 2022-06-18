@@ -28,8 +28,8 @@ anova_table_df <- function(model){
         clean_names()  %>% 
  
         # Round p and f values
-        mutate(chisq = round(chisq,3),
-               pr_chisq = round(pr_chisq,6)) %>% 
+        mutate(chisq = round(chisq,4),
+               pr_chisq = round(pr_chisq,20)) %>% 
         dplyr::select(response_variable, fixed_effects, everything())
 }
 

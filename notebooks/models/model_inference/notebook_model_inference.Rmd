@@ -17,7 +17,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE,comment = "", fig.align = 'center',
 					  fig.width = 11, fig.height = 7)
 
-options(knitr.graphics.auto_pdf = TRUE, scipen = 9999999)
+options(knitr.graphics.auto_pdf = TRUE, scipen = 9999, digits = 10)
 ```
 
 
@@ -139,7 +139,6 @@ models_nodule_count <-
 models_q3_nlme <- models_q3_nlme
 ```
 
-
 # Load data
 
 ```{r}
@@ -163,7 +162,7 @@ data_for_models <-
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax" = NULL, 
+    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
                        "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
     anova_table_tidy(., model_list = T)
 ```
@@ -172,7 +171,7 @@ models_q1_q2 %>%
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL, "d15n"  = NULL, "amax" = NULL, 
+    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
                        "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
@@ -182,7 +181,7 @@ models_q1_q2 %>%
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax" = NULL, 
+    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
                        "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
     
     # Percentage difference
@@ -222,7 +221,7 @@ data_pred_biomass_growth <-
                 gsub("\\$", "", .))) %>% 
     
         # Select only pred variables
-        dplyr::select(c(1:3,13:16))  
+        dplyr::select(c(1:3,15:18))  
 ```
 
 ```{r warning=FALSE}
@@ -238,13 +237,13 @@ vars_q1 <-
 ```
 
 
-```{r fig_1_biomass_growth_boxplot, fig.height = 7, fig.width = 7, fig.align = 'center'}
+```{r fig_1_biomass_growth_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
 vars_q1 %>% 
       # Gererate plots
       pmap( ~ boxplot_plot_pmap(data = data_pred_biomass_growth,
                                 y = !!sym(..1), x = !!sym(..2), 
-                                fill = !!sym(..3))) %>% 
-      cowplot::plot_grid(plotlist = ., ncol = 2)
+                                fill = !!sym(..3))) 
+      #cowplot::plot_grid(plotlist = ., ncol = 2)
 ```
 
 
@@ -254,7 +253,7 @@ vars_q1 %>%
 models_q1_q2 %>%
     
     # Remove traits models
-    purrr::list_modify("d13c" = NULL,"d15n"  = NULL, "amax" = NULL, 
+    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
                        "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>%
     
     map(., r2)
@@ -357,7 +356,7 @@ models_q1_q2 %>%
                        "below_biomass" = NULL, "rgr" = NULL, 
                        
                      
-                       "amax" = NULL, "d15n" = NULL, "wue_log" = NULL
+                       "amax" = NULL, "wue_log" = NULL
                        , "d13c" = NULL ) %>%
     
     # Percentage difference
@@ -396,7 +395,6 @@ data_pred_traits <-
         gather_predictions(data_for_models,
                            
                            # Return predictions
-                            models_q1_q2$d15n,
                             models_q1_q2$amax,
                             models_q1_q2$d13c,
                             models_q1_q2$gs,
@@ -416,7 +414,7 @@ data_pred_traits <-
                 gsub("\\$", "", .)
                 )) %>% 
        
-        dplyr::select(c(1:3,15:20))  
+        dplyr::select(c(1:3,15:19))  
 ```
 
 
@@ -433,13 +431,13 @@ vars_q2 <-
 ```
 
 
-```{r fig_2_traits_q2_boxplot, fig.height = 14, fig.width = 12, fig.align = 'center'}
+```{r fig_2_traits_q2_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
 vars_q2 %>% 
       # Gererate plots
       pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
                                 y = !!sym(..1), x = !!sym(..2), 
-                                fill = !!sym(..3))) %>% 
-      cowplot::plot_grid(plotlist = ., ncol = 2)
+                                fill = !!sym(..3))) 
+#      cowplot::plot_grid(plotlist = ., ncol = 2)
     
 ```
 
@@ -460,8 +458,8 @@ models_q1_q2 %>%
 anova_table_tidy(models_nodule_count$lmer_gaussian, single_model = T)
 ```
 ```{r}
-arm::display(models_nodule_count$lmer_gaussian)
-sjPlot::plot_model(models_nodule_count$lmer_gaussian)
+#arm::display(models_nodule_count$lmer_gaussian)
+#sjPlot::plot_model(models_nodule_count$lmer_gaussian)
 ```
 
 ```{r}
@@ -492,11 +490,11 @@ After this I bootstrap the parameters for getting the Confidence intervals
 
 ```{r}
 model.sel(models_q3_nlme$`abovebiomass~amax`,
-          models_q3_nlme$`abovebiomass~d15n`,
+          #models_q3_nlme$`abovebiomass~d15n`,
           models_q3_nlme$`abovebiomass~d13c`,
           models_q3_nlme$`abovebiomass~gs`,
           models_q3_nlme$`abovebiomass~pnue`,
-          models_q3_nlme$`abovebiomass~wue`)[,9:13]
+          models_q3_nlme$`abovebiomass~wue`)[,9:12]
 ```
 
 
@@ -504,11 +502,11 @@ model.sel(models_q3_nlme$`abovebiomass~amax`,
 
 ```{r}
 model.sel(models_q3_nlme$`belowbiomass~amax`,
-                    models_q3_nlme$`belowbiomass~d15n`,
+                    #models_q3_nlme$`belowbiomass~d15n`,
                     models_q3_nlme$`belowbiomass~d13c`,
                     models_q3_nlme$`belowbiomass~gs`,
                     models_q3_nlme$`belowbiomass~pnue`,
-                    models_q3_nlme$`belowbiomass~wue`)[,9:13]
+                    models_q3_nlme$`belowbiomass~wue`)[,9:12]
 ```
 
 ### rgr
@@ -516,10 +514,10 @@ model.sel(models_q3_nlme$`belowbiomass~amax`,
 ```{r}
 model.sel(models_q3_nlme$`rgr~amax`,
                     models_q3_nlme$`rgr~d13c`,
-                    models_q3_nlme$`rgr~d15n`,
+                    #models_q3_nlme$`rgr~d15n`,
                     models_q3_nlme$`rgr~gs`,
                     models_q3_nlme$`rgr~pnue`,
-                    models_q3_nlme$`rgr~wue`)[,9:13]
+                    models_q3_nlme$`rgr~wue`)[,9:12]
 ```
 
 
@@ -527,11 +525,11 @@ model.sel(models_q3_nlme$`rgr~amax`,
 
 ```{r}
 model.sel(models_q3_nlme$`totalbiomass~amax`,
-                    models_q3_nlme$`totalbiomass~d15n`,
+                    #models_q3_nlme$`totalbiomass~d15n`,
                     models_q3_nlme$`totalbiomass~d13c`,
                     models_q3_nlme$`totalbiomass~gs`,
                     models_q3_nlme$`totalbiomass~pnue`,
-                    models_q3_nlme$`totalbiomass~wue`)[,9:13]
+                    models_q3_nlme$`totalbiomass~wue`)[,9:12]
 ```
 
 ## r2
@@ -551,13 +549,13 @@ models_q3_nlme %>%
 
 ```{r bootstrap__ci_three_way_params_models}
 
+# #bootstrap_model_ci_df(model = models_q3_nlme$`abovebiomass~amax`,category = "all", iter = 100)
 
-# # #bootstrap_model_ci_df(model = models_q3_nlme$`abovebiomass~amax`,category = "all", iter = 100) 
 # bootstrap_ci_results <- map_dfr(models_q3_nlme,~ bootstrap_model_ci_df(model = .x,
 #                                                               category = "all",
 #                                                               iter = 9999))
-#  
-# saveRDS(bootstrap_ci_results, file = "./processed_data/bootstrap_ci_results.RData") 
+
+#saveRDS(bootstrap_ci_results, file = "./processed_data/bootstrap_ci_results.RData")
 
 bootstrap_ci_results <- readRDS("./processed_data/bootstrap_ci_results.RData")
 ```

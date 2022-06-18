@@ -101,7 +101,7 @@ $$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
 ```{r}
 # Take response variables names 
 response_vars_q1_q2 <- 
-    set_names(names(data_for_models)[5:14])
+    set_names(names(data_for_models)[c(5:12,14)])
 
 response_vars_q1_q2 
 ```
@@ -202,7 +202,7 @@ data_for_models_scaled <-
 ```{r}
 # Select traits (x_vars)
 traits_names <- 
-    set_names(names(data_for_models_scaled)[c(9:14)])
+    set_names(names(data_for_models_scaled)[c(9:12,14)])
 
 traits_names
 ```
