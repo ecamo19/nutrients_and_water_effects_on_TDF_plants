@@ -1180,18 +1180,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="256"
-     inkscape:cx="461.69531"
-     inkscape:cy="15.912109"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="482.95393"
+     inkscape:cy="846.05326"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g316923"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1904"
-     inkscape:window-height="995"
-     inkscape:window-x="1928"
-     inkscape:window-y="40"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="1920"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
      inkscape:pagecheckerboard="0"
      inkscape:showpageshadow="2"
      inkscape:deskcolor="#d1d1d1" />
@@ -1418,7 +1418,7 @@
        transform="matrix(1,0,0,0.8326096,-20.744228,-47.954602)"><tspan
          x="30.408512"
          y="235.60507"
-         id="tspan21955">
+         id="tspan1608">
 </tspan></text>
     <text
        xml:space="preserve"
@@ -1429,7 +1429,7 @@
        transform="matrix(1,0,0,0.91741733,-20.769683,-63.328607)"><tspan
          x="30.408512"
          y="235.60507"
-         id="tspan21957">
+         id="tspan1610">
 </tspan></text>
     <text
        xml:space="preserve"
@@ -1459,18 +1459,18 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan21959">Figure 2: Mean values with error bars indicating confidence intervals
+         id="tspan1612">Figure 2: Mean values with error bars indicating confidence intervals
 </tspan><tspan
          x="0"
          y="41.650375"
-         id="tspan21961">Uppercase letters indicate differences between treatments in the same group (N-fixing, Non-fixing)
+         id="tspan1614">Uppercase letters indicate differences between treatments in the same group (N-fixing, Non-fixing)
 </tspan><tspan
          x="0"
          y="83.300748"
-         id="tspan21963">Lowercase letters indicate significant differences between N-fixing and Non-Fixing in the same </tspan><tspan
+         id="tspan1616">Lowercase letters indicate significant differences between N-fixing and Non-Fixing in the same </tspan><tspan
          x="0"
          y="124.95112"
-         id="tspan21965">treatment.
+         id="tspan1618">treatment.
 </tspan></text>
     <text
        xml:space="preserve"
@@ -1771,7 +1771,8 @@
        id="g316923"
        transform="translate(143.52871,-3.1594405)">
       <g
-         id="g316877">
+         id="g316877"
+         transform="translate(-92.873035,-22.820982)">
         <g
            id="g316832">
           <g
@@ -1854,7 +1855,7 @@
                  xml:space="preserve"><tspan
                    x="0"
                    y="0"
-                   id="tspan21967">Plus-Nutrients </tspan></text>
+                   id="tspan1620">Plus-Nutrients </tspan></text>
             </g>
           </g>
           <g
@@ -1880,7 +1881,7 @@
                  xml:space="preserve"><tspan
                    x="0"
                    y="0"
-                   id="tspan21969">Plus-Water </tspan></text>
+                   id="tspan1622">Plus-Water </tspan></text>
             </g>
           </g>
           <g
@@ -1919,7 +1920,7 @@
                    xml:space="preserve"><tspan
                      x="0"
                      y="0"
-                     id="tspan21971">Plus-Nutrients-Water </tspan></text>
+                     id="tspan1624">Plus-Nutrients-Water </tspan></text>
               </g>
             </g>
           </g>
@@ -1948,7 +1949,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan21973">N-fixing species</tspan></text>
+         id="tspan1626">N-fixing species</tspan></text>
     <text
        transform="matrix(0.04355764,0,0,0.06191829,27.617242,84.159045)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.6484px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';writing-mode:lr-tb;white-space:pre;inline-size:511.949;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1956,7 +1957,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan21975">Non-fixing species</tspan></text>
+         id="tspan1628">Non-fixing species</tspan></text>
     <path
        d="m 16.475682,4.8825039 h 71.83887"
        style="fill:none;stroke:#000000;stroke-width:0.185092;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -2197,7 +2198,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan21977">N-fixing species</tspan></text>
+         id="tspan1630">N-fixing species</tspan></text>
     <text
        transform="matrix(0.04094696,0,0,0.06186533,26.605013,246.44105)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.6484px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';writing-mode:lr-tb;white-space:pre;inline-size:511.949;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -2205,7 +2206,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan21979">Non-fixing species</tspan></text>
+         id="tspan1632">Non-fixing species</tspan></text>
     <path
        d="m 16.882188,242.97627 h 69.78295"
        style="fill:none;stroke:#000000;stroke-width:0.182346;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -2225,7 +2226,7 @@
        transform="matrix(0.81375374,0,0,0.83443571,-12.707859,95.591045)"><tspan
          x="69.636719"
          y="99.463322"
-         id="tspan21981">Ba</tspan></text>
+         id="tspan1634">Ba</tspan></text>
     <text
        xml:space="preserve"
        id="text5754-6-9-73-5-4"
@@ -2233,7 +2234,7 @@
        transform="matrix(0.82779653,0,0,0.83443571,-28.218941,106.99483)"><tspan
          x="69.636719"
          y="99.446819"
-         id="tspan21983">Aa</tspan></text>
+         id="tspan1636">Aa</tspan></text>
     <text
        xml:space="preserve"
        id="text5754-6-9-6-84-2"
@@ -2241,7 +2242,7 @@
        transform="matrix(0.81375374,0,0,0.83443571,-11.852775,106.23845)"><tspan
          x="69.636719"
          y="99.463322"
-         id="tspan21985">Bb</tspan></text>
+         id="tspan1638">Bb</tspan></text>
     <text
        xml:space="preserve"
        id="text5754-6-9-7-3-5"
@@ -2249,7 +2250,7 @@
        transform="matrix(0.81375374,0,0,0.83443571,-27.597852,96.072969)"><tspan
          x="69.636719"
          y="99.463322"
-         id="tspan21987">Ca</tspan></text>
+         id="tspan1640">Ca</tspan></text>
     <path
        d="m 27.148242,216.19692 v -5.70201"
        style="fill:none;stroke:#333333;stroke-width:0.192299;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -2457,7 +2458,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan21989">N-fixing species</tspan></text>
+         id="tspan1642">N-fixing species</tspan></text>
     <text
        transform="matrix(0.04251147,0,0,0.06186524,129.37534,83.654591)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.6484px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';writing-mode:lr-tb;white-space:pre;inline-size:511.949;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -2465,7 +2466,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan21991">Non-fixing species</tspan></text>
+         id="tspan1644">Non-fixing species</tspan></text>
     <path
        d="m 121.95451,80.841854 h 70.36141"
        style="fill:none;stroke:#000000;stroke-width:0.1831;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -2904,7 +2905,7 @@
                    xml:space="preserve"><tspan
                      x="0"
                      y="0"
-                     id="tspan21993">N-fixing species</tspan></text>
+                     id="tspan1646">N-fixing species</tspan></text>
                 <text
                    transform="matrix(0.0425113,0,0,0.06186524,127.99946,166.34348)"
                    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.6484px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';writing-mode:lr-tb;white-space:pre;inline-size:511.949;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -2912,7 +2913,7 @@
                    xml:space="preserve"><tspan
                      x="0"
                      y="0"
-                     id="tspan21995">Non-fixing species</tspan></text>
+                     id="tspan1648">Non-fixing species</tspan></text>
               </g>
             </g>
           </g>
@@ -3157,7 +3158,7 @@
            xml:space="preserve"><tspan
              x="0"
              y="0"
-             id="tspan21997">N-fixing species</tspan></text>
+             id="tspan1650">N-fixing species</tspan></text>
         <text
            transform="matrix(0.03952702,0,0,0.06186524,29.455082,166.69517)"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.6484px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';writing-mode:lr-tb;white-space:pre;inline-size:511.949;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -3165,7 +3166,7 @@
            xml:space="preserve"><tspan
              x="0"
              y="0"
-             id="tspan21999">Non-fixing species</tspan></text>
+             id="tspan1652">Non-fixing species</tspan></text>
       </g>
     </g>
     <path

@@ -494,7 +494,7 @@ model.sel(models_q3_nlme$`abovebiomass~amax`,
           models_q3_nlme$`abovebiomass~d13c`,
           models_q3_nlme$`abovebiomass~gs`,
           models_q3_nlme$`abovebiomass~pnue`,
-          models_q3_nlme$`abovebiomass~wue`)[,9:12]
+          models_q3_nlme$`abovebiomass~wue`)[,8:12]
 ```
 
 
@@ -506,7 +506,7 @@ model.sel(models_q3_nlme$`belowbiomass~amax`,
                     models_q3_nlme$`belowbiomass~d13c`,
                     models_q3_nlme$`belowbiomass~gs`,
                     models_q3_nlme$`belowbiomass~pnue`,
-                    models_q3_nlme$`belowbiomass~wue`)[,9:12]
+                    models_q3_nlme$`belowbiomass~wue`)[,8:12]
 ```
 
 ### rgr
@@ -517,7 +517,7 @@ model.sel(models_q3_nlme$`rgr~amax`,
                     #models_q3_nlme$`rgr~d15n`,
                     models_q3_nlme$`rgr~gs`,
                     models_q3_nlme$`rgr~pnue`,
-                    models_q3_nlme$`rgr~wue`)[,9:12]
+                    models_q3_nlme$`rgr~wue`)[,8:12]
 ```
 
 
@@ -529,7 +529,7 @@ model.sel(models_q3_nlme$`totalbiomass~amax`,
                     models_q3_nlme$`totalbiomass~d13c`,
                     models_q3_nlme$`totalbiomass~gs`,
                     models_q3_nlme$`totalbiomass~pnue`,
-                    models_q3_nlme$`totalbiomass~wue`)[,9:12]
+                    models_q3_nlme$`totalbiomass~wue`)[,8:12]
 ```
 
 ## r2
