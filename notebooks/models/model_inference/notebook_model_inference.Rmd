@@ -456,6 +456,11 @@ models_q1_q2 %>%
 
 ```{r}
 anova_table_tidy(models_nodule_count$lmer_gaussian, single_model = T)
+
+summary(models_nodule_count$lmer_gaussian)
+var(ranef(models_nodule_count$lmer_gaussian)$spcode)
+VarCorr(models_nodule_count$lmer_gaussian)
+
 ```
 ```{r}
 #arm::display(models_nodule_count$lmer_gaussian)

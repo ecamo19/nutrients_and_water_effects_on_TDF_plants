@@ -2317,15 +2317,53 @@ $d13c
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova_table_tidy</span>(models_nodule_count<span class="sc">$</span>lmer_gaussian, <span class="at">single_model =</span> T)</span></code></pre></div>
 <div id="htmlwidget-e919d36253c885a867d2" class="reactable html-widget" style="width:auto;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-e919d36253c885a867d2">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["number_of_root_nodulation","number_of_root_nodulation","number_of_root_nodulation"],"fixed_effects":["(Intercept)","treatment","init_height"],"chisq":[1.0448,13.5295,3.7265],"df":[1,3,1],"pr_chisq":[0.30671662857037,0.00362092834032766,0.0535539310753823]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"character","minWidth":165},{"accessor":"fixed_effects","name":"fixed_effects","type":"character","minWidth":125},{"accessor":"chisq","name":"chisq","type":"numeric","minWidth":70},{"accessor":"df","name":"df","type":"numeric","minWidth":70},{"accessor":"pr_chisq","name":"pr_chisq","type":"numeric","style":[{"color":"black"},{"color":"#008000"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee', \n                        borderLeft: '2px solid #ffa62d' }} \n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"23dd1ffae7df7338ed5672d975444e67","key":"23dd1ffae7df7338ed5672d975444e67"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#arm::display(models_nodule_count$lmer_gaussian)</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co">#sjPlot::plot_model(models_nodule_count$lmer_gaussian)</span></span></code></pre></div>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tukey_table_tidy</span>(models_nodule_count<span class="sc">$</span>lmer_gaussian,<span class="at">single_model =</span> T, </span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(models_nodule_count<span class="sc">$</span>lmer_gaussian)</span></code></pre></div>
+<pre><code>Linear mixed model fit by REML [&#39;lmerMod&#39;]
+Formula: number_of_root_nodulation ~ treatment + init_height + (1 | spcode)
+   Data: data_nodules_cleaned
+
+REML criterion at convergence: 391
+
+Scaled residuals: 
+   Min     1Q Median     3Q    Max 
+-2.103 -0.697 -0.101  0.719  1.822 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ spcode   (Intercept) 3648     60.4    
+ Residual              282     16.8    
+Number of obs: 48, groups:  spcode, 3
+
+Fixed effects:
+                                     Estimate Std. Error t value
+(Intercept)                            38.354     37.524    1.02
+treatmentambientrain_nutrients         -3.126      6.854   -0.46
+treatmentambientrain_water             -8.223      6.854   -1.20
+treatmentambientrain_water_nutrients   16.194      6.997    2.31
+init_height                             1.675      0.868    1.93
+
+Correlation of Fixed Effects:
+               (Intr) trtmntmbntrn_n trtmntmbntrn_w trtm__
+trtmntmbntrn_n -0.086                                     
+trtmntmbntrn_w -0.088  0.500                              
+trtmntmbn__    -0.020  0.493          0.492               
+init_height    -0.346 -0.016         -0.011         -0.202</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(<span class="fu">ranef</span>(models_nodule_count<span class="sc">$</span>lmer_gaussian)<span class="sc">$</span>spcode)</span></code></pre></div>
+<pre><code>            (Intercept)
+(Intercept)        3610</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(models_nodule_count<span class="sc">$</span>lmer_gaussian)</span></code></pre></div>
+<pre><code> Groups   Name        Std.Dev.
+ spcode   (Intercept) 60.4    
+ Residual             16.8    </code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#arm::display(models_nodule_count$lmer_gaussian)</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co">#sjPlot::plot_model(models_nodule_count$lmer_gaussian)</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tukey_table_tidy</span>(models_nodule_count<span class="sc">$</span>lmer_gaussian,<span class="at">single_model =</span> T, </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <div id="htmlwidget-0a919f68e3b6a3cb796e" class="reactable html-widget" style="width:auto;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-0a919f68e3b6a3cb796e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["number_of_root_nodulation","number_of_root_nodulation","number_of_root_nodulation","number_of_root_nodulation","number_of_root_nodulation","number_of_root_nodulation"],"contrast":["ambientrain - ambientrain_nutrients","ambientrain - ambientrain_water","ambientrain - ambientrain_water_nutrients","ambientrain_nutrients - ambientrain_water","ambientrain_nutrients - ambientrain_water_nutrients","ambientrain_water - ambientrain_water_nutrients"],"estimate":[3.1261,8.223,-16.194,5.0969,-19.3201,-24.417],"se":[6.854,6.8535,7.0001,6.8532,6.9786,6.9856],"t_ratio":[0.4561,1.1998,-2.3134,0.7437,-2.7685,-3.4953],"p_value":[0.9681,0.6305,0.1116,0.8788,0.0403,0.0061]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"#008000"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee', \n                        borderLeft: '2px solid #ffa62d' }} \n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"021b2bf167bc7a4666f84e4a16d34b19","key":"021b2bf167bc7a4666f84e4a16d34b19"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>models_nodule_count <span class="sc">%&gt;%</span> </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#purrr::list_modify(&quot;rgr_slope&quot; = NULL, &quot;agr_log&quot; = NULL, &quot;gs_sqrt&quot; = NULL) %&gt;%</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(., r2)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>models_nodule_count <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#purrr::list_modify(&quot;rgr_slope&quot; = NULL, &quot;agr_log&quot; = NULL, &quot;gs_sqrt&quot; = NULL) %&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map</span>(., r2)</span></code></pre></div>
 <pre><code>$lmer_gaussian
 # R2 for Mixed Models
 
@@ -2350,12 +2388,12 @@ intervals</p>
 <h2>Model comparisons</h2>
 <div id="aboveground-biomass" class="section level3">
 <h3>Aboveground biomass</h3>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~amax</span><span class="st">`</span>,</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>          <span class="co">#models_q3_nlme$`abovebiomass~d15n`,</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~d13c</span><span class="st">`</span>,</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~gs</span><span class="st">`</span>,</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~pnue</span><span class="st">`</span>,</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~amax</span><span class="st">`</span>,</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>          <span class="co">#models_q3_nlme$`abovebiomass~d15n`,</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~d13c</span><span class="st">`</span>,</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~gs</span><span class="st">`</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~pnue</span><span class="st">`</span>,</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>          models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">abovebiomass~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
 <pre><code>                                   df logLik AICc delta     weight
 models_q3_nlme$`abovebiomass~amax` 19   -158  362   0.0 0.99819412
 models_q3_nlme$`abovebiomass~pnue` 19   -165  375  12.7 0.00177201
@@ -2365,12 +2403,12 @@ models_q3_nlme$`abovebiomass~d13c` 19   -172  389  27.0 0.00000137</code></pre>
 </div>
 <div id="belowgraound-biomass" class="section level3">
 <h3>Belowgraound Biomass</h3>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~amax</span><span class="st">`</span>,</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#models_q3_nlme$`belowbiomass~d15n`,</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~d13c</span><span class="st">`</span>,</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~gs</span><span class="st">`</span>,</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~pnue</span><span class="st">`</span>,</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~amax</span><span class="st">`</span>,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#models_q3_nlme$`belowbiomass~d15n`,</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~d13c</span><span class="st">`</span>,</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~gs</span><span class="st">`</span>,</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~pnue</span><span class="st">`</span>,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">belowbiomass~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
 <pre><code>                                   df logLik AICc delta  weight
 models_q3_nlme$`belowbiomass~wue`  19   -202  450  0.00 0.69212
 models_q3_nlme$`belowbiomass~d13c` 19   -203  453  2.81 0.17006
@@ -2380,12 +2418,12 @@ models_q3_nlme$`belowbiomass~gs`   19   -208  463 12.68 0.00122</code></pre>
 </div>
 <div id="rgr" class="section level3">
 <h3>rgr</h3>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~amax</span><span class="st">`</span>,</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~d13c</span><span class="st">`</span>,</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#models_q3_nlme$`rgr~d15n`,</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~gs</span><span class="st">`</span>,</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~pnue</span><span class="st">`</span>,</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~amax</span><span class="st">`</span>,</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~d13c</span><span class="st">`</span>,</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#models_q3_nlme$`rgr~d15n`,</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~gs</span><span class="st">`</span>,</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~pnue</span><span class="st">`</span>,</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">rgr~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
 <pre><code>                          df logLik AICc  delta    weight
 models_q3_nlme$`rgr~wue`  19    521 -996  0.000 0.6156408
 models_q3_nlme$`rgr~amax` 19    520 -995  0.944 0.3839463
@@ -2395,12 +2433,12 @@ models_q3_nlme$`rgr~d13c` 19    512 -978 18.306 0.0000652</code></pre>
 </div>
 <div id="total-biomass" class="section level3">
 <h3>Total Biomass</h3>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~amax</span><span class="st">`</span>,</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#models_q3_nlme$`totalbiomass~d15n`,</span></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~d13c</span><span class="st">`</span>,</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~gs</span><span class="st">`</span>,</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~pnue</span><span class="st">`</span>,</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~amax</span><span class="st">`</span>,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#models_q3_nlme$`totalbiomass~d15n`,</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~d13c</span><span class="st">`</span>,</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~gs</span><span class="st">`</span>,</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~pnue</span><span class="st">`</span>,</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>                    models_q3_nlme<span class="sc">$</span><span class="st">`</span><span class="at">totalbiomass~wue</span><span class="st">`</span>)[,<span class="dv">8</span><span class="sc">:</span><span class="dv">12</span>]</span></code></pre></div>
 <pre><code>                                   df logLik AICc delta     weight
 models_q3_nlme$`totalbiomass~amax` 19   -249  544  0.00 0.98929535
 models_q3_nlme$`totalbiomass~pnue` 19   -254  553  9.74 0.00758738
@@ -2411,7 +2449,7 @@ models_q3_nlme$`totalbiomass~gs`   19   -261  568 23.98 0.00000614</code></pre>
 </div>
 <div id="r2" class="section level2">
 <h2>r2</h2>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(models_q3_nlme, r.squaredGLMM)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(models_q3_nlme, r.squaredGLMM)</span></code></pre></div>
 <pre><code>$`abovebiomass~amax`
        R2m   R2c
 [1,] 0.125 0.647
@@ -2494,22 +2532,22 @@ $`totalbiomass~wue`
 </div>
 <div id="anova-tables" class="section level2">
 <h2>Anova tables</h2>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>models_q3_nlme <span class="sc">%&gt;%</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">anova_table_tidy</span>(., <span class="at">model_list =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>models_q3_nlme <span class="sc">%&gt;%</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">anova_table_tidy</span>(., <span class="at">model_list =</span> T)</span></code></pre></div>
 <div id="htmlwidget-b4ff1b4c8252a4ae53ee" class="reactable html-widget" style="width:auto;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-b4ff1b4c8252a4ae53ee">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","above_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","below_biomass","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","rgr","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass","total_biomass"],"fixed_effects":["(Intercept)","init_height","treatment:nfixer:amax","(Intercept)","init_height","treatment:nfixer:d13c","(Intercept)","init_height","treatment:nfixer:gs","(Intercept)","init_height","treatment:nfixer:pnue","(Intercept)","init_height","treatment:nfixer:wue","(Intercept)","init_height","treatment:nfixer:amax","(Intercept)","init_height","treatment:nfixer:d13c","(Intercept)","init_height","treatment:nfixer:gs","(Intercept)","init_height","treatment:nfixer:pnue","(Intercept)","init_height","treatment:nfixer:wue","(Intercept)","init_height","treatment:nfixer:amax","(Intercept)","init_height","treatment:nfixer:d13c","(Intercept)","init_height","treatment:nfixer:gs","(Intercept)","init_height","treatment:nfixer:pnue","(Intercept)","init_height","treatment:nfixer:wue","(Intercept)","init_height","treatment:nfixer:amax","(Intercept)","init_height","treatment:nfixer:d13c","(Intercept)","init_height","treatment:nfixer:gs","(Intercept)","init_height","treatment:nfixer:pnue","(Intercept)","init_height","treatment:nfixer:wue"],"chisq":[35.5244,14.9853,86.9856,61.0911,26.8822,32.641,56.6284,18.5386,34.145,41.2277,9.9527,79.6299,49.5351,12.5352,39.9119,20.1452,0.7201,32.5047,73.552,3.5935,30.0134,53.1107,2.143,17.9114,39.8766,0.0308,31.4351,38.7809,1.2825,35.2567,19.5449,33.461,36.949,19.6096,18.7289,17.5655,22.0715,38.0722,16.6123,17.9922,46.0893,14.3157,17.6858,40.5968,36.296,25.8458,3.2685,91.3178,81.6064,14.6315,39.1062,76.3755,8.2383,20.8298,48.4612,2.3556,65.6575,51.7531,5.2187,37.0823],"df":[1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8,1,1,8],"pr_chisq":[2.51871547229e-09,0.000108352255357306,1.8998e-15,5.44929e-15,2.1624305190338e-07,7.14675069885513e-05,5.264726e-14,1.66500641083221e-05,3.82403198980601e-05,1.3549014939e-10,0.00160612557236468,5.803352e-14,1.94858207e-12,0.00039936437686409,3.32704991417871e-06,7.1780293191207e-06,0.396104616504183,7.56139211383435e-05,9.8e-18,0.0580061589517142,0.000210232874245049,3.1526401e-13,0.143220214175882,0.0219008999662363,2.7052433186e-10,0.860640036981674,0.000117526099338073,4.741462136e-10,0.257430709180719,2.40076003034434e-05,9.82647908750936e-06,7.2707218884e-09,1.17602454080787e-05,9.49914122046319e-06,1.50677737405825e-05,0.024730311301686,2.62685235576395e-06,6.8173729024e-10,0.0344093375492528,2.21808267421669e-05,1.129860687e-11,0.0738988973407249,2.60561516025555e-05,1.8711490677e-10,1.54990966112215e-05,3.6980463720772e-07,0.0706224830111166,2.511e-16,1.7e-19,0.000130711526889891,4.69733829347712e-06,2.35e-18,0.0041015938684881,0.00761344833889816,3.36883967e-12,0.124834456784905,3.577093282e-11,6.2938157e-13,0.0223447458099516,1.11146217483387e-05]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"character","minWidth":165},{"accessor":"fixed_effects","name":"fixed_effects","type":"character","minWidth":125},{"accessor":"chisq","name":"chisq","type":"numeric","minWidth":70},{"accessor":"df","name":"df","type":"numeric","minWidth":70},{"accessor":"pr_chisq","name":"pr_chisq","type":"numeric","style":[{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee', \n                        borderLeft: '2px solid #ffa62d' }} \n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"cd0f289d8f811fe04eebc61ec3b4eb2f","key":"cd0f289d8f811fe04eebc61ec3b4eb2f"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
 <div id="bootstrap-parameters-for-getting-confidence-intervals" class="section level2">
 <h2>Bootstrap parameters for getting confidence intervals</h2>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># #bootstrap_model_ci_df(model = models_q3_nlme$`abovebiomass~amax`,category = &quot;all&quot;, iter = 100)</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="co"># bootstrap_ci_results &lt;- map_dfr(models_q3_nlme,~ bootstrap_model_ci_df(model = .x,</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                               category = &quot;all&quot;,</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                               iter = 9999))</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(bootstrap_ci_results, file = &quot;./processed_data/bootstrap_ci_results.RData&quot;)</span></span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>bootstrap_ci_results <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./processed_data/bootstrap_ci_results.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># #bootstrap_model_ci_df(model = models_q3_nlme$`abovebiomass~amax`,category = &quot;all&quot;, iter = 100)</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co"># bootstrap_ci_results &lt;- map_dfr(models_q3_nlme,~ bootstrap_model_ci_df(model = .x,</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                               category = &quot;all&quot;,</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                                                               iter = 9999))</span></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(bootstrap_ci_results, file = &quot;./processed_data/bootstrap_ci_results.RData&quot;)</span></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>bootstrap_ci_results <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./processed_data/bootstrap_ci_results.RData&quot;</span>)</span></code></pre></div>
 </div>
 <div id="plot" class="section level2">
 <h2>Plot</h2>
