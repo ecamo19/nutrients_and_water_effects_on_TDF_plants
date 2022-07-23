@@ -153,38 +153,34 @@ data_nodules_cleaned <-
 ### m4 lmer gaussian      
 
 ```{r}
-lmer_gaussian <- lmer(number_of_root_nodulation ~ treatment + init_height + 
-                           (1 |spcode),
+lm_nodule_count <- lm(number_of_root_nodulation ~ treatment*spcode + init_height,
                        data = data_nodules_cleaned)
 ```
 
 
 ```{r}
-lmer_gaussian_log <-  lmer(log(number_of_root_nodulation) ~ treatment + init_height + 
-                           (1 |spcode),
-                       data = data_nodules_cleaned)
+lm_nodule_count_log <-  lm(log(number_of_root_nodulation) ~ treatment*spcode + init_height,
+                           data = data_nodules_cleaned)
 ```
 
 ### m5 glmer poisson
 
 ```{r}
-glmer_poisson <-  glmer(number_of_root_nodulation ~ treatment + init_height + 
-                           (1 |spcode), family = "poisson",
-                       data = data_nodules_cleaned)
+glm_poisson <-  glm(number_of_root_nodulation ~ treatment*spcode + 
+                    init_height, family = "poisson",data = data_nodules_cleaned)
 ```
 
 ```{r}
-models_nodule_count <- list(lmer_gaussian, lmer_gaussian_log, glmer_poisson)
-names(models_nodule_count) <- c("lmer_gaussian",
-                                     "lmer_gaussian_log",
-                                     "glmer_poisson")
+models_nodule_count <- list(glm_poisson, lm_nodule_count_log, lm_nodule_count)
+names(models_nodule_count) <- c("glm_poisson","lm_nodule_count_log",
+                                "lm_nodule_count")
 ```
 
 ## Mycorrhizal colonization
 
 ```{r, eval = FALSE}
 I decided not to include it, because I want to focus on Nfixing vrs non-Fixing, 
-also I don't trust on the data
+also I don't trust the data
 ```
 
 # Models: Question 3
@@ -292,7 +288,7 @@ map(models_q1_q2, bolker_validation)
 ## Models for nodule count
 
 ```{r,bolker_plots_nodule_count, fig.height = 8, fig.width = 15}
-map(models_nodule_count, bolker_validation)
+#map(models_nodule_count, bolker_validation)
 ```
 
 ## Models for question 3
