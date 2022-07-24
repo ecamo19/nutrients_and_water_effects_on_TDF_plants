@@ -8,7 +8,10 @@
    height="285"
    viewBox="0 0 729 285"
    sodipodi:docname="table_2_fvalues.svg"
-   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   inkscape:export-filename="table_2_fvalues.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -78,9 +81,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="0.925"
-     inkscape:cx="680"
-     inkscape:cy="227.56757"
+     inkscape:zoom="0.65407377"
+     inkscape:cx="347.05565"
+     inkscape:cy="188.81662"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="1920"
@@ -135,7 +138,7 @@
          id="text87"><tspan
            x="0"
            y="0"
-           id="tspan5677">Variable</tspan></text>
+           id="tspan658">Variable</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,216.02467)"
@@ -143,7 +146,7 @@
          id="text103"><tspan
            x="0"
            y="0"
-           id="tspan5679">Total Biomass </tspan></text>
+           id="tspan660">Total Biomass </tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,199.34884)"
@@ -151,7 +154,7 @@
          id="text119"><tspan
            x="0"
            y="0"
-           id="tspan5681">RGRh</tspan></text>
+           id="tspan662">RGRh</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,182.67301)"
@@ -159,7 +162,7 @@
          id="text135"><tspan
            x="0"
            y="0"
-           id="tspan5683">Aboveground Biomass</tspan></text>
+           id="tspan664">Aboveground Biomass</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,165.99718)"
@@ -167,7 +170,7 @@
          id="text151"><tspan
            x="0"
            y="0"
-           id="tspan5685">Belowground Biomass</tspan></text>
+           id="tspan666">Belowground Biomass</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,149.32135)"
@@ -175,7 +178,7 @@
          id="text167"><tspan
            x="0"
            y="0"
-           id="tspan5687">Amax</tspan></text>
+           id="tspan668">Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,132.64551)"
@@ -183,7 +186,7 @@
          id="text183"><tspan
            x="0"
            y="0"
-           id="tspan5689">gs</tspan></text>
+           id="tspan670">gs</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,115.96968)"
@@ -191,7 +194,7 @@
          id="text199"><tspan
            x="0"
            y="0"
-           id="tspan5691">log(iWUE)</tspan></text>
+           id="tspan672">log(iWUE)</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,99.293848)"
@@ -199,7 +202,7 @@
          id="text215"><tspan
            x="0"
            y="0"
-           id="tspan5693">Δ δ13C</tspan></text>
+           id="tspan674">Δ δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,82.618017)"
@@ -207,7 +210,7 @@
          id="text231"><tspan
            x="0"
            y="0"
-           id="tspan5695">log(PNUE)</tspan></text>
+           id="tspan676">log(PNUE)</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,51.71651,66.381023)"
@@ -215,7 +218,7 @@
          id="text247"><tspan
            x="0"
            y="0"
-           id="tspan5697">Nodule count </tspan></text>
+           id="tspan678">Nodule count </tspan></text>
       <g
          id="g3327"
          transform="translate(-233.06041,0.38604564)">
@@ -230,7 +233,7 @@
              y="-233.57819"><tspan
                x="456.76367"
                y="-233.57819"
-               id="tspan5699">Treatment </tspan></text>
+               id="tspan680">Treatment </tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,462.46857,216.02467)"
@@ -238,7 +241,7 @@
              id="text107"><tspan
                x="0"
                y="0"
-               id="tspan5701">17.29***</tspan></text>
+               id="tspan682">17.29***</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,465.97927,199.34884)"
@@ -246,7 +249,7 @@
              id="text123"><tspan
                x="0"
                y="0"
-               id="tspan5703">14.45**</tspan></text>
+               id="tspan684">14.45**</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,462.46857,182.67301)"
@@ -254,7 +257,7 @@
              id="text139"><tspan
                x="0"
                y="0"
-               id="tspan5705">25.33***</tspan></text>
+               id="tspan686">25.33***</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,469.48997,165.99718)"
@@ -262,7 +265,7 @@
              id="text155"><tspan
                x="0"
                y="0"
-               id="tspan5707">7.47ns</tspan></text>
+               id="tspan688">7.47ns</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,469.48997,149.32135)"
@@ -270,7 +273,7 @@
              id="text171"><tspan
                x="0"
                y="0"
-               id="tspan5709">0.77ns</tspan></text>
+               id="tspan690">0.77ns</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,462.46857,132.64551)"
@@ -278,7 +281,7 @@
              id="text187"><tspan
                x="0"
                y="0"
-               id="tspan5711">55.98***</tspan></text>
+               id="tspan692">55.98***</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,462.46857,115.96968)"
@@ -286,7 +289,7 @@
              id="text203"><tspan
                x="0"
                y="0"
-               id="tspan5713">80.62***</tspan></text>
+               id="tspan694">80.62***</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,469.48997,99.293848)"
@@ -294,7 +297,7 @@
              id="text219"><tspan
                x="0"
                y="0"
-               id="tspan5715">2.85ns</tspan></text>
+               id="tspan696">2.85ns</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,465.97927,82.618017)"
@@ -302,7 +305,7 @@
              id="text235"><tspan
                x="0"
                y="0"
-               id="tspan5717">10.87**</tspan></text>
+               id="tspan698">10.87**</tspan></text>
           <text
              xml:space="preserve"
              transform="matrix(0.43883767,0,0,-0.43883767,465.97927,66.381023)"
@@ -310,7 +313,7 @@
              id="text251"><tspan
                x="0"
                y="0"
-               id="tspan5719">13.53**</tspan></text>
+               id="tspan700">13.53**</tspan></text>
         </g>
       </g>
       <g
@@ -325,7 +328,7 @@
            y="-243.56853"><tspan
              x="517.41962"
              y="-243.56853"
-             id="tspan5721">N-Fixer</tspan></text>
+             id="tspan702">N-Fixer</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -335,7 +338,7 @@
            y="-201.77003"><tspan
              x="577.91534"
              y="-201.77003"
-             id="tspan5723">1.41ns</tspan></text>
+             id="tspan704">1.41ns</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -345,7 +348,7 @@
            y="-185.09421"><tspan
              x="580.1095"
              y="-185.09421"
-             id="tspan5725">3.91*</tspan></text>
+             id="tspan706">3.91*</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -355,7 +358,7 @@
            y="-168.41837"><tspan
              x="577.91534"
              y="-168.41837"
-             id="tspan5727">0.73ns</tspan></text>
+             id="tspan708">0.73ns</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -365,7 +368,7 @@
            y="-151.74254"><tspan
              x="577.91534"
              y="-151.74254"
-             id="tspan5729">1.16ns</tspan></text>
+             id="tspan710">1.16ns</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -375,7 +378,7 @@
            y="-135.06671"><tspan
              x="577.03766"
              y="-135.06671"
-             id="tspan5731">7.96**</tspan></text>
+             id="tspan712">7.96**</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -385,7 +388,7 @@
            y="-118.39086"><tspan
              x="577.03766"
              y="-118.39086"
-             id="tspan5733">6.40**</tspan></text>
+             id="tspan714">6.40**</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -395,7 +398,7 @@
            y="-101.71503"><tspan
              x="580.1095"
              y="-101.71503"
-             id="tspan5735">4.08*</tspan></text>
+             id="tspan716">4.08*</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -405,7 +408,7 @@
            y="-85.0392"><tspan
              x="577.91534"
              y="-85.0392"
-             id="tspan5737">1.17ns</tspan></text>
+             id="tspan718">1.17ns</tspan></text>
         <text
            xml:space="preserve"
            transform="matrix(1,0,0,-1,-56.10732,24.244977)"
@@ -415,7 +418,7 @@
            y="-68.363373"><tspan
              x="577.91534"
              y="-68.363373"
-             id="tspan5739">0.51ns</tspan></text>
+             id="tspan720">0.51ns</tspan></text>
         <text
            xml:space="preserve"
            transform="scale(1,-1)"
@@ -441,7 +444,7 @@
              id="text99"><tspan
                x="0"
                y="0"
-               id="tspan5741">Treatment x Group </tspan></text>
+               id="tspan722">Treatment x Group </tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -451,7 +454,7 @@
              y="-216.02467"><tspan
                x="594.99756"
                y="-216.02467"
-               id="tspan5743">14.7***</tspan></text>
+               id="tspan724">14.7***</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -461,7 +464,7 @@
              y="-199.34885"><tspan
                x="601.1413"
                y="-199.34885"
-               id="tspan5745">9.72*</tspan></text>
+               id="tspan726">9.72*</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -471,7 +474,7 @@
              y="-182.673"><tspan
                x="591.92566"
                y="-182.673"
-               id="tspan5747">16.20***</tspan></text>
+               id="tspan728">16.20***</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -481,7 +484,7 @@
              y="-165.99718"><tspan
                x="591.92566"
                y="-165.99718"
-               id="tspan5749">14.082**</tspan></text>
+               id="tspan730">14.082**</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -491,7 +494,7 @@
              y="-149.32135"><tspan
                x="591.92566"
                y="-149.32135"
-               id="tspan5751">22.15***</tspan></text>
+               id="tspan732">22.15***</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -501,7 +504,7 @@
              y="-132.64551"><tspan
                x="598.94708"
                y="-132.64551"
-               id="tspan5753">5.09ns</tspan></text>
+               id="tspan734">5.09ns</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -511,7 +514,7 @@
              y="-115.96968"><tspan
                x="594.99756"
                y="-115.96968"
-               id="tspan5755">14.01**</tspan></text>
+               id="tspan736">14.01**</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -521,7 +524,7 @@
              y="-99.293846"><tspan
                x="598.94708"
                y="-99.293846"
-               id="tspan5757">2.28ns</tspan></text>
+               id="tspan738">2.28ns</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"
@@ -531,7 +534,7 @@
              y="-82.618019"><tspan
                x="598.94708"
                y="-82.618019"
-               id="tspan5759">5.36ns</tspan></text>
+               id="tspan740">5.36ns</tspan></text>
           <text
              xml:space="preserve"
              transform="scale(1,-1)"

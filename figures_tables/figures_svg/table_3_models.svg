@@ -9,6 +9,9 @@
    viewBox="0 0 816 528"
    sodipodi:docname="table_3_models.svg"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   inkscape:export-filename="table_3_models.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -315,12 +318,12 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="6.5"
-     inkscape:cx="750.30769"
+     inkscape:cx="750.46154"
      inkscape:cy="416.53846"
      inkscape:window-width="1920"
-     inkscape:window-height="1043"
-     inkscape:window-x="0"
-     inkscape:window-y="562"
+     inkscape:window-height="1011"
+     inkscape:window-x="1920"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="g10">
     <inkscape:page
@@ -430,7 +433,7 @@
          y="-325.04727"><tspan
            x="51.10804"
            y="-325.04727"
-           id="tspan144757">(a) Aboveground Biomass (g)</tspan></text>
+           id="tspan1046">(a) Aboveground Biomass (g)</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -440,7 +443,7 @@
          y="-314.66278"><tspan
            x="51.10804"
            y="-314.66278"
-           id="tspan144759">Amax</tspan></text>
+           id="tspan1048">Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -450,7 +453,7 @@
          y="-304.27829"><tspan
            x="51.10804"
            y="-304.27829"
-           id="tspan144761">Δ δ13C</tspan></text>
+           id="tspan1050">Δ δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -460,7 +463,7 @@
          y="-293.8938"><tspan
            x="51.10804"
            y="-293.8938"
-           id="tspan144763">gs</tspan></text>
+           id="tspan1052">gs</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -470,7 +473,7 @@
          y="-283.50931"><tspan
            x="51.10804"
            y="-283.50931"
-           id="tspan144765">PNUD</tspan></text>
+           id="tspan1054">PNUD</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -480,7 +483,7 @@
          y="-273.12482"><tspan
            x="51.10804"
            y="-273.12482"
-           id="tspan144767">iWUE</tspan></text>
+           id="tspan1056">iWUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -490,7 +493,7 @@
          y="-262.74033"><tspan
            x="51.10804"
            y="-262.74033"
-           id="tspan144769">(b) Belowground Biomass (g)</tspan></text>
+           id="tspan1058">(b) Belowground Biomass (g)</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -500,7 +503,7 @@
          y="-252.35583"><tspan
            x="51.10804"
            y="-252.35583"
-           id="tspan144771">Amax</tspan></text>
+           id="tspan1060">Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -510,7 +513,7 @@
          y="-241.97134"><tspan
            x="51.10804"
            y="-241.97134"
-           id="tspan144773">Δ δ13C</tspan></text>
+           id="tspan1063">Δ δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -520,7 +523,7 @@
          y="-231.58687"><tspan
            x="51.10804"
            y="-231.58687"
-           id="tspan144775">gs</tspan></text>
+           id="tspan1065">gs</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -530,7 +533,7 @@
          y="-221.20238"><tspan
            x="51.10804"
            y="-221.20238"
-           id="tspan144777">PNUD</tspan></text>
+           id="tspan1067">PNUD</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -540,7 +543,7 @@
          y="-210.81789"><tspan
            x="51.10804"
            y="-210.81789"
-           id="tspan144779">iWUE</tspan></text>
+           id="tspan1069">iWUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -550,9 +553,9 @@
          y="-200.4334"><tspan
            x="51.10804"
            y="-200.4334"
-           id="tspan144783">(c) RGRh (log(cm) days<tspan
+           id="tspan1073">(c) RGRh (log(cm) days<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan144781">-1</tspan>)</tspan></text>
+   id="tspan1071">-1</tspan>)</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -562,7 +565,7 @@
          y="-199.10092"><tspan
            x="20.236259"
            y="-199.10092"
-           id="tspan144785">Amax</tspan></text>
+           id="tspan1075">Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -572,7 +575,7 @@
          y="-188.22183"><tspan
            x="20.236259"
            y="-188.22183"
-           id="tspan144787">Δ δ13C</tspan></text>
+           id="tspan1077">Δ δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -582,7 +585,7 @@
          y="-177.34273"><tspan
            x="20.236259"
            y="-177.34273"
-           id="tspan144789">gs</tspan></text>
+           id="tspan1079">gs</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -592,7 +595,7 @@
          y="-166.46362"><tspan
            x="20.236259"
            y="-166.46362"
-           id="tspan144791">PNUD</tspan></text>
+           id="tspan1081">PNUD</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -602,7 +605,7 @@
          y="-155.58452"><tspan
            x="20.236259"
            y="-155.58452"
-           id="tspan144793">iWUE</tspan></text>
+           id="tspan1083">iWUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0975285,0,0,-1,-34.892417,0)"
@@ -612,7 +615,7 @@
          y="-138.12646"><tspan
            x="51.10804"
            y="-138.12646"
-           id="tspan144795">(d) Total Biomass (g)</tspan></text>
+           id="tspan1085">(d) Total Biomass (g)</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -622,7 +625,7 @@
          y="-133.82634"><tspan
            x="20.236259"
            y="-133.82634"
-           id="tspan144797">Amax</tspan></text>
+           id="tspan1087">Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -632,7 +635,7 @@
          y="-122.94723"><tspan
            x="20.236259"
            y="-122.94723"
-           id="tspan144799">Δ δ13C</tspan></text>
+           id="tspan1089">Δ δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -642,7 +645,7 @@
          y="-112.06812"><tspan
            x="20.236259"
            y="-112.06812"
-           id="tspan144801">gs</tspan></text>
+           id="tspan1091">gs</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -652,7 +655,7 @@
          y="-101.18901"><tspan
            x="20.236259"
            y="-101.18901"
-           id="tspan144803">PNUD</tspan></text>
+           id="tspan1093">PNUD</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -662,7 +665,7 @@
          y="-90.557167"><tspan
            x="20.236259"
            y="-90.557167"
-           id="tspan144805">iWUE</tspan></text>
+           id="tspan1095">iWUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-114,0)"
@@ -672,7 +675,7 @@
          y="-351.90286"><tspan
            x="277.58069"
            y="-351.90286"
-           id="tspan144807">df</tspan></text>
+           id="tspan1097">df</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -682,7 +685,7 @@
          y="-329.65015"><tspan
            x="225.78851"
            y="-329.65015"
-           id="tspan144809">19</tspan></text>
+           id="tspan1099">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -692,7 +695,7 @@
          y="-318.77106"><tspan
            x="225.78851"
            y="-318.77106"
-           id="tspan144811">19</tspan></text>
+           id="tspan1101">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -702,7 +705,7 @@
          y="-307.89194"><tspan
            x="225.78851"
            y="-307.89194"
-           id="tspan144813">19</tspan></text>
+           id="tspan1103">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -712,7 +715,7 @@
          y="-297.01285"><tspan
            x="225.78851"
            y="-297.01285"
-           id="tspan144815">19</tspan></text>
+           id="tspan1105">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -722,7 +725,7 @@
          y="-286.13373"><tspan
            x="225.78851"
            y="-286.13373"
-           id="tspan144817">19</tspan></text>
+           id="tspan1107">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -732,7 +735,7 @@
          y="-264.37552"><tspan
            x="225.78851"
            y="-264.37552"
-           id="tspan144819">19</tspan></text>
+           id="tspan1109">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -742,7 +745,7 @@
          y="-253.49643"><tspan
            x="225.78851"
            y="-253.49643"
-           id="tspan144821">19</tspan></text>
+           id="tspan1111">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -752,7 +755,7 @@
          y="-242.61734"><tspan
            x="225.78851"
            y="-242.61734"
-           id="tspan144823">19</tspan></text>
+           id="tspan1113">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -762,7 +765,7 @@
          y="-231.73824"><tspan
            x="225.78851"
            y="-231.73824"
-           id="tspan144825">19</tspan></text>
+           id="tspan1115">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -772,7 +775,7 @@
          y="-220.85913"><tspan
            x="225.78851"
            y="-220.85913"
-           id="tspan144827">19</tspan></text>
+           id="tspan1117">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -782,7 +785,7 @@
          y="-199.10092"><tspan
            x="225.78851"
            y="-199.10092"
-           id="tspan144829">19</tspan></text>
+           id="tspan1119">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -792,7 +795,7 @@
          y="-188.22183"><tspan
            x="225.78851"
            y="-188.22183"
-           id="tspan144831">19</tspan></text>
+           id="tspan1121">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -802,7 +805,7 @@
          y="-177.34273"><tspan
            x="225.78851"
            y="-177.34273"
-           id="tspan144833">19</tspan></text>
+           id="tspan1123">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -812,7 +815,7 @@
          y="-166.46362"><tspan
            x="225.78851"
            y="-166.46362"
-           id="tspan144835">19</tspan></text>
+           id="tspan1125">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -822,7 +825,7 @@
          y="-155.58452"><tspan
            x="225.78851"
            y="-155.58452"
-           id="tspan144837">19</tspan></text>
+           id="tspan1127">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -832,7 +835,7 @@
          y="-133.82634"><tspan
            x="225.78851"
            y="-133.82634"
-           id="tspan144839">19</tspan></text>
+           id="tspan1129">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -842,7 +845,7 @@
          y="-122.94723"><tspan
            x="225.78851"
            y="-122.94723"
-           id="tspan144841">19</tspan></text>
+           id="tspan1131">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -852,7 +855,7 @@
          y="-112.06812"><tspan
            x="225.78851"
            y="-112.06812"
-           id="tspan144843">19</tspan></text>
+           id="tspan1133">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -862,7 +865,7 @@
          y="-101.18901"><tspan
            x="225.78851"
            y="-101.18901"
-           id="tspan144845">19</tspan></text>
+           id="tspan1135">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-60,0)"
@@ -872,7 +875,7 @@
          y="-90.557167"><tspan
            x="225.78851"
            y="-90.557167"
-           id="tspan144847">19</tspan></text>
+           id="tspan1137">19</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-63,0)"
@@ -882,7 +885,7 @@
          y="-351.90286"><tspan
            x="246.20111"
            y="-351.90286"
-           id="tspan144849">logLik</tspan></text>
+           id="tspan1139">logLik</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -892,7 +895,7 @@
          y="-329.65015"><tspan
            x="254.12555"
            y="-329.65015"
-           id="tspan144851">-158</tspan></text>
+           id="tspan1141">-158</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -902,7 +905,7 @@
          y="-318.77106"><tspan
            x="254.12558"
            y="-318.77106"
-           id="tspan144853">-172</tspan></text>
+           id="tspan1143">-172</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -912,7 +915,7 @@
          y="-307.89194"><tspan
            x="254.12558"
            y="-307.89194"
-           id="tspan144855">-170</tspan></text>
+           id="tspan1145">-170</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -922,7 +925,7 @@
          y="-297.01285"><tspan
            x="254.12558"
            y="-297.01285"
-           id="tspan144857">-165</tspan></text>
+           id="tspan1147">-165</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -932,7 +935,7 @@
          y="-286.13373"><tspan
            x="254.12558"
            y="-286.13373"
-           id="tspan144859">-169</tspan></text>
+           id="tspan1149">-169</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -942,7 +945,7 @@
          y="-264.37552"><tspan
            x="254.12558"
            y="-264.37552"
-           id="tspan144861">-204</tspan></text>
+           id="tspan1151">-204</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -952,7 +955,7 @@
          y="-253.49643"><tspan
            x="254.12558"
            y="-253.49643"
-           id="tspan144863">-203</tspan></text>
+           id="tspan1153">-203</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -962,7 +965,7 @@
          y="-242.61734"><tspan
            x="254.12558"
            y="-242.61734"
-           id="tspan144865">-208</tspan></text>
+           id="tspan1155">-208</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -972,7 +975,7 @@
          y="-231.73824"><tspan
            x="254.12558"
            y="-231.73824"
-           id="tspan144867">-205</tspan></text>
+           id="tspan1157">-205</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -982,7 +985,7 @@
          y="-220.85913"><tspan
            x="254.12558"
            y="-220.85913"
-           id="tspan144869">-202</tspan></text>
+           id="tspan1159">-202</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -992,7 +995,7 @@
          y="-199.10092"><tspan
            x="256.90833"
            y="-199.10092"
-           id="tspan144871">520</tspan></text>
+           id="tspan1161">520</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1002,7 +1005,7 @@
          y="-188.22183"><tspan
            x="256.90833"
            y="-188.22183"
-           id="tspan144873">512</tspan></text>
+           id="tspan1163">512</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1012,7 +1015,7 @@
          y="-177.34273"><tspan
            x="256.90833"
            y="-177.34273"
-           id="tspan144875">513</tspan></text>
+           id="tspan1165">513</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1022,7 +1025,7 @@
          y="-166.46362"><tspan
            x="256.90833"
            y="-166.46362"
-           id="tspan144877">513</tspan></text>
+           id="tspan1167">513</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1032,7 +1035,7 @@
          y="-155.58452"><tspan
            x="256.90833"
            y="-155.58452"
-           id="tspan144879">521</tspan></text>
+           id="tspan1169">521</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1042,7 +1045,7 @@
          y="-133.82634"><tspan
            x="254.12558"
            y="-133.82634"
-           id="tspan144881">-249</tspan></text>
+           id="tspan1171">-249</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1052,7 +1055,7 @@
          y="-122.94723"><tspan
            x="254.12558"
            y="-122.94723"
-           id="tspan144883">-256</tspan></text>
+           id="tspan1173">-256</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1062,7 +1065,7 @@
          y="-112.06812"><tspan
            x="254.12558"
            y="-112.06812"
-           id="tspan144885">-261</tspan></text>
+           id="tspan1175">-261</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1072,7 +1075,7 @@
          y="-101.18901"><tspan
            x="254.12558"
            y="-101.18901"
-           id="tspan144887">-254</tspan></text>
+           id="tspan1177">-254</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-64.5,0)"
@@ -1082,7 +1085,7 @@
          y="-90.557167"><tspan
            x="254.12558"
            y="-90.557167"
-           id="tspan144889">-255</tspan></text>
+           id="tspan1179">-255</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-69,0)"
@@ -1092,7 +1095,7 @@
          y="-351.90286"><tspan
            x="285.23901"
            y="-351.90286"
-           id="tspan144891">AICc</tspan></text>
+           id="tspan1181">AICc</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1102,7 +1105,7 @@
          y="-329.65015"><tspan
            x="291.74289"
            y="-329.65015"
-           id="tspan144893">362</tspan></text>
+           id="tspan1183">362</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1112,7 +1115,7 @@
          y="-318.77106"><tspan
            x="291.74289"
            y="-318.77106"
-           id="tspan144895">389</tspan></text>
+           id="tspan1185">389</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1122,7 +1125,7 @@
          y="-307.89194"><tspan
            x="291.74289"
            y="-307.89194"
-           id="tspan144897">387</tspan></text>
+           id="tspan1187">387</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1132,7 +1135,7 @@
          y="-297.01285"><tspan
            x="291.74289"
            y="-297.01285"
-           id="tspan144899">375</tspan></text>
+           id="tspan1189">375</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1142,7 +1145,7 @@
          y="-286.13373"><tspan
            x="291.74289"
            y="-286.13373"
-           id="tspan144901">383</tspan></text>
+           id="tspan1191">383</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1152,7 +1155,7 @@
          y="-264.37552"><tspan
            x="291.74289"
            y="-264.37552"
-           id="tspan144903">454</tspan></text>
+           id="tspan1193">454</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1162,7 +1165,7 @@
          y="-253.49643"><tspan
            x="291.74289"
            y="-253.49643"
-           id="tspan144905">453</tspan></text>
+           id="tspan1195">453</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1172,7 +1175,7 @@
          y="-242.61734"><tspan
            x="291.74289"
            y="-242.61734"
-           id="tspan144907">463</tspan></text>
+           id="tspan1197">463</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1182,7 +1185,7 @@
          y="-231.73824"><tspan
            x="291.74289"
            y="-231.73824"
-           id="tspan144909">455</tspan></text>
+           id="tspan1199">455</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1192,7 +1195,7 @@
          y="-220.85913"><tspan
            x="291.74289"
            y="-220.85913"
-           id="tspan144911">450</tspan></text>
+           id="tspan1201">450</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1202,7 +1205,7 @@
          y="-199.10092"><tspan
            x="288.96017"
            y="-199.10092"
-           id="tspan144913">-995</tspan></text>
+           id="tspan1203">-995</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1212,7 +1215,7 @@
          y="-188.22183"><tspan
            x="288.96017"
            y="-188.22183"
-           id="tspan144915">-978</tspan></text>
+           id="tspan1205">-978</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1222,7 +1225,7 @@
          y="-177.34273"><tspan
            x="288.96017"
            y="-177.34273"
-           id="tspan144917">-981</tspan></text>
+           id="tspan1207">-981</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1232,7 +1235,7 @@
          y="-166.46362"><tspan
            x="288.96017"
            y="-166.46362"
-           id="tspan144919">-981</tspan></text>
+           id="tspan1209">-981</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1242,7 +1245,7 @@
          y="-155.58452"><tspan
            x="288.96017"
            y="-155.58452"
-           id="tspan144921">-996</tspan></text>
+           id="tspan1211">-996</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1252,7 +1255,7 @@
          y="-133.82634"><tspan
            x="291.74289"
            y="-133.82634"
-           id="tspan144923">544</tspan></text>
+           id="tspan1213">544</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1262,7 +1265,7 @@
          y="-122.94723"><tspan
            x="291.74289"
            y="-122.94723"
-           id="tspan144925">558</tspan></text>
+           id="tspan1215">558</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1272,7 +1275,7 @@
          y="-112.06812"><tspan
            x="291.74289"
            y="-112.06812"
-           id="tspan144927">568</tspan></text>
+           id="tspan1217">568</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1282,7 +1285,7 @@
          y="-101.18901"><tspan
            x="291.74289"
            y="-101.18901"
-           id="tspan144929">553</tspan></text>
+           id="tspan1219">553</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-73.5,0)"
@@ -1292,7 +1295,7 @@
          y="-90.557167"><tspan
            x="291.74289"
            y="-90.557167"
-           id="tspan144931">556</tspan></text>
+           id="tspan1221">556</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-94.5,0)"
@@ -1302,7 +1305,7 @@
          y="-351.90286"><tspan
            x="335.68497"
            y="-351.90286"
-           id="tspan144933">delta</tspan></text>
+           id="tspan1223">delta</tspan></text>
       <text
          xml:space="preserve"
          transform="scale(1.0476299,-0.95453556)"
@@ -1548,7 +1551,7 @@
          y="-329.65015"><tspan
            x="360.42169"
            y="-329.65015"
-           id="tspan144935">0.99819412</tspan></text>
+           id="tspan1225">0.99819412</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1558,7 +1561,7 @@
          y="-318.77106"><tspan
            x="360.42169"
            y="-318.77106"
-           id="tspan144937">0.00000137</tspan></text>
+           id="tspan1227">0.00000137</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1568,7 +1571,7 @@
          y="-297.01285"><tspan
            x="360.42169"
            y="-297.01285"
-           id="tspan144939">0.00177201</tspan></text>
+           id="tspan1229">0.00177201</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1578,7 +1581,7 @@
          y="-351.90286"><tspan
            x="368.46606"
            y="-351.90286"
-           id="tspan144941">weight</tspan></text>
+           id="tspan1231">weight</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1588,7 +1591,7 @@
          y="-307.89194"><tspan
            x="364.59988"
            y="-307.89194"
-           id="tspan144943">0.0000045</tspan></text>
+           id="tspan1233">0.0000045</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1598,7 +1601,7 @@
          y="-286.13373"><tspan
            x="368.77805"
            y="-286.13373"
-           id="tspan144945">0.000028</tspan></text>
+           id="tspan1235">0.000028</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1608,7 +1611,7 @@
          y="-264.37552"><tspan
            x="377.1344"
            y="-264.37552"
-           id="tspan144947">0.0867</tspan></text>
+           id="tspan1237">0.0867</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1618,7 +1621,7 @@
          y="-253.49643"><tspan
            x="372.95627"
            y="-253.49643"
-           id="tspan144949">0.17006</tspan></text>
+           id="tspan1239">0.17006</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1628,7 +1631,7 @@
          y="-242.61734"><tspan
            x="372.95627"
            y="-242.61734"
-           id="tspan144951">0.00122</tspan></text>
+           id="tspan1241">0.00122</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1638,7 +1641,7 @@
          y="-231.73824"><tspan
            x="372.95627"
            y="-231.73824"
-           id="tspan144953">0.04989</tspan></text>
+           id="tspan1243">0.04989</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1648,7 +1651,7 @@
          y="-220.85913"><tspan
            x="372.95627"
            y="-220.85913"
-           id="tspan144955">0.69212</tspan></text>
+           id="tspan1245">0.69212</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1658,7 +1661,7 @@
          y="-199.10092"><tspan
            x="364.59988"
            y="-199.10092"
-           id="tspan144957">0.3839463</tspan></text>
+           id="tspan1247">0.3839463</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1668,7 +1671,7 @@
          y="-188.22183"><tspan
            x="364.59988"
            y="-188.22183"
-           id="tspan144959">0.0000652</tspan></text>
+           id="tspan1249">0.0000652</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1678,7 +1681,7 @@
          y="-177.34273"><tspan
            x="364.59988"
            y="-177.34273"
-           id="tspan144961">0.0002755</tspan></text>
+           id="tspan1251">0.0002755</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1688,7 +1691,7 @@
          y="-166.46362"><tspan
            x="364.59988"
            y="-166.46362"
-           id="tspan144963">0.0002755</tspan></text>
+           id="tspan1253">0.0002755</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1698,7 +1701,7 @@
          y="-155.58452"><tspan
            x="364.59988"
            y="-155.58452"
-           id="tspan144965">0.6156408</tspan></text>
+           id="tspan1255">0.6156408</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1708,7 +1711,7 @@
          y="-133.82634"><tspan
            x="360.42169"
            y="-133.82634"
-           id="tspan144967">0.98929535</tspan></text>
+           id="tspan1257">0.98929535</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1718,7 +1721,7 @@
          y="-122.94723"><tspan
            x="360.42169"
            y="-122.94723"
-           id="tspan144969">0.00087158</tspan></text>
+           id="tspan1259">0.00087158</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1728,7 +1731,7 @@
          y="-112.06812"><tspan
            x="360.42169"
            y="-112.06812"
-           id="tspan144971">0.00000614</tspan></text>
+           id="tspan1261">0.00000614</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1738,7 +1741,7 @@
          y="-101.18901"><tspan
            x="360.42169"
            y="-101.18901"
-           id="tspan144973">0.00758738</tspan></text>
+           id="tspan1263">0.00758738</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-93,0)"
@@ -1748,7 +1751,7 @@
          y="-90.557167"><tspan
            x="360.42169"
            y="-90.557167"
-           id="tspan144975">0.00223956</tspan></text>
+           id="tspan1265">0.00223956</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-73.5,0)"
@@ -1758,9 +1761,9 @@
          y="-351.90286"><tspan
            x="398.98157"
            y="-351.90286"
-           id="tspan144979">R<tspan
+           id="tspan1269">R<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan144977">2</tspan>m</tspan></text>
+   id="tspan1267">2</tspan>m</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1770,7 +1773,7 @@
          y="-329.65015"><tspan
            x="398.98157"
            y="-329.65015"
-           id="tspan144981">0.125</tspan></text>
+           id="tspan1271">0.125</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1780,7 +1783,7 @@
          y="-318.77106"><tspan
            x="398.98157"
            y="-318.77106"
-           id="tspan144983">0.264</tspan></text>
+           id="tspan1273">0.264</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1790,7 +1793,7 @@
          y="-307.89194"><tspan
            x="398.98157"
            y="-307.89194"
-           id="tspan144985">0.175</tspan></text>
+           id="tspan1275">0.175</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1800,7 +1803,7 @@
          y="-297.01285"><tspan
            x="398.98157"
            y="-297.01285"
-           id="tspan144987">0.138</tspan></text>
+           id="tspan1277">0.138</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1810,7 +1813,7 @@
          y="-286.13373"><tspan
            x="398.98157"
            y="-286.13373"
-           id="tspan144989">0.144</tspan></text>
+           id="tspan1279">0.144</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1820,7 +1823,7 @@
          y="-264.37552"><tspan
            x="398.98157"
            y="-264.37552"
-           id="tspan144991">0.073</tspan></text>
+           id="tspan1281">0.073</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1830,7 +1833,7 @@
          y="-253.49643"><tspan
            x="398.98157"
            y="-253.49643"
-           id="tspan144993">0.256</tspan></text>
+           id="tspan1283">0.256</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1840,7 +1843,7 @@
          y="-242.61734"><tspan
            x="398.98157"
            y="-242.61734"
-           id="tspan144995">0.094</tspan></text>
+           id="tspan1285">0.094</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1850,7 +1853,7 @@
          y="-231.73824"><tspan
            x="398.98157"
            y="-231.73824"
-           id="tspan144997">0.116</tspan></text>
+           id="tspan1287">0.116</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1860,7 +1863,7 @@
          y="-220.85913"><tspan
            x="398.98157"
            y="-220.85913"
-           id="tspan144999">0.249</tspan></text>
+           id="tspan1289">0.249</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1870,7 +1873,7 @@
          y="-199.10092"><tspan
            x="398.98157"
            y="-199.10092"
-           id="tspan145001">0.171</tspan></text>
+           id="tspan1291">0.171</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1880,7 +1883,7 @@
          y="-188.22183"><tspan
            x="398.98157"
            y="-188.22183"
-           id="tspan145003">0.123</tspan></text>
+           id="tspan1293">0.123</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1890,7 +1893,7 @@
          y="-177.34273"><tspan
            x="398.98157"
            y="-177.34273"
-           id="tspan145005">0.167</tspan></text>
+           id="tspan1295">0.167</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1900,7 +1903,7 @@
          y="-166.46362"><tspan
            x="398.98157"
            y="-166.46362"
-           id="tspan145007">0.219</tspan></text>
+           id="tspan1297">0.219</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1910,7 +1913,7 @@
          y="-155.58452"><tspan
            x="398.98157"
            y="-155.58452"
-           id="tspan145009">0.166</tspan></text>
+           id="tspan1299">0.166</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1920,7 +1923,7 @@
          y="-133.82634"><tspan
            x="398.98157"
            y="-133.82634"
-           id="tspan145011">0.104</tspan></text>
+           id="tspan1301">0.104</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1930,7 +1933,7 @@
          y="-122.94723"><tspan
            x="398.98157"
            y="-122.94723"
-           id="tspan145013">0.288</tspan></text>
+           id="tspan1303">0.288</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1940,7 +1943,7 @@
          y="-112.06812"><tspan
            x="398.98157"
            y="-112.06812"
-           id="tspan145015">0.145</tspan></text>
+           id="tspan1305">0.145</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1950,7 +1953,7 @@
          y="-101.18901"><tspan
            x="398.98157"
            y="-101.18901"
-           id="tspan145017">0.142</tspan></text>
+           id="tspan1307">0.142</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453553,-75,0)"
@@ -1960,7 +1963,7 @@
          y="-90.557167"><tspan
            x="398.98157"
            y="-90.557167"
-           id="tspan145019">0.191</tspan></text>
+           id="tspan1309">0.191</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-34.5,0)"
@@ -1970,9 +1973,9 @@
          y="-351.90286"><tspan
            x="391.60916"
            y="-351.90286"
-           id="tspan145023">R<tspan
+           id="tspan1313">R<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan145021">2</tspan>c</tspan></text>
+   id="tspan1311">2</tspan>c</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -1982,7 +1985,7 @@
          y="-329.65015"><tspan
            x="393.66867"
            y="-329.65015"
-           id="tspan145025">0.640</tspan></text>
+           id="tspan1315">0.640</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -1992,7 +1995,7 @@
          y="-318.77106"><tspan
            x="393.66867"
            y="-318.77106"
-           id="tspan145027">0.600</tspan></text>
+           id="tspan1317">0.600</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2002,7 +2005,7 @@
          y="-307.89194"><tspan
            x="393.66867"
            y="-307.89194"
-           id="tspan145029">0.539</tspan></text>
+           id="tspan1319">0.539</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2012,7 +2015,7 @@
          y="-297.01285"><tspan
            x="393.66867"
            y="-297.01285"
-           id="tspan145031">0.682</tspan></text>
+           id="tspan1321">0.682</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2022,7 +2025,7 @@
          y="-286.13373"><tspan
            x="393.66867"
            y="-286.13373"
-           id="tspan145033">0.625</tspan></text>
+           id="tspan1323">0.625</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2032,7 +2035,7 @@
          y="-264.37552"><tspan
            x="393.66867"
            y="-264.37552"
-           id="tspan145035">0.708</tspan></text>
+           id="tspan1325">0.708</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2042,7 +2045,7 @@
          y="-253.49643"><tspan
            x="393.66867"
            y="-253.49643"
-           id="tspan145037">0.532</tspan></text>
+           id="tspan1327">0.532</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2052,7 +2055,7 @@
          y="-242.61734"><tspan
            x="393.66867"
            y="-242.61734"
-           id="tspan145039">0.674</tspan></text>
+           id="tspan1329">0.674</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2062,7 +2065,7 @@
          y="-231.73824"><tspan
            x="393.66867"
            y="-231.73824"
-           id="tspan145041">0.641</tspan></text>
+           id="tspan1331">0.641</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2072,7 +2075,7 @@
          y="-220.85913"><tspan
            x="393.66867"
            y="-220.85913"
-           id="tspan145043">0.768</tspan></text>
+           id="tspan1333">0.768</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2082,7 +2085,7 @@
          y="-199.10092"><tspan
            x="395.10046"
            y="-199.10092"
-           id="tspan145045">0.803</tspan></text>
+           id="tspan1335">0.803</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2092,7 +2095,7 @@
          y="-188.22183"><tspan
            x="395.10046"
            y="-188.22183"
-           id="tspan145047">0.817</tspan></text>
+           id="tspan1337">0.817</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2102,7 +2105,7 @@
          y="-177.34273"><tspan
            x="395.10046"
            y="-177.34273"
-           id="tspan145049">0.813</tspan></text>
+           id="tspan1339">0.813</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2112,7 +2115,7 @@
          y="-166.46362"><tspan
            x="395.10046"
            y="-166.46362"
-           id="tspan145051">0.860</tspan></text>
+           id="tspan1341">0.860</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2122,7 +2125,7 @@
          y="-155.58452"><tspan
            x="395.10046"
            y="-155.58452"
-           id="tspan145053">0.842</tspan></text>
+           id="tspan1343">0.842</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2132,7 +2135,7 @@
          y="-133.82634"><tspan
            x="395.10046"
            y="-133.82634"
-           id="tspan145055">0.729</tspan></text>
+           id="tspan1345">0.729</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2142,7 +2145,7 @@
          y="-122.94723"><tspan
            x="395.10046"
            y="-122.94723"
-           id="tspan145057">0.599</tspan></text>
+           id="tspan1347">0.599</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2152,7 +2155,7 @@
          y="-112.06812"><tspan
            x="395.10046"
            y="-112.06812"
-           id="tspan145059">0.558</tspan></text>
+           id="tspan1349">0.558</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2162,7 +2165,7 @@
          y="-101.18901"><tspan
            x="395.10046"
            y="-101.18901"
-           id="tspan145061">0.654</tspan></text>
+           id="tspan1351">0.654</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453556,-39,0)"
@@ -2172,7 +2175,7 @@
          y="-90.557167"><tspan
            x="395.10046"
            y="-90.557167"
-           id="tspan145063">0.718</tspan></text>
+           id="tspan1353">0.718</tspan></text>
       <path
          d="M 422.23546,332.99834 V 84.006652"
          style="fill:none;stroke:#000000;stroke-width:0.225068;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -2188,7 +2191,7 @@
          y="-352.15012"><tspan
            x="482.72165"
            y="-352.15012"
-           id="tspan145065">initial height </tspan></text>
+           id="tspan1355">initial height </tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2198,7 +2201,7 @@
          y="-329.8974"><tspan
            x="490.63373"
            y="-329.8974"
-           id="tspan145067">14.98***</tspan></text>
+           id="tspan1357">14.98***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2208,7 +2211,7 @@
          y="-319.01831"><tspan
            x="490.63373"
            y="-319.01831"
-           id="tspan145069">26.88***</tspan></text>
+           id="tspan1359">26.88***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2218,7 +2221,7 @@
          y="-308.13919"><tspan
            x="490.63373"
            y="-308.13919"
-           id="tspan145071">18.54***</tspan></text>
+           id="tspan1361">18.54***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2228,7 +2231,7 @@
          y="-297.2601"><tspan
            x="494.83701"
            y="-297.2601"
-           id="tspan145073">9.95**</tspan></text>
+           id="tspan1363">9.95**</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2238,7 +2241,7 @@
          y="-286.38098"><tspan
            x="490.63373"
            y="-286.38098"
-           id="tspan145075">12.53***</tspan></text>
+           id="tspan1365">12.53***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2248,7 +2251,7 @@
          y="-264.62277"><tspan
            x="495.33151"
            y="-264.62277"
-           id="tspan145077">0.72ns</tspan></text>
+           id="tspan1367">0.72ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2258,7 +2261,7 @@
          y="-253.74368"><tspan
            x="495.33151"
            y="-253.74368"
-           id="tspan145079">3.59ns</tspan></text>
+           id="tspan1369">3.59ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2268,7 +2271,7 @@
          y="-242.86459"><tspan
            x="495.33151"
            y="-242.86459"
-           id="tspan145081">2.14ns</tspan></text>
+           id="tspan1371">2.14ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2278,7 +2281,7 @@
          y="-231.98549"><tspan
            x="495.33151"
            y="-231.98549"
-           id="tspan145083">0.03ns</tspan></text>
+           id="tspan1373">0.03ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2288,7 +2291,7 @@
          y="-221.10638"><tspan
            x="495.33151"
            y="-221.10638"
-           id="tspan145085">1.28ns</tspan></text>
+           id="tspan1375">1.28ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2298,7 +2301,7 @@
          y="-199.34818"><tspan
            x="490.63373"
            y="-199.34818"
-           id="tspan145087">33.46***</tspan></text>
+           id="tspan1377">33.46***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2308,7 +2311,7 @@
          y="-188.46909"><tspan
            x="490.63373"
            y="-188.46909"
-           id="tspan145089">18.72***</tspan></text>
+           id="tspan1379">18.72***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2318,7 +2321,7 @@
          y="-177.58998"><tspan
            x="490.63373"
            y="-177.58998"
-           id="tspan145091">38.07***</tspan></text>
+           id="tspan1381">38.07***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2328,7 +2331,7 @@
          y="-166.71088"><tspan
            x="490.63373"
            y="-166.71088"
-           id="tspan145093">46.08***</tspan></text>
+           id="tspan1383">46.08***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2338,7 +2341,7 @@
          y="-155.83177"><tspan
            x="490.63373"
            y="-155.83177"
-           id="tspan145095">40.60***</tspan></text>
+           id="tspan1385">40.60***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2348,7 +2351,7 @@
          y="-134.07359"><tspan
            x="495.33151"
            y="-134.07359"
-           id="tspan145097">3.26ns</tspan></text>
+           id="tspan1387">3.26ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2358,7 +2361,7 @@
          y="-123.19447"><tspan
            x="490.63373"
            y="-123.19447"
-           id="tspan145099">14.63***</tspan></text>
+           id="tspan1389">14.63***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2368,7 +2371,7 @@
          y="-112.31537"><tspan
            x="494.83701"
            y="-112.31537"
-           id="tspan145101">8.23**</tspan></text>
+           id="tspan1391">8.23**</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2378,7 +2381,7 @@
          y="-101.43626"><tspan
            x="495.33151"
            y="-101.43626"
-           id="tspan145103">2.35ns</tspan></text>
+           id="tspan1393">2.35ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-105,0)"
@@ -2388,7 +2391,7 @@
          y="-90.804413"><tspan
            x="496.81503"
            y="-90.804413"
-           id="tspan145105">5.22*</tspan></text>
+           id="tspan1395">5.22*</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2398,7 +2401,7 @@
          y="-352.15012"><tspan
            x="531.18311"
            y="-352.15012"
-           id="tspan145107">Treatment x Nfixer x Trait</tspan></text>
+           id="tspan1397">Treatment x Nfixer x Trait</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2408,7 +2411,7 @@
          y="-329.8974"><tspan
            x="563.82043"
            y="-329.8974"
-           id="tspan145109">86.99***</tspan></text>
+           id="tspan1399">86.99***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2418,7 +2421,7 @@
          y="-319.01831"><tspan
            x="563.82043"
            y="-319.01831"
-           id="tspan145111">32.64***</tspan></text>
+           id="tspan1401">32.64***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2428,7 +2431,7 @@
          y="-308.13919"><tspan
            x="563.82043"
            y="-308.13919"
-           id="tspan145113">34.15***</tspan></text>
+           id="tspan1403">34.15***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2438,7 +2441,7 @@
          y="-297.2601"><tspan
            x="563.82043"
            y="-297.2601"
-           id="tspan145115">79.62***</tspan></text>
+           id="tspan1405">79.62***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2448,7 +2451,7 @@
          y="-286.38098"><tspan
            x="563.82043"
            y="-286.38098"
-           id="tspan145117">39.91***</tspan></text>
+           id="tspan1407">39.91***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2458,7 +2461,7 @@
          y="-264.62277"><tspan
            x="563.82043"
            y="-264.62277"
-           id="tspan145119">32.50***</tspan></text>
+           id="tspan1409">32.50***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2468,7 +2471,7 @@
          y="-253.74368"><tspan
            x="563.82043"
            y="-253.74368"
-           id="tspan145121">30.01***</tspan></text>
+           id="tspan1411">30.01***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2478,7 +2481,7 @@
          y="-242.86459"><tspan
            x="565.79846"
            y="-242.86459"
-           id="tspan145123">17.91**</tspan></text>
+           id="tspan1413">17.91**</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2488,7 +2491,7 @@
          y="-231.98549"><tspan
            x="563.82043"
            y="-231.98549"
-           id="tspan145125">31.43***</tspan></text>
+           id="tspan1415">31.43***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2498,7 +2501,7 @@
          y="-221.10638"><tspan
            x="563.82043"
            y="-221.10638"
-           id="tspan145127">35.25***</tspan></text>
+           id="tspan1417">35.25***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2508,7 +2511,7 @@
          y="-199.34818"><tspan
            x="563.82043"
            y="-199.34818"
-           id="tspan145129">36.94***</tspan></text>
+           id="tspan1419">36.94***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2518,7 +2521,7 @@
          y="-188.46909"><tspan
            x="568.02374"
            y="-188.46909"
-           id="tspan145131">17.56*</tspan></text>
+           id="tspan1421">17.56*</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2528,7 +2531,7 @@
          y="-177.58998"><tspan
            x="568.02374"
            y="-177.58998"
-           id="tspan145133">16.61*</tspan></text>
+           id="tspan1423">16.61*</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2538,7 +2541,7 @@
          y="-166.71088"><tspan
            x="566.29297"
            y="-166.71088"
-           id="tspan145135">14.31ns</tspan></text>
+           id="tspan1425">14.31ns</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2548,7 +2551,7 @@
          y="-155.83177"><tspan
            x="563.82043"
            y="-155.83177"
-           id="tspan145137">36.29***</tspan></text>
+           id="tspan1427">36.29***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2558,7 +2561,7 @@
          y="-134.07359"><tspan
            x="563.82043"
            y="-134.07359"
-           id="tspan145139">91.31***</tspan></text>
+           id="tspan1429">91.31***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2568,7 +2571,7 @@
          y="-123.19447"><tspan
            x="563.82043"
            y="-123.19447"
-           id="tspan145141">39.10***</tspan></text>
+           id="tspan1431">39.10***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2578,7 +2581,7 @@
          y="-112.31537"><tspan
            x="565.79846"
            y="-112.31537"
-           id="tspan145143">20.83**</tspan></text>
+           id="tspan1433">20.83**</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2588,7 +2591,7 @@
          y="-101.43626"><tspan
            x="563.82043"
            y="-101.43626"
-           id="tspan145145">65.66***</tspan></text>
+           id="tspan1435">65.66***</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1.0476299,0,0,-0.95453555,-87,0)"
@@ -2598,7 +2601,7 @@
          y="-90.804413"><tspan
            x="565.79846"
            y="-90.804413"
-           id="tspan145147">37.08**</tspan></text>
+           id="tspan1437">37.08**</tspan></text>
     </g>
   </g>
 </svg>

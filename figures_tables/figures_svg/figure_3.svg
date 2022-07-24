@@ -7,8 +7,11 @@
    width="3700"
    height="2100"
    viewBox="0 0 3700 2100"
-   sodipodi:docname="figure_2_final.svg"
-   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   sodipodi:docname="figure_3.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   inkscape:export-filename="figure_3.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -148,9 +151,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="0.5"
-     inkscape:cx="2514"
-     inkscape:cy="1341"
+     inkscape:zoom="0.1767767"
+     inkscape:cx="2279.7123"
+     inkscape:cy="975.80736"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="1920"
@@ -507,7 +510,7 @@
        y="-10.98"><tspan
          x="1138.95"
          y="-10.98"
-         id="tspan41084">Standarized coefficients ( +/− 95% C.I)</tspan></text>
+         id="tspan1200">Standarized coefficients ( +/− 95% C.I)</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-104.52733,-84.071797)"
@@ -517,7 +520,7 @@
        y="-104.25"><tspan
          x="148.02"
          y="-104.25"
-         id="tspan41086">Plus nutrients*N-fixer*Amax</tspan></text>
+         id="tspan1202">Plus nutrients*N-fixer*Amax</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-29.876942,-86.474563)"
@@ -527,7 +530,7 @@
        y="-192.87"><tspan
          x="73.370003"
          y="-192.87"
-         id="tspan41088">Plus water-nutrients*N-fixer*Amax</tspan></text>
+         id="tspan1204">Plus water-nutrients*N-fixer*Amax</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-36.796864,-87.270329)"
@@ -537,7 +540,7 @@
        y="-281.5"><tspan
          x="80.290001"
          y="-281.5"
-         id="tspan41090">Plus water-nutrients*N-fixer*δ13C</tspan></text>
+         id="tspan1206">Plus water-nutrients*N-fixer*δ13C</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-65.44804,-84.624626)"
@@ -547,9 +550,9 @@
        y="-370.12"><tspan
          x="108.09"
          y="-370.12"
-         id="tspan41094">Plus water-nutrients*N-fixer*<tspan
+         id="tspan1210">Plus water-nutrients*N-fixer*<tspan
    style="font-style:italic;-inkscape-font-specification:'Helvetica Italic'"
-   id="tspan41092">gs</tspan></tspan></text>
+   id="tspan1208">gs</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-35.648427,-87.399693)"
@@ -559,7 +562,7 @@
        y="-458.73999"><tspan
          x="79.139999"
          y="-458.73999"
-         id="tspan41096">Plus water-nutrients*N-fixer*PNUE</tspan></text>
+         id="tspan1212">Plus water-nutrients*N-fixer*PNUE</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-119.79686,-87.409698)"
@@ -569,7 +572,7 @@
        y="-547.37"><tspan
          x="163.28999"
          y="-547.37"
-         id="tspan41098">Plus nutrients*N-fixer*WUE</tspan></text>
+         id="tspan1214">Plus nutrients*N-fixer*WUE</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-78.097645,-87.409693)"
@@ -579,7 +582,7 @@
        y="-635.98999"><tspan
          x="121.59"
          y="-635.98999"
-         id="tspan41100">Plus nutrients*Non-fixer*WUE</tspan></text>
+         id="tspan1216">Plus nutrients*Non-fixer*WUE</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-62.829196,-45.407315)"
@@ -589,7 +592,7 @@
        y="-796.85999"><tspan
          x="106.32"
          y="-796.85999"
-         id="tspan41102">Plus nutrients*Non-fixer*Amax</tspan></text>
+         id="tspan1218">Plus nutrients*Non-fixer*Amax</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,11.821194,-45.407315)"
@@ -599,7 +602,7 @@
        y="-866.21002"><tspan
          x="31.67"
          y="-866.21002"
-         id="tspan41104">Plus water-nutrients*Non-fixer*Amax</tspan></text>
+         id="tspan1220">Plus water-nutrients*Non-fixer*Amax</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-36.797946,-45.407315)"
@@ -609,7 +612,7 @@
        y="-935.57001"><tspan
          x="80.290001"
          y="-935.57001"
-         id="tspan41106">Plus water-nutrients*N-fixer*δ13C</tspan></text>
+         id="tspan1222">Plus water-nutrients*N-fixer*δ13C</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-64.598728,-45.407315)"
@@ -619,9 +622,9 @@
        y="-1004.93"><tspan
          x="108.09"
          y="-1004.93"
-         id="tspan41110">Plus water-nutrients*N-fixer*<tspan
+         id="tspan1226">Plus water-nutrients*N-fixer*<tspan
    style="font-style:italic;-inkscape-font-specification:'Helvetica Italic'"
-   id="tspan41108">gs</tspan></tspan></text>
+   id="tspan1224">gs</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-68.598728,-45.407315)"
@@ -631,7 +634,7 @@
        y="-1074.28"><tspan
          x="112.09"
          y="-1074.28"
-         id="tspan41112">Plus nutrients*Non-fixer*PNUE</tspan></text>
+         id="tspan1228">Plus nutrients*Non-fixer*PNUE</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-35.649509,-45.407315)"
@@ -641,7 +644,7 @@
        y="-1143.64"><tspan
          x="79.139999"
          y="-1143.64"
-         id="tspan41114">Plus water-nutrients*N-fixer*PNUE</tspan></text>
+         id="tspan1230">Plus water-nutrients*N-fixer*PNUE</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,6.05129,-43.323218)"
@@ -651,7 +654,7 @@
        y="-1213"><tspan
          x="37.439999"
          y="-1213"
-         id="tspan41116">Plus water-nutrients*Non-fixer*PNUE</tspan></text>
+         id="tspan1232">Plus water-nutrients*Non-fixer*PNUE</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-78.098728,-45.407315)"
@@ -661,7 +664,7 @@
        y="-1282.36"><tspan
          x="121.59"
          y="-1282.36"
-         id="tspan41118">Plus nutrients*Non-fixer*WUE</tspan></text>
+         id="tspan1234">Plus nutrients*Non-fixer*WUE</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-3.448337,-44.827823)"
@@ -671,7 +674,7 @@
        y="-1351.71"><tspan
          x="46.939999"
          y="-1351.71"
-         id="tspan41120">Plus water-nutrients*Non-fixer*WUE</tspan></text>
+         id="tspan1236">Plus water-nutrients*Non-fixer*WUE</tspan></text>
     <path
        d="M 746.64414,723.71943 V 1361.7994"
        style="fill:none;stroke:#ebebeb;stroke-width:1.07;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -783,7 +786,7 @@
        y="-1409.4399"><tspan
          x="709.62"
          y="-1409.4399"
-         id="tspan41122">Aboveground biomass (g)</tspan></text>
+         id="tspan1238">Aboveground biomass (g)</tspan></text>
     <path
        d="M 631.03914,723.71943 H 1362.8741"
        style="fill:none;stroke:#000000;stroke-width:0.850247;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -1016,7 +1019,7 @@
          y="-808.41998"><tspan
            x="1242.48"
            y="-808.41998"
-           id="tspan41124">Plus nutrients*Non-fixer*Amax</tspan></text>
+           id="tspan1240">Plus nutrients*Non-fixer*Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,447.0001,-1.5)"
@@ -1026,7 +1029,7 @@
          y="-897.03998"><tspan
            x="1167.83"
            y="-897.03998"
-           id="tspan41126">Plus water-nutrients*Non-fixer*Amax</tspan></text>
+           id="tspan1242">Plus water-nutrients*Non-fixer*Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,323.72072,-1.5)"
@@ -1036,7 +1039,7 @@
          y="-985.65997"><tspan
            x="1291.11"
            y="-985.65997"
-           id="tspan41128">Plus nutrients*N-fixer*δ13C</tspan></text>
+           id="tspan1244">Plus nutrients*N-fixer*δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,324.86916,-1.5)"
@@ -1046,7 +1049,7 @@
          y="-1074.28"><tspan
            x="1289.96"
            y="-1074.28"
-           id="tspan41130">Plus nutrients*N-fixer*PNUE</tspan></text>
+           id="tspan1246">Plus nutrients*N-fixer*PNUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,366.57033,-1.5)"
@@ -1056,7 +1059,7 @@
          y="-1162.91"><tspan
            x="1248.26"
            y="-1162.91"
-           id="tspan41132">Plus nutrients*Non-fixer*PNUE</tspan></text>
+           id="tspan1248">Plus nutrients*Non-fixer*PNUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,315.36916,-1.5)"
@@ -1066,7 +1069,7 @@
          y="-1251.53"><tspan
            x="1299.46"
            y="-1251.53"
-           id="tspan41134">Plus nutrients*N-fixer*WUE</tspan></text>
+           id="tspan1250">Plus nutrients*N-fixer*WUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,390.01955,-1.5)"
@@ -1076,7 +1079,7 @@
          y="-1340.15"><tspan
            x="1224.8101"
            y="-1340.15"
-           id="tspan41136">Plus water-nutrients*N-fixer*WUE</tspan></text>
+           id="tspan1252">Plus water-nutrients*N-fixer*WUE</tspan></text>
     </g>
     <text
        xml:space="preserve"
@@ -1087,9 +1090,9 @@
        y="-705.27002"><tspan
          x="781.38"
          y="-705.27002"
-         id="tspan41140">RGR (log(cm) days<tspan
+         id="tspan1256">RGR (log(cm) days<tspan
    style="baseline-shift:super"
-   id="tspan41138">-1</tspan>)</tspan></text>
+   id="tspan1254">-1</tspan>)</tspan></text>
     <text
        xml:space="preserve"
        transform="scale(1,-1)"
@@ -1422,7 +1425,7 @@
        y="-705.27002"><tspan
          x="1855.71"
          y="-705.27002"
-         id="tspan41142">Total Biomass (g)</tspan></text>
+         id="tspan1258">Total Biomass (g)</tspan></text>
     <g
        id="g21332"
        transform="translate(-172.26249,-45.23906)">
@@ -1435,7 +1438,7 @@
          y="-142.23"><tspan
            x="1167.83"
            y="-142.23"
-           id="tspan41144">Plus water-nutrients*Non-fixer*Amax</tspan></text>
+           id="tspan1260">Plus water-nutrients*Non-fixer*Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,444.22062,-1.5)"
@@ -1445,7 +1448,7 @@
          y="-427.09"><tspan
            x="1173.61"
            y="-427.09"
-           id="tspan41146">Plus water-nutrients*Non-fixer*PNUE</tspan></text>
+           id="tspan1262">Plus water-nutrients*Non-fixer*PNUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,434.72072,-1.5)"
@@ -1455,7 +1458,7 @@
          y="-654.97998"><tspan
            x="1183.11"
            y="-654.97998"
-           id="tspan41148">Plus water-nutrients*Non-fixer*WUE</tspan></text>
+           id="tspan1264">Plus water-nutrients*Non-fixer*WUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,375.34963,-1.5)"
@@ -1465,7 +1468,7 @@
          y="-85.260002"><tspan
            x="1242.48"
            y="-85.260002"
-           id="tspan41150">Plus nutrients*Non-fixer*Amax</tspan></text>
+           id="tspan1266">Plus nutrients*Non-fixer*Amax</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,326.72072,-1.5)"
@@ -1475,7 +1478,7 @@
          y="-199.2"><tspan
            x="1291.11"
            y="-199.2"
-           id="tspan41152">Plus nutrients*N-fixer*δ13C</tspan></text>
+           id="tspan1268">Plus nutrients*N-fixer*δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,401.36916,-1.5)"
@@ -1485,7 +1488,7 @@
          y="-256.17999"><tspan
            x="1216.46"
            y="-256.17999"
-           id="tspan41154">Plus water-nutrients*N-fixer*δ13C</tspan></text>
+           id="tspan1270">Plus water-nutrients*N-fixer*δ13C</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,369.57033,-1.5)"
@@ -1495,7 +1498,7 @@
          y="-313.14999"><tspan
            x="1248.26"
            y="-313.14999"
-           id="tspan41156">Plus nutrients*Non-fixer*PNUE</tspan></text>
+           id="tspan1272">Plus nutrients*Non-fixer*PNUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,318.36916,-1.5)"
@@ -1505,7 +1508,7 @@
          y="-484.06"><tspan
            x="1299.46"
            y="-484.06"
-           id="tspan41158">Plus nutrients*N-fixer*WUE</tspan></text>
+           id="tspan1274">Plus nutrients*N-fixer*WUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,360.07033,-1.5)"
@@ -1515,7 +1518,7 @@
          y="-541.03998"><tspan
            x="1257.76"
            y="-541.03998"
-           id="tspan41160">Plus nutrients*Non-fixer*WUE</tspan></text>
+           id="tspan1276">Plus nutrients*Non-fixer*WUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,393.01955,-1.5)"
@@ -1525,7 +1528,7 @@
          y="-598.01001"><tspan
            x="1224.8101"
            y="-598.01001"
-           id="tspan41162">Plus water-nutrients*N-fixer*WUE</tspan></text>
+           id="tspan1278">Plus water-nutrients*N-fixer*WUE</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,446.67157,-58.470001)"
@@ -1535,7 +1538,7 @@
          y="-427.09"><tspan
            x="1173.61"
            y="-427.09"
-           id="tspan41164">Plus water-nutrients*N-fixer*PNUE</tspan></text>
+           id="tspan1280">Plus water-nutrients*N-fixer*PNUE</tspan></text>
     </g>
     <g
        id="g21308"
@@ -2111,7 +2114,7 @@
            y="-1409.4399"><tspan
              x="1846.87"
              y="-1409.4399"
-             id="tspan41166">Belowground  Biomass (g)</tspan></text>
+             id="tspan1282">Belowground  Biomass (g)</tspan></text>
       </g>
     </g>
     <g
