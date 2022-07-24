@@ -119,8 +119,11 @@ models_nodule_count <- readRDS("./processed_data/models_nodule_count.RData")
 models_q1_q2 <-     
     models_q1_q2 %>%
         
-        # Remove traits models
+        # Remove traits models not log transformed
         purrr::list_modify("wue" = NULL, "pnue"  = NULL)
+
+names(models_q1_q2)
+
 ```
 
 
@@ -128,7 +131,7 @@ models_q1_q2 <-
 models_nodule_count <- 
     models_nodule_count %>%
         
-        # Remove traits models
+        # Remove unused models
         purrr::list_modify("lmer_gaussian_log" = NULL, "glmer_poisson"  = NULL)
 ```
 
@@ -136,7 +139,7 @@ models_nodule_count <-
 ## Models Q3 
 
 ```{r}
-models_q3_nlme <- models_q3_nlme
+#models_q3_nlme <- models_q3_nlme
 ```
 
 # Load data
@@ -193,6 +196,8 @@ models_q1_q2 %>%
 ## Plot Biomass growth boxplot
 
 ```{r message=FALSE, warning=FALSE}
+
+# Get predictions
 string <- c("models_q1_q2")
 
 data_pred_biomass_growth <- 
@@ -225,6 +230,8 @@ data_pred_biomass_growth <-
 ```
 
 ```{r warning=FALSE}
+
+# Generate plot combinations
 vars_q1 <-  
   crossing(
     
@@ -337,7 +344,7 @@ models_q1_q2 %>%
                        # No interaction
                        "d13c" = NULL, 
                        
-                       # This only responded to the treatments 
+                       # These variables only responded to the treatments 
                        "pnue_log" = NULL, "gs" = NULL ) %>%
     
     # Percentage difference
@@ -366,6 +373,8 @@ models_q1_q2 %>%
 
 ```
 ```{r}
+
+# Difference in WUE btw fixer non fixers
 # Percentage difference
 as.data.frame(emmeans(models_q1_q2$gs,
                           specs = pairwise ~ "nfixer",
@@ -398,8 +407,8 @@ data_pred_traits <-
                             models_q1_q2$amax,
                             models_q1_q2$d13c,
                             models_q1_q2$gs,
-                            models_q1_q2$wue,
-                            models_q1_q2$pnue) %>% 
+                            models_q1_q2$wue_log,
+                            models_q1_q2$pnue_log) %>% 
                        
             
             
@@ -412,9 +421,13 @@ data_pred_traits <-
                 
                 # Remove dollar sing    
                 gsub("\\$", "", .)
-                )) %>% 
+                )) %>%
+    
+        # Back transform log variables
+        mutate(pred_wue = exp(pred_wue_log),
+               pred_pnue = exp(pred_pnue_log)) %>% 
        
-        dplyr::select(c(1:3,15:19))  
+        dplyr::select(c(1:3,15:17, 20,21))  
 ```
 
 
