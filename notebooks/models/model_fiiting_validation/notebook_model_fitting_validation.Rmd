@@ -163,7 +163,7 @@ lmer_gaussian_log <-  lmer(log(number_of_root_nodulation) ~ treatment + init_hei
                            (1 |spcode),data = data_nodules_cleaned)
 ```
 
-### m5 glmer poisson
+### m5 glmer
 
 ```{r}
 glmer_poisson <-  glmer(number_of_root_nodulation ~ treatment + init_height + 
