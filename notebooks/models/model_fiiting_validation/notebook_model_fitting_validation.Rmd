@@ -158,21 +158,45 @@ lmer_gaussian <- lmer(number_of_root_nodulation ~ treatment + init_height +
 ```
 
 
+
 ```{r}
 lmer_gaussian_log <-  lmer(log(number_of_root_nodulation) ~ treatment + init_height + 
                            (1 |spcode),data = data_nodules_cleaned)
 ```
 
-### m5 glmer
+### m5 glmer poisson
 
 ```{r}
 glmer_poisson <-  glmer(number_of_root_nodulation ~ treatment + init_height + 
-                           (1 |spcode), family = "poisson",data = data_nodules_cleaned)
+                           (1|spcode), family = "poisson",data = data_nodules_cleaned)
 ```
+
+
+<!-- ## gls poisson  -->
+
+<!-- ```{r} -->
+<!-- gls_pois <- glm(number_of_root_nodulation ~ treatment*spcode + init_height,  -->
+<!--                 data = data_nodules_cleaned,  -->
+<!--                 family = poisson()) -->
+<!-- ``` -->
+
+
+<!-- ## linear model -->
+
+<!-- ```{r} -->
+<!-- lm_gaussian <-  lm(number_of_root_nodulation ~ treatment*spcode + init_height,  -->
+<!--                      data = data_nodules_cleaned) -->
+
+<!-- ``` -->
+
+
 
 ```{r}
 models_nodule_count <- list(lmer_gaussian, lmer_gaussian_log, glmer_poisson)
-names(models_nodule_count) <- c("lmer_gaussian","lmer_gaussian_log","glmer_poisson")
+
+names(models_nodule_count) <- c("lmer_gaussian","lmer_gaussian_log",
+                                "glmer_poisson")
+
 ```
 
 ## Mycorrhizal colonization
@@ -287,7 +311,7 @@ map(models_q1_q2, bolker_validation)
 ## Models for nodule count
 
 ```{r,bolker_plots_nodule_count, fig.height = 8, fig.width = 15}
-#map(models_nodule_count, bolker_validation)
+map(models_nodule_count, plot)
 ```
 
 ## Models for question 3
