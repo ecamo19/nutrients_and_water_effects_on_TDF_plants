@@ -204,7 +204,7 @@ data_complete <-
         dplyr::select(id, spcode, nfixer, treatment,init_height, everything()) %>%  
         
         # remove unused columns
-        dplyr::select(-c(la,leaf_dry_weight,N_mg,N_g, whole_leaf_dry_weight,
+        dplyr::select(-c(la,leaf_dry_weight,N_mg, whole_leaf_dry_weight,
                          root_dry_weight,stem_dry_weight))
 
 
@@ -216,7 +216,7 @@ data_for_models <-
     # Calculate nitrogen use efficiency column
     # I followed Leaf traits explaining the growth of tree 
     # species planted in a Central Amazonian disturbed area
-    mutate(pnue = (amax*sla_cm2_g*0.1)/perc_n) %>% 
+    mutate(pnue = (amax*sla_cm2_g*0.1)/N_g) %>% 
     
     # select variables that are going to be used in the models
     dplyr::select(id, spcode, treatment,nfixer, init_height, 
