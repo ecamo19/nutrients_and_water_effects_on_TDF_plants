@@ -508,11 +508,21 @@ After this I bootstrap the parameters for getting the Confidence intervals
 
 ```{r}
 model.sel(models_q3_nlme$`abovebiomass~amax`,
-          #models_q3_nlme$`abovebiomass~d15n`,
           models_q3_nlme$`abovebiomass~d13c`,
           models_q3_nlme$`abovebiomass~gs`,
           models_q3_nlme$`abovebiomass~pnue`,
           models_q3_nlme$`abovebiomass~wue`)[,8:12]
+
+```
+
+
+```{r}
+model.sel(models_q3_nlme$`abovebiomass~amax`,
+          models_q3_nlme$`abovebiomass~d13c`,
+          models_q3_nlme$`abovebiomass~gs`,
+          models_q3_nlme$`abovebiomass~pnue`,
+          models_q3_nlme$`abovebiomass~wue`,
+          rank = "AIC")[,8:12]
 ```
 
 
@@ -524,7 +534,8 @@ model.sel(models_q3_nlme$`belowbiomass~amax`,
                     models_q3_nlme$`belowbiomass~d13c`,
                     models_q3_nlme$`belowbiomass~gs`,
                     models_q3_nlme$`belowbiomass~pnue`,
-                    models_q3_nlme$`belowbiomass~wue`)[,8:12]
+                    models_q3_nlme$`belowbiomass~wue`,
+                    rank = "AIC")[,8:12]
 ```
 
 ### rgr
@@ -543,7 +554,7 @@ model.sel(models_q3_nlme$`rgr~amax`,
 
 ```{r}
 model.sel(models_q3_nlme$`totalbiomass~amax`,
-                    #models_q3_nlme$`totalbiomass~d15n`,
+                   
                     models_q3_nlme$`totalbiomass~d13c`,
                     models_q3_nlme$`totalbiomass~gs`,
                     models_q3_nlme$`totalbiomass~pnue`,
