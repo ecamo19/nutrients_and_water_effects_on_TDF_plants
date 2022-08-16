@@ -208,15 +208,39 @@ also I don't trust the data
 
 # Models: Question 3
 
+
 $$performance\sim treatment:fixer:scale(trait)\ + initial\ height + random( 1|\ specie)$$
 
 ## Scale preditors 
 
 ```{r}
+
 data_for_models_scaled <-
     data_for_models %>% 
         mutate(across(c(4,9:14),scale)) 
 ```
+
+
+```{r}
+# test_again <- lme(total_biomass ~   treatment:nfixer:amax +
+#                                     treatment:nfixer:gs  +
+#                                     treatment:nfixer:wue +
+#                                     treatment:nfixer:pnue +
+#                                     treatment:nfixer:d13c +
+#                                     init_height ,
+#                   random = ~1 | spcode, 
+#                   weights = varIdent(form = ~1 |spcode), 
+#                   data = data_for_models_scaled)
+# 
+# 
+# bootstrap_ci_results <- bootstrap_model_ci_df(model = test_again, 
+#                                               category = "all", 
+#                                               iter = 9999)
+
+```
+
+
+
 
 ```{r}
 # Select traits (x_vars)
@@ -262,7 +286,7 @@ models_nlme_formulas[1]
 
 
 ```{r}
-models_q3_nlme <- map(models_nlme_formulas, ~model_nlme(., data = data_for_models_scaled))
+models_q3_nlme <- map(models_nlme_formulas, ~model_nlme(.,data = data_for_models_scaled))
 ```
 
 

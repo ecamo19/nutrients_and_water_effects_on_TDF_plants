@@ -533,10 +533,7 @@ anova_table_tidy(models_nodule_count$lmer_gaussian, single_model = T)
 ```
 
 
-```{r}
-arm::display(models_nodule_count$lmer_gaussian)
-sjPlot::plot_model(models_nodule_count$lmer_gaussian)
-```
+
 
 ```{r}
 tukey_table_tidy(models_nodule_count$lmer_gaussian,single_model = T, 
@@ -612,7 +609,6 @@ model.sel(models_q3_nlme$`rgr~amax`,
 
 ```{r}
 model.sel(models_q3_nlme$`totalbiomass~amax`,
-                   
                     models_q3_nlme$`totalbiomass~d13c`,
                     models_q3_nlme$`totalbiomass~gs`,
                     models_q3_nlme$`totalbiomass~pnue`,
@@ -626,6 +622,15 @@ map(models_q3_nlme, r.squaredGLMM)
 ```
 
 ## Anova tables
+
+
+```{r}
+arm::display(models_q3_lmer$`abovebiomass~amax`)
+```
+
+
+
+
 
 ```{r}
 models_q3_nlme %>%
@@ -650,8 +655,6 @@ models_q3_nlme %>%
 # Read dataset
 bootstrap_ci_results <- readRDS("./processed_data/bootstrap_ci_results.RData")
 ```
-
-
 
 
 ## Plot
