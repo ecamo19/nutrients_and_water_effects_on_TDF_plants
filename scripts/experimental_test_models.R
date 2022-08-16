@@ -34,9 +34,7 @@ data_for_models_scaled <-
 
 # Models -----------------------------------------------------------------------
 
-
 ## Aboveground Biomass ---------------------------------------------------------
-
 
 ### Test A ---------------------------------------------------------------------
 test_above_a <- lme(above_biomass ~   treatment:nfixer:amax +
@@ -49,7 +47,6 @@ test_above_a <- lme(above_biomass ~   treatment:nfixer:amax +
                     data = data_for_models_scaled)
 
 #### Check assumptions ---------------------------------------------------------
-
 
 plot(test_above_a, resid(., scaled = TRUE) ~ fitted(.),
   abline = 0, pch = 16, xlab = "Fitted values", ylab = "Standardised residuals"
@@ -68,24 +65,35 @@ qqnorm(resid(test_above_a), pch = 16)
 qqline(resid(test_above_a))
 
 # Nothing wrong with the model 
-AIC(test_above_a)
-
 
 #### Results -------------------------------------------------------------------
+report::report(test_above_a)
+    
+AIC(test_above_a)
 data.frame(intervals(test_above_a)$fixed) %>% 
     tibble::rownames_to_column("names") %>% 
     filter(!names %in% c("(Intercept)","init_height")) %>% 
     mutate(significance = ifelse((lower > 0 & upper > 0 | lower < 0 & upper < 0 ), 
                                  TRUE, FALSE)) %>% 
-    filter(significance == TRUE)
+    filter(significance == TRUE) 
 
-boots_test_model_above_biom <- 
-    bootstrap_model_ci_df(model = test_above_a, category = "all", 
-                          iter = 9999) %>% 
-    filter(significance == TRUE)
 
-saveRDS(boots_test_model_above_biom, 
-        file = "./processed_data/bootstrap_ci_aboveground_biomass.RData")
+if (file.exists("./processed_data/bootstrap_ci_aboveground_biomass.RData")) {
+    
+    print("The bootstrap exists")
+    
+} else {
+    
+    print("The bootstrap does not exist")
+    boots_test_model_above_biom <- 
+        bootstrap_model_ci_df(model = test_above_a, category = "all", 
+                              iter = 9999) %>% 
+        filter(significance == TRUE)
+    
+    saveRDS(boots_test_model_above_biom, 
+            file = "./processed_data/bootstrap_ci_aboveground_biomass.RData")
+}
+
 
 
 ### Test B ---------------------------------------------------------------------
@@ -174,6 +182,7 @@ qqline(resid(test_below_a))
 # Nothing wrong with model
 
 #### Results -------------------------------------------------------------------
+report::report(test_below_a)
 
 data.frame(intervals(test_below_a)$fixed) %>% 
     tibble::rownames_to_column("names") %>% 
@@ -182,14 +191,20 @@ data.frame(intervals(test_below_a)$fixed) %>%
                                  TRUE, FALSE)) %>% 
     filter(significance == TRUE)
 
-
-boots_test_model_below_biom <- 
-    bootstrap_model_ci_df(model = test_below_a, category = "all", 
-                          iter = 9999) %>%
-    filter(significance == TRUE)
-
-saveRDS(boots_test_model_below_biom, 
-        file = "./processed_data/bootstrap_ci_belowground_biomass.RData")
+if (file.exists("./processed_data/bootstrap_ci_belowground_biomass.RData")) {
+    
+    print("The bootstrap exists")
+    
+} else {
+    
+    boots_test_model_below_biom <- 
+        bootstrap_model_ci_df(model = test_below_a, category = "all", 
+                              iter = 9999) %>%
+        filter(significance == TRUE)
+    
+    saveRDS(boots_test_model_below_biom, 
+            file = "./processed_data/bootstrap_ci_belowground_biomass.RData")
+}
 
 ### Test B ---------------------------------------------------------------------
 # test_below_b <- lme(below_biomass ~   treatment:nfixer:amax +
@@ -282,6 +297,8 @@ qqline(resid(test_rgr_a))
 # Nothing wrong with this model
 
 #### Results -------------------------------------------------------------------
+report::report(test_rgr_a)
+
 data.frame(intervals(test_rgr_a)$fixed) %>% 
     tibble::rownames_to_column("names") %>% 
     filter(!names %in% c("(Intercept)","init_height")) %>% 
@@ -289,15 +306,23 @@ data.frame(intervals(test_rgr_a)$fixed) %>%
                                  TRUE, FALSE)) %>% 
     filter(significance == TRUE)
 
+if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
+    
+    print("The bootstrap exists")
+    
+} else {
+    
+    boots_test_model_rgr <- 
+        bootstrap_model_ci_df(model = test_rgr_a, category = "all", 
+                              iter = 9999) %>%
+        filter(significance == TRUE)
+    
+    
+    saveRDS(boots_test_model_rgr, 
+            file = "./processed_data/bootstrap_ci_rgr.RData")
+    
+}
 
-boots_test_model_rgr <- 
-    bootstrap_model_ci_df(model = test_rgr_a, category = "all", 
-                          iter = 9999) %>%
-    filter(significance == TRUE)
-
-
-saveRDS(boots_test_model_rgr, 
-        file = "./processed_data/bootstrap_ci_rgr.RData")
 
 ### Test B ---------------------------------------------------------------------
 # test_rgr_b <- lme(rgr ~   treatment:nfixer:amax +
@@ -422,13 +447,14 @@ plot(test_total_biomass_a, as.factor(spcode) ~ resid(., scaled = TRUE),
      abline = 0, pch = 16, xlab = "Standardised residuals", ylab = "Regions"
 )
 
-qqnorm(resid(model), pch = 16)
-qqline(resid(model))
+qqnorm(resid(test_total_biomass_a), pch = 16)
+qqline(resid(test_total_biomass_a))
 
 
 # Nothing wrong with the model
 
 #### Results -------------------------------------------------------------------
+report::report(test_total_biomass_a)
 
 data.frame(intervals(test_total_biomass_a)$fixed) %>% 
     tibble::rownames_to_column("names") %>% 
@@ -437,14 +463,25 @@ data.frame(intervals(test_total_biomass_a)$fixed) %>%
                                  TRUE, FALSE)) %>% 
     filter(significance == TRUE)
 
-boots_test_model_total_biom <- 
-    bootstrap_model_ci_df(model = test_total_biomass_a, category = "all", 
-                          iter = 9999) %>%
-    filter(significance == TRUE)
+if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
+    
+    print("The bootstrap exists")
+    
+} else {
+
+    boots_test_model_total_biom <- 
+        bootstrap_model_ci_df(model = test_total_biomass_a, category = "all", 
+                              iter = 9999) %>%
+        filter(significance == TRUE)
+    
+    
+    saveRDS(boots_test_model_total_biom, 
+            file = "./processed_data/bootstrap_ci_total_biomass.RData")
+    
+}
 
 
-saveRDS(boots_test_model_total_biom, 
-        file = "./processed_data/bootstrap_ci_total_biomass.RData")
+
 
 
 # ### Test B ---------------------------------------------------------------------
