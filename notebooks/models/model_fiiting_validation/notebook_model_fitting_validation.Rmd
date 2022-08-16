@@ -240,8 +240,6 @@ data_for_models_scaled <-
 ```
 
 
-
-
 ```{r}
 # Select traits (x_vars)
 traits_names <- 

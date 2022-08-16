@@ -138,7 +138,7 @@ models_nodule_count <-
 
 
 
-# Double checking nodule count model's assumptions
+### Double checking nodule count model's assumptions
 ```{r}
 plot(models_nodule_count$lmer_gaussian, resid(., scaled=TRUE) ~ fitted(.), 
      abline = 0,pch=16,xlab="Fitted values",ylab="Standardised residuals")
