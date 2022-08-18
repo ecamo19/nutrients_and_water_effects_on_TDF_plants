@@ -225,6 +225,9 @@ data_for_models <-
                   total_biomass, above_biomass, below_biomass, 
                   agr, rgr, rgr_slope,
                   
+                  # Mass fractions
+                  rmf, smf, lmf,
+                  
                   # Traits
                   amax, gs, wue, d13c, d15n, pnue) %>%
     
