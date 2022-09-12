@@ -597,6 +597,7 @@ if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
 #### Plot Total Biomass
 
 ```{r}
+
 colmn <- paste0("col_", 1:3)
 
 data_total_biomass_plot <- 
@@ -606,6 +607,8 @@ data_total_biomass_plot <-
                      sep = ":",
                      into = colmn,
                      remove = F) %>% 
+    
+            unite("treat_trait", col_1,col_3, sep = "-", remove = F) %>% 
             mutate(across(where(is.character), as.factor)) %>% 
             filter(type == "norm")   
 
@@ -615,19 +618,20 @@ data_total_biomass_plot$term <-
 
 # Show estimates
 data_total_biomass_plot %>% 
-    arrange(desc(significance)) %>% 
-    dplyr::select(term,estimate,lower, upper, response_var,significance)
+    arrange(col_3) 
+    #dplyr::select(term,estimate,lower, upper, response_var,significance)
 ```
 
 
-```{r total_biomass_plot, fig.width = 30, fig.height = 25, fig.align = 'center'}
+```{r total_biomass_plot, fig.width = 30, fig.height = 15, fig.align = 'center'}
 # Plot
-# 
 
-(total_biomass_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
-                                     color = significance,
+(total_biomass_plot <-
+    cleveland_plot(x = treat_trait, y = estimate, 
+                                     color = col_1,
                                      ci_lower = lower, ci_upper = upper,
-                                     data = data_total_biomass_plot))
+                                     data = data_total_biomass_plot) +
+        facet_wrap(.~col_2))
 
  
 ```
@@ -678,6 +682,7 @@ data_belowground_plot <-
                      sep = ":",
                      into = colmn,
                      remove = F) %>% 
+            unite("treat_trait", col_1,col_3, sep = "-", remove = F) %>%
             mutate(across(where(is.character), as.factor)) %>% 
             filter(type == "norm") 
 
@@ -699,35 +704,20 @@ data_belowground_plot %>%
 
 ```{r belowground_plot, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
 # Plot
-belowground_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
-                                   color = significance,
+(belowground_plot <- cleveland_plot(x = treat_trait, y = estimate,
+                                   color = col_1,
                                    ci_lower = lower, ci_upper = upper,
-                                   data = data_belowground_plot)
+                                   data = data_belowground_plot) +
+                    facet_wrap(.~col_2))
 
  
 ```
-
-
-
 
 ### Aboveground Biomass
 
 ```{r}
 # Look results before bootstrap
 #report::report_parameters(models_3way_q3$lme_above_biom_3way)
-```
-
-```{r}
-# Look results before bootstrap
-AIC(models_3way_q3$lme_above_biom_3way)
-
-data.frame(intervals(models_3way_q3$lme_above_biom_3way)$fixed) %>% 
-    tibble::rownames_to_column("names") %>% 
-    filter(!names %in% c("(Intercept)","init_height")) %>% 
-    mutate(significance = ifelse((lower > 0 & upper > 0 | lower < 0 & upper < 0 ), 
-                                 TRUE, FALSE)) %>% 
-    filter(significance == TRUE) %>% 
-    reactable()
 ```
 
 ```{r}
@@ -765,8 +755,11 @@ data_aboveground_plot <-
                                                 sep = ":",
                                                 into = colmn,
                                             remove = F) %>% 
+                unite("treat_trait", col_1,col_3, sep = "-", remove = F) %>%
                 mutate(across(where(is.character), as.factor))  %>% 
                 filter(type == "norm") 
+                
+                
 
 # Rearrange data
 data_aboveground_plot$term <- 
@@ -781,9 +774,12 @@ data_aboveground_plot %>%
 
 ```{r aboveground_plot, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
 # Plot
-(aboveground_plot <- cleveland_plot(x = term, y = estimate, shape = col_2, color = significance,
-               ci_lower = lower, ci_upper = upper,
-               data = data_aboveground_plot))
+(aboveground_plot <- 
+     cleveland_plot(x = treat_trait, y = estimate,
+                    color = col_1,
+                    ci_lower = lower, ci_upper = upper,
+                data = data_aboveground_plot) +
+                facet_grid(.~col_2))
 
 ```
 
@@ -795,22 +791,6 @@ data_aboveground_plot %>%
 # Look results before bootstrap
 #report::report_parameters(models_3way_q3$lme_rgr_3way)
 ```
-
-
-```{r}
-# Look results before bootstrap
-
-AIC(models_3way_q3$lme_rgr_3way)
-
-data.frame(intervals(models_3way_q3$lme_rgr_3way)$fixed) %>% 
-    tibble::rownames_to_column("names") %>% 
-    filter(!names %in% c("(Intercept)","init_height")) %>% 
-    mutate(significance = ifelse((lower > 0 & upper > 0 | lower < 0 & upper < 0 ), 
-                                 TRUE, FALSE)) %>% 
-    filter(significance == TRUE)  %>% 
-    reactable()
-```
-
 
 ```{r}
 if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
@@ -845,25 +825,30 @@ data_rgr_plot <-
                      sep = ":",
                      into = colmn,
                      remove = F) %>% 
+            unite("treat_trait", col_1,col_3, sep = "-", remove = F) %>%
             mutate(across(where(is.character), as.factor)) %>% 
             filter(type == "norm")
 
 data_rgr_plot$term <- 
     factor(data_rgr_plot$term,
            levels = data_rgr_plot$term[order(data_rgr_plot$col_2)])
-           
-        
+```
+
+
+```{r}
 # Plot
-rgr_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
-                           color = significance,
+rgr_plot <- 
+    cleveland_plot(x = treat_trait, y = estimate, shape = col_2,
+                           color = col_1,
                            ci_lower = lower, ci_upper = upper,
-                             data = data_rgr_plot)
+                             data = data_rgr_plot) +
+    facet_grid(.~col_2)
 
 ```
 
  
 ##
-```{r figure_3_three_way_q3, fig.width = 40, fig.height = 30, fig.align = 'center', echo = FALSE}
+```{r figure_3_three_way_q3_2, fig.width = 40, fig.height = 20, fig.align = 'center'}
 cowplot::plot_grid(total_biomass_plot,belowground_plot,aboveground_plot,rgr_plot, ncol = 2)
 ```
  

@@ -46,7 +46,8 @@ boxplot_plot_pmap <-  function(x, y, fill, data) {
 
 # Cleveland plot ---------------------------------------------------------------
 
-cleveland_plot <-function(x, y, color, shape, ci_lower, ci_upper, data){
+cleveland_plot <-function(x, y, color = NULL, shape  = NULL , 
+                          ci_lower, ci_upper, data){
     
     xvar <- rlang::enquo(x)
     yvar <- rlang::enquo(y)
@@ -85,7 +86,8 @@ cleveland_plot <-function(x, y, color, shape, ci_lower, ci_upper, data){
     #labs(title = paste0(response_variable)) +
     ggplot2::facet_wrap(~ response_var, scales = "free", ncol = 2) +
     # Significance colors
-    ggplot2::scale_colour_manual(values = c("grey","black")) +
+    ggplot2::scale_color_manual(values = c("#009E73",
+                                              "#56B4E9","#0072B2")) +
     ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
     ggplot2::xlab("") +
     ggplot2::coord_flip()
