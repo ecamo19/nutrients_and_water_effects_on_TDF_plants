@@ -43,7 +43,61 @@ boxplot_plot_pmap <-  function(x, y, fill, data) {
                        axis.title=element_text(size = 21,face = "bold")) 
 }
 
-#  Simulate -------------------------------------------------------------------
+
+# Cleveland plot ---------------------------------------------------------------
+
+cleveland_plot <-function(x, y, color, shape, ci_lower, ci_upper, data){
+    
+    xvar <- rlang::enquo(x)
+    yvar <- rlang::enquo(y)
+    color <- rlang::enquo(color)
+    shape <- rlang::enquo(shape)  
+    upper <- rlang::enquo(ci_upper)
+    lower <- rlang::enquo(ci_lower)
+    
+    ggplot2::ggplot(data = data,
+                    
+                # Highlight significant terms
+                aes(x = !!xvar , y = !!yvar, 
+                    color = !!color, shape = !!shape)) +
+    
+    
+    ggplot2::geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
+    ggplot2::geom_point(size = 6, position = position_dodge(width = .9)) +
+    
+    # 95% C.I
+    ggplot2::geom_linerange(aes(ymin = !!lower, ymax = !!upper),
+                            lwd = 1, position = position_dodge(width = .9)) +
+    ggplot2::theme_bw() +
+    
+    ggplot2::theme(legend.position = "none",
+                   strip.text.x = element_text(size = 25),
+                   axis.text.y   = element_text(size= 25),
+                   axis.text.x   = element_text(size= 25),
+                   axis.title.y  = element_text(size= 25),
+                   axis.title.x  = element_text(size= 25),
+                   panel.grid.major.y = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   axis.line = element_line(size = .4,colour = "black"),
+                   panel.border = element_rect(colour = "black", fill= NA,
+                                               size = 1.3)) +
+    # Add name
+    #labs(title = paste0(response_variable)) +
+    ggplot2::facet_wrap(~ response_var, scales = "free", ncol = 2) +
+    # Significance colors
+    ggplot2::scale_colour_manual(values = c("grey","black")) +
+    ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
+    ggplot2::xlab("") +
+    ggplot2::coord_flip()
+
+}
+
+
+
+
+
+
+#  Simulate --------------------------------------------------------------------
 
 #' @importFrom magrittr %>%
 #' 

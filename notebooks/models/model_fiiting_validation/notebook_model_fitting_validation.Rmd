@@ -9,7 +9,7 @@ output:
     theme: cayman
     toc: yes
     number_sections: no
-    toc_depth: 1
+    toc_depth: 2
 
 ---
 
@@ -66,6 +66,7 @@ library(purrr)
 library(performance)
 # For adding new columns
 library(tibble)
+library(MuMIn)
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -78,57 +79,79 @@ sys.source("./scripts/code_join_data_full_dataset.R", envir = knitr::knit_global
 # Load functions
 ## Models
 sys.source("./R/functions_models.R", envir = knitr::knit_global())
+sys.source("./R/function_nlme_validation_plots.R", envir = knitr::knit_global())
 ```
 
-# Select performance and traits variables 
+# Model Fitting
 
-## Transform variables
-[Backtranformation info](http://www.biostathandbook.com/transformation.html#:~:text=Square%2Droot%20transformation.,to%20make%20them%20all%20positive.)
+
+## Models: Questions 1,2 and Mass fractions   
+
+
+### Select performance and traits variables 
+
 
 ```{r}
 data_for_models <-
     data_for_models %>%
-
         # Select variables for analysis
         dplyr::select(c(1:7,9,11:ncol(data_for_models)))
 ```
 
 
-# Models: Questions 1 and 2   
 
 $$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
 
 ```{r}
 # Take response variables names 
 response_vars_q1_q2 <- 
-    set_names(names(data_for_models)[c(5:12,14)])
+    set_names(names(data_for_models)[c(5:11, 12:15,17)])
 
 response_vars_q1_q2 
 ```
 
 ```{r}
-models_q1_q2 <- map(response_vars_q1_q2, ~ mixed_model_1(response = .x, 
+models_q1_q2_mass_fractions <- map(response_vars_q1_q2, ~ mixed_model_1(response = .x, 
                                                               data = data_for_models))
 ```
 
 ```{r}
+# Log models
+
 model_q2_wue_log <- lmer(log(wue) ~ nfixer*treatment + init_height + (1|spcode), 
                          data = data_for_models)
 
 model_q2_pnue_log <- lmer(log(pnue) ~ nfixer*treatment + init_height + (1|spcode), 
                          data = data_for_models) 
 
-log_models <- list(model_q2_wue_log, model_q2_pnue_log)
-names(log_models) <- c("wue_log", "pnue_log")
+
+model_rmf_log <- lmer(log(rmf) ~ nfixer*treatment + init_height + (1|spcode), 
+                         data = data_for_models)
+
+model_smf_log <- lmer(log(smf) ~ nfixer*treatment + init_height + (1|spcode), 
+                         data = data_for_models) 
+
+model_lmf_log <- lmer(log(lmf) ~ nfixer*treatment + init_height + (1|spcode), 
+                         data = data_for_models) 
+
 ```
 
 ```{r}
-# Append log models to model list
-models_q1_q2 <- append(log_models, models_q1_q2)
+# Append log models to model list Q1 Q2
+log_models <- list(model_q2_wue_log, model_q2_pnue_log,
+                   model_rmf_log, model_smf_log, model_lmf_log)
+
+
+names(log_models) <- c("wue_log", "pnue_log", 
+                       "rmf_log", "smf_log", "lmf_log")
+
+models_q1_q2_mass_fractions <- append(log_models, models_q1_q2_mass_fractions)
+
+length(models_q1_q2_mass_fractions)
+names(models_q1_q2_mass_fractions)
 ```
 
-
-## Models Nodule count
+## Model: Nodule count
 
 + Chapter 9 Mixed models in ecology check glmmML package for count data
 + GOOD ref https://www.dataquest.io/blog/tutorial-poisson-regression-in-r/
@@ -150,7 +173,7 @@ data_nodules_cleaned <-
 
 ```
 
-### m4 lmer gaussian      
+### lmer gaussian      
 
 ```{r}
 lmer_gaussian <- lmer(number_of_root_nodulation ~ treatment + init_height + 
@@ -158,59 +181,63 @@ lmer_gaussian <- lmer(number_of_root_nodulation ~ treatment + init_height +
 ```
 
 
+### lmer gaussian log  
 
 ```{r}
 lmer_gaussian_log <-  lmer(log(number_of_root_nodulation) ~ treatment + init_height + 
                            (1 |spcode),data = data_nodules_cleaned)
 ```
 
-### m5 glmer poisson
+#### Compare models
+```{r}
+# Based on this output I decided to use the log model
+MuMIn::model.sel(lmer_gaussian, lmer_gaussian_log)
+```
 
 ```{r}
-glmer_poisson <-  glmer(number_of_root_nodulation ~ treatment + init_height + 
-                           (1|spcode), family = "poisson",data = data_nodules_cleaned)
+AIC(lmer_gaussian, lmer_gaussian_log)
 ```
 
-
-<!-- ## gls poisson  -->
-
-<!-- ```{r} -->
-<!-- gls_pois <- glm(number_of_root_nodulation ~ treatment*spcode + init_height,  -->
-<!--                 data = data_nodules_cleaned,  -->
-<!--                 family = poisson()) -->
-<!-- ``` -->
-
-
-<!-- ## linear model -->
-
-<!-- ```{r} -->
-<!-- lm_gaussian <-  lm(number_of_root_nodulation ~ treatment*spcode + init_height,  -->
-<!--                      data = data_nodules_cleaned) -->
-
-<!-- ``` -->
-
-
+### Improving log model
 
 ```{r}
-models_nodule_count <- list(lmer_gaussian, lmer_gaussian_log, glmer_poisson)
+## After seeing the validation plots for the lmer_gaussian_log I decided to try 
+## to improve the log model using the nlme package
 
-names(models_nodule_count) <- c("lmer_gaussian","lmer_gaussian_log",
-                                "glmer_poisson")
+
+nlme_gaussian_log <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
+                                    random = ~1|spcode,
+                                    data = data_nodules_cleaned)
+
+
+
+nlme_nodule_log_weights <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
+                                    random = ~1|spcode,
+                                    weights = varIdent(form = ~1|spcode),
+                                    data = data_nodules_cleaned)
+```
+
+#### Compare models
+```{r}
+# Check if the nlme_gaussian_log_weights is a better model
+
+# Compare between nlme objects
+anova(nlme_gaussian_log, nlme_nodule_log_weights )
+
+model.sel(nlme_gaussian_log, lmer_gaussian_log,  nlme_nodule_log_weights)
+
+AIC(lmer_gaussian_log, nlme_gaussian_log, nlme_nodule_log_weights)
+# Model improved, check assumptions for nlme_gaussian_log_weights 
 
 ```
 
-## Mycorrhizal colonization
 
-```{r, eval = FALSE}
-I decided not to include it, because I want to focus on Nfixing vrs non-Fixing, 
-also I don't trust the data
-```
+## Models: Question 3
 
-# Models: Question 3
 
-$$performance\sim treatment:fixer:scale(trait)\ + initial\ height + random( 1|\ specie)$$
+$$performance\sim treatment:fixer:scaled(trait)\ + initial\ height + random( 1|\ specie)$$
 
-## Scale preditors 
+### Scale preditors 
 
 ```{r}
 data_for_models_scaled <-
@@ -218,143 +245,176 @@ data_for_models_scaled <-
         mutate(across(c(4,9:14),scale)) 
 ```
 
-```{r}
-# Select traits (x_vars)
-traits_names <- 
-    set_names(names(data_for_models_scaled)[c(9:12,14)])
 
-traits_names
+### Model Aboveground biomass
+
+```{r}
+lme_above_biom_3way <- lme(above_biomass ~  treatment:nfixer:amax +
+                                            treatment:nfixer:gs  +
+                                            treatment:nfixer:wue +
+                                            treatment:nfixer:pnue +
+                                            treatment:nfixer:d13c +
+                                            init_height ,
+                    random = ~1 | spcode, 
+                    data = data_for_models_scaled)
 ```
 
-```{r}
-# Select plants performance vars (y_vars)
-performance_names <- 
-    set_names(names(data_for_models_scaled)[c(5:8)])
+### Model Belowground biommass
 
-performance_names
+```{r}
+lme_below_biom_3way <- lme(below_biomass ~  treatment:nfixer:amax +
+                                            treatment:nfixer:gs  +
+                                            treatment:nfixer:wue +
+                                            treatment:nfixer:pnue +
+                                            treatment:nfixer:d13c +
+                                            init_height ,
+                    random = ~1 | spcode, 
+                    data = data_for_models_scaled)
 ```
 
-## Models lme4::lmer
+### Model RGR
 
 ```{r}
-models_lmer_formulas <- model_combinations_formulas(performance_names, traits_names)
-
-length(models_lmer_formulas)
-models_lmer_formulas[1]
-```
-
-```{r}
-models_q3_lmer <- map(models_lmer_formulas, 
-                       ~ lmer(.x, data = data_for_models_scaled))
-```
-
-## Models nlme::lme
-
-```{r}
-models_nlme_formulas <- model_combinations_formulas(performance_names, 
-                                                    traits_names, 
-                                                    nlme = T)
-
-length(models_nlme_formulas)
-models_nlme_formulas[1]
-```
-
-
-
-```{r}
-models_q3_nlme <- map(models_nlme_formulas, ~model_nlme(., data = data_for_models_scaled))
+lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
+                            treatment:nfixer:gs  +
+                            treatment:nfixer:wue +
+                            treatment:nfixer:pnue +
+                            treatment:nfixer:d13c +
+                            init_height ,
+                  random = ~1 | spcode, 
+                  data = data_for_models_scaled)
 ```
 
 
+### Model Total Biomass
 
-# Validation plots 
+```{r}
+lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
+                                            treatment:nfixer:gs  +
+                                            treatment:nfixer:wue +
+                                            treatment:nfixer:pnue +
+                                            treatment:nfixer:d13c +
+                                            init_height,
+                            random = ~1 | spcode, 
+                            data = data_for_models_scaled)
+```
 
-# Collinearity
+
+# Model Validation  
+
+
+## Validation of models for questions 1,2 and Mass fractions 
+
+### Collinearity
 
 ```{r collinearity_q1_q2}
-map(models_q1_q2, check_collinearity)
+map(models_q1_q2_mass_fractions, check_collinearity)
 ```
 
-```{r}
-# map(models_nodule_count, check_collinearity)
-```
-
-```{r collinearity_q3}
-
-#Warning: Model has interaction terms. VIFs might be inflated. You may check 
-#multicollinearity among predictors of a model without interaction terms.
-
-#map(models_list_q3, check_mul)
-```
-
-# Bolker's plots
-
-```{r}
-bolker_validation <- function(model) {
-    
-    
-    a <- plot(model, type = c("p", "smooth"))
-    
-    ## heteroscedasticity
-    b <-  plot(model,sqrt(abs(resid(.))) ~ fitted(.), type = c("p", "smooth"))
-   
-    cowplot::plot_grid(a,b,nrow = 1)
-}
-```
-
-## Models for questions 1 and 2 
-
-```{r bolker_plots_q1_q2,fig.height = 8, fig.width = 15}
-map(models_q1_q2, bolker_validation)
-```
-
-## Models for nodule count
-
-```{r,bolker_plots_nodule_count, fig.height = 8, fig.width = 15}
-map(models_nodule_count, plot)
-```
-
-## Models for question 3
-
-### lme4 models
-
-```{r,bolker_plots_q3, fig.height = 8, fig.width = 15}
-map(models_q3_lmer, bolker_validation)
-```
-
-### nlme models
-
-```{r,bolker_plots_q3_nlme, fig.height = 8, fig.width = 15}
-map(models_q3_nlme, bolker_validation)
-```
-
-# Performance package
-
-## Models for questions 1,2 
 
 ```{r validation_plots_q1_q2,fig.height = 15, fig.width = 10}
-map(models_q1_q2, check_model)
-```
-
-## Models for nodule count
-
-```{r validation_plots_nodule_count,fig.height = 15, fig.width = 10}
-map(models_nodule_count, check_model)
-```
-
-## Models for question 3
-
-```{r validation_plots_3_way_interact_lmer, fig.height = 15, fig.width = 10}
-map(models_q3_lmer, check_model)
+# No problems found here
+map(models_q1_q2_mass_fractions, check_model)
 ```
 
 
+## Validation of nodule count models 
 
-# Save lists with the models 
+### Checking log nodule count model's assumptions
+
+```{r,validation_plots_lme_nodule_log, fig.height = 14, fig.width = 12}
+check_model(lmer_gaussian_log)
+```
+
+```{r nlme_validation_func_lme_nodule_log, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lmer_gaussian_log, data = data_nodules_cleaned, 
+                      group = "spcode", variables = c("treatment"))
+```
+
+#### Checking improved nlme log model assumptions
+
+Zuur et al pp 84:
+
+"Note that these residuals still show heterogeneity, but this is now allowed 
+(because the residual variation differs depending on the chosen variance 
+structure and values of the variance covariate). Hence, these residuals are 
+less useful for the model validation process."
+
+```{r, validation_plots_nodule_log_weights,  fig.height = 9, fig.width = 14}
+nlme_validation_plots(nlme_nodule_log_weights, data = data_nodules_cleaned,
+                      group = "spcode", variables = c("treatment") )
+```
+
+## Validation of models for question 3
+
+### Aboveground biomass
+
+```{r validation_lme_above_biom_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_above_biom_3way, data = data_for_models_scaled,
+                      group = "spcode")
+```
+
+
+### Belowground biomass
+
+```{r validation_lme_below_biom_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_below_biom_3way, data = data_for_models_scaled,
+                      group = "spcode")
+```
+
+
+### RGR biomass
+
+```{r validation_rgr_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_rgr_3way, data = data_for_models_scaled, group = "spcode")
+```
+
+
+### Total biomass
+
+```{r validation_lme_total_biom_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_total_biom_3way, data = data_for_models_scaled,
+                      group = "spcode")
+```
+
+
+# Save model lists as .RData
+
+# Models for Q1, Q2 and Mass fractions
 
 ```{r}
-saveRDS(models_q1_q2, file = "./processed_data/models_q1_q2.RData") 
-saveRDS(models_q3_lmer, file = "./processed_data/models_q3_3_way_interaction_lmer.RData") 
-saveRDS(models_q3_nlme, file = "./processed_data/models_q3_3_way_interaction_nlme.RData")
+models_q1_q2_mass_fractions <-
+    
+    models_q1_q2_mass_fractions %>%
+  
+    # Remove models that showed violation of the assumptions
+    purrr::list_modify("pnue" = NULL, "wue" = NULL, 
+                       "rmf" = NULL, "smf" = NULL, "lmf" = NULL)
+
+```
+
+## Nodule count
+
+```{r}
+models_nodule_count <- list(nlme_gaussian_log, nlme_nodule_log_weights)
+
+names(models_nodule_count) <- c("nlme_gaussian_log", "nlme_gaussian_log_weights")
+```
+
+## 3-way models
+
+```{r}
+models_3way_q3<- list(lme_above_biom_3way, lme_below_biom_3way,
+                           lme_rgr_3way, lme_total_biom_3way)
+
+names(models_3way_q3) <- c("lme_above_biom_3way", "lme_below_biom_3way",
+                               "lme_rgr_3way", "lme_total_biom_3way")
+
+```
+
+
+```{r}
+saveRDS(models_q1_q2_mass_fractions, file = "./processed_data/models_q1_q2_and_mass_fractions.RData") 
 saveRDS(models_nodule_count, file = "./processed_data/models_nodule_count.RData") 
+saveRDS(models_3way_q3, file = "./processed_data/models_3way_q3.RData")
 ```

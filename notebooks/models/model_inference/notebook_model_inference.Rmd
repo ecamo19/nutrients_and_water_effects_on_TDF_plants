@@ -102,44 +102,45 @@ sys.source("./R/function_masomenos_plots.R", envir = knitr::knit_global())
 
 ```{r}
 # Load models
-models_q1_q2 <- readRDS("./processed_data/models_q1_q2.RData")
-
-models_q3_lmer <- readRDS("./processed_data/models_q3_3_way_interaction_lmer.RData")
-
-models_q3_nlme <- readRDS("./processed_data/models_q3_3_way_interaction_nlme.RData")
+models_q1_q2_and_mass_fractions <- readRDS("./processed_data/models_q1_q2_and_mass_fractions.RData")
 
 models_nodule_count <- readRDS("./processed_data/models_nodule_count.RData")
-```
 
-# Models selected according validation plots for answering questions
-
-## Models Q1 and Q2
-
-```{r}
-models_q1_q2 <-     
-    models_q1_q2 %>%
-        
-        # Remove traits models not log transformed
-        purrr::list_modify("wue" = NULL, "pnue"  = NULL)
-
-names(models_q1_q2)
+models_3way_q3 <- readRDS("./processed_data/models_3way_q3.RData")
 
 ```
 
+# Models selected according validation plots 
+
+## Models: Q1 and Q2
 
 ```{r}
-models_nodule_count <- 
-    models_nodule_count %>%
-        
-        # Remove unused models
-        purrr::list_modify("lmer_gaussian_log" = NULL, "glmer_poisson"  = NULL)
+names(models_q1_q2_and_mass_fractions)
 ```
 
-
-## Models Q3 
+## Nodule count seleted model
 
 ```{r}
-#models_q3_nlme <- models_q3_nlme
+names(models_nodule_count)
+```
+
+```{r echo = FALSE}
+
+# Step done for getting predictions from model
+source("./scripts/code_clean_data_nodules.R")
+
+data_pred_nodules <-
+     data_nodules_cleaned %>%
+         
+         # add id to rownames for keep track of the rows
+         
+         dplyr::select(c("id","spcode","treatment","init_height"))
+```
+
+## 3-way models
+
+```{r}
+names(models_3way_q3)
 ```
 
 # Load data
@@ -151,41 +152,50 @@ set.seed(666)
 ```{r echo=FALSE}
 # Step done for getting predictions from models for Q1 and Q2 
 data_for_models <- 
-    data_for_models %>% 
+    data_for_models %>%
+    
+        rownames_to_column("id") %>% 
         
         # Remove unused variables 
-        dplyr::select(spcode, treatment, nfixer, init_height, everything(),
-               -c(8,10))  
+        dplyr::select(id, spcode, treatment, nfixer, init_height)  
 
 ```
 
-# Q1 Growth and biomass accumulation
+# Q1: Growth and biomass accumulation
+
+
+## Anova and Tuckey comparisons 
 
 ```{r}
-models_q1_q2 %>%
+models_q1_q2_and_mass_fractions %>%
     
-    # Remove traits models
-    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
-                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    # Remove traits and mass fractions models
+    purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
+                       "d13c" = NULL, "amax" = NULL, "gs" = NULL, 
+                       "wue_log" = NULL, "pnue_log" = NULL) %>% 
     anova_table_tidy(., model_list = T)
 ```
 
 ```{r}
-models_q1_q2 %>%
+models_q1_q2_and_mass_fractions %>%
     
-    # Remove traits models
-    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
-                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    # Remove traits and mass fractions models
+    purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
+                       "d13c" = NULL, "amax" = NULL, "gs" = NULL, 
+                       "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
 
+## Percentange change
 
 ```{r message=FALSE, warning=FALSE}
-models_q1_q2 %>%
+models_q1_q2_and_mass_fractions %>%
     
-    # Remove traits models
-    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
-                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>% 
+    # Remove traits and mass fractions models
+    purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
+                       "d13c" = NULL, "amax" = NULL, "gs" = NULL, 
+                       "wue_log" = NULL, "pnue_log" = NULL) %>% 
     
     # Percentage difference
     emmeans_table_tidy(., model_list = T, 
@@ -198,7 +208,7 @@ models_q1_q2 %>%
 ```{r message=FALSE, warning=FALSE}
 
 # Get predictions
-string <- c("models_q1_q2")
+string <- c("models_q1_q2_and_mass_fractions")
 
 data_pred_biomass_growth <- 
         
@@ -206,10 +216,10 @@ data_pred_biomass_growth <-
         gather_predictions(data_for_models,
                            
                            # Return predictions of:
-                            models_q1_q2$rgr,
-                            models_q1_q2$total_biomass,
-                            models_q1_q2$above_biomass,
-                            models_q1_q2$below_biomass) %>%
+                            models_q1_q2_and_mass_fractions$rgr,
+                            models_q1_q2_and_mass_fractions$total_biomass,
+                            models_q1_q2_and_mass_fractions$above_biomass,
+                            models_q1_q2_and_mass_fractions$below_biomass) %>%
             
             # Get fitted values
             pivot_wider(names_from = model, values_from = pred) %>% 
@@ -223,10 +233,9 @@ data_pred_biomass_growth <-
                 stringr::str_replace(., c(string),"pred_") %>% 
                 
                 # Remove dollar sing    
-                gsub("\\$", "", .))) %>% 
-    
+                gsub("\\$", "", .))) %>%
         # Select only pred variables
-        dplyr::select(c(1:3,15:18))  
+        dplyr::select(-init_height)  
 ```
 
 ```{r warning=FALSE}
@@ -243,7 +252,6 @@ vars_q1 <-
     group_var = dplyr::select(data_pred_biomass_growth, treatment) %>%  names)
 ```
 
-
 ```{r fig_1_biomass_growth_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
 vars_q1 %>% 
       # Gererate plots
@@ -253,29 +261,35 @@ vars_q1 %>%
       #cowplot::plot_grid(plotlist = ., ncol = 2)
 ```
 
-
 ## r2 models
 
 ```{r}
-models_q1_q2 %>%
+models_q1_q2_and_mass_fractions %>%
     
-    # Remove traits models
-    purrr::list_modify("d13c" = NULL, "amax" = NULL, 
-                       "gs" = NULL, "wue_log" = NULL, "pnue_log" = NULL) %>%
+    # Remove traits and mass fractions models
+    purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
+                       
+                       "d13c" = NULL, "amax" = NULL, "gs" = NULL, 
+                       "wue_log" = NULL, "pnue_log" = NULL)%>%
     
-    map(., r2)
+    map(., r2) %>% 
+    unlist() 
+   
+   
 ```
 
-# Q2 Traits and Nodule count
+# Q2: Traits and Nodule count
 
 ## Anova and Tuckey comparisons 
 
 ```{r}
-models_q1_q2 %>% 
+models_q1_q2_and_mass_fractions %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL) %>%
+                       "below_biomass" = NULL, "rgr" = NULL, 
+                       
+                       "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL) %>%
     
     anova_table_tidy(., model_list = T)
 ```
@@ -284,11 +298,14 @@ models_q1_q2 %>%
 ### Models with significant interaction
 
 ```{r}
-models_q1_q2 %>% 
+models_q1_q2_and_mass_fractions %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
                        "below_biomass" = NULL, "rgr" = NULL, 
+                       
+                       
+                        "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                        
                        # No interaction
                        "d13c" = NULL,
@@ -299,30 +316,32 @@ models_q1_q2 %>%
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
 
-### Models with no significant interaction
+### Models with signifcant treatment effect
 
 ```{r message=FALSE, warning=FALSE}
-models_q1_q2 %>% 
+models_q1_q2_and_mass_fractions %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
                        "below_biomass" = NULL, "rgr" = NULL, 
                        
-                     
-                       "amax" = NULL, "d15n" = NULL, "wue_log" = NULL
-                       , "d13c" = NULL ) %>%
+                        "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
+                        
+                       "amax" = NULL,  "wue_log" = NULL,
+                       "d13c" = NULL ) %>%
     
     tukey_table_tidy(., model_list = T, formula = "treatment")
 ```
-
+### Models with signifcant nfixer effect
 
 ```{r}
-models_q1_q2 %>% 
+models_q1_q2_and_mass_fractions %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
                        "below_biomass" = NULL, "rgr" = NULL, 
                        
+                       "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                      
                        "amax" = NULL, "d15n" = NULL, 
                        "wue_log" = NULL, "d13c" = NULL, "pnue_log" = NULL) %>%
@@ -335,11 +354,14 @@ models_q1_q2 %>%
 ### Models with significant interaction
 
 ```{r}
-models_q1_q2 %>% 
+models_q1_q2_and_mass_fractions %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
                        "below_biomass" = NULL, "rgr" = NULL, 
+                       
+                       "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
+                       
                        
                        # No interaction
                        "d13c" = NULL, 
@@ -353,15 +375,16 @@ models_q1_q2 %>%
                         grouping_var = "nfixer")
 ```
 
-### Models with no significant interaction
+### Models with significant treatment effect
 
 ```{r}
-models_q1_q2 %>% 
+models_q1_q2_and_mass_fractions %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
                        "below_biomass" = NULL, "rgr" = NULL, 
                        
+                       "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                      
                        "amax" = NULL, "wue_log" = NULL
                        , "d13c" = NULL ) %>%
@@ -372,11 +395,15 @@ models_q1_q2 %>%
     
 
 ```
+
+
+### Models with signifcant nfixer effect
+
 ```{r}
 
-# Difference in WUE btw fixer non fixers
+# Difference in gs between fixer non fixers
 # Percentage difference
-as.data.frame(emmeans(models_q1_q2$gs,
+as.data.frame(emmeans(models_q1_q2_and_mass_fractions$gs,
                           specs = pairwise ~ "nfixer",
                           type = "response",
                           adjust = "tukey")$emmeans)  %>% 
@@ -396,7 +423,8 @@ as.data.frame(emmeans(models_q1_q2$gs,
 ## Plot Traits boxplot
 
 ```{r}
-string <- c("models_q1_q2")
+
+string <- c("models_q1_q2_and_mass_fractions")
 
 data_pred_traits <- 
         
@@ -404,11 +432,11 @@ data_pred_traits <-
         gather_predictions(data_for_models,
                            
                            # Return predictions
-                            models_q1_q2$amax,
-                            models_q1_q2$d13c,
-                            models_q1_q2$gs,
-                            models_q1_q2$wue_log,
-                            models_q1_q2$pnue_log) %>% 
+                            models_q1_q2_and_mass_fractions$amax,
+                            models_q1_q2_and_mass_fractions$d13c,
+                            models_q1_q2_and_mass_fractions$gs,
+                            models_q1_q2_and_mass_fractions$wue_log,
+                            models_q1_q2_and_mass_fractions$pnue_log) %>% 
                        
             
             
@@ -421,13 +449,14 @@ data_pred_traits <-
                 
                 # Remove dollar sing    
                 gsub("\\$", "", .)
-                )) %>%
+                )) %>% 
     
         # Back transform log variables
         mutate(pred_wue = exp(pred_wue_log),
-               pred_pnue = exp(pred_pnue_log)) %>% 
+               pred_pnue = exp(pred_pnue_log)) %>%  
        
-        dplyr::select(c(1:3,15:17, 20,21))  
+        # Remove log predictions and init height
+        dplyr::select(-c(init_height, pred_wue_log,pred_pnue_log ))  
 ```
 
 
@@ -443,7 +472,6 @@ vars_q2 <-
     group_var = dplyr::select(data_pred_traits, treatment) %>%  names)
 ```
 
-
 ```{r fig_2_traits_q2_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
 vars_q2 %>% 
       # Gererate plots
@@ -454,241 +482,389 @@ vars_q2 %>%
     
 ```
 
+
+
 ```{r}
-models_q1_q2 %>% 
+models_q1_q2_and_mass_fractions %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL) %>%
+                       "below_biomass" = NULL, "rgr" = NULL,
+                       
+                        "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
+                       ) %>%
+    map(., r2) %>% 
+    unlist() 
     
-    map(., r2)
+    
 ```
 
 
 ## Nodule count
 
 ```{r}
-anova_table_tidy(models_nodule_count$lmer_gaussian, single_model = T)
-
-summary(models_nodule_count$lmer_gaussian)
-var(ranef(models_nodule_count$lmer_gaussian)$spcode)
-VarCorr(models_nodule_count$lmer_gaussian)
-
-```
-```{r}
-#arm::display(models_nodule_count$lmer_gaussian)
-#sjPlot::plot_model(models_nodule_count$lmer_gaussian)
+map(models_nodule_count, AIC)
 ```
 
 ```{r}
-tukey_table_tidy(models_nodule_count$lmer_gaussian,single_model = T, 
-                 formula = "treatment")
+anova.lme(models_nodule_count$nlme_gaussian_log_weights, type = "marginal")
 ```
+
+
+
+
+```{r}
+# Interpretation: https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/
+```
+
+
+```{r}
+as.data.frame(emmeans(models_nodule_count$nlme_gaussian_log_weights,
+                           specs = pairwise ~ "treatment",
+                           type = "response",
+                           adjust =  "tukey")$contrast) %>%
+         clean_names() %>% 
+         reactable()
+```
+
+
+```{r}
+# Percentage difference
+emmeans_table_tidy(models_nodule_count$nlme_gaussian_log_weights, 
+                        single_model = T, 
+                        formula = "treatment")
+
+```
+
+
 
 
 ```{r}
 models_nodule_count %>% 
     #purrr::list_modify("rgr_slope" = NULL, "agr_log" = NULL, "gs_sqrt" = NULL) %>%
-    map(., r2)
+    map(., r2) %>% 
+    unlist() 
 ```
 
 
-# Q3 Do species modulate their traits in response to the addition of nutrients and/or water to increase biomass accumulation and growth rates? 
+# Q3: Do species modulate their traits in response to the addition of nutrients and/or water to increase biomass accumulation and growth rates? 
 
 For answering this question I fitted the following models focusing in the 3 way interaction:
 
 $$response \sim\ treatment:nfixer:trait\ + initialheight\ + (1|spcode) $$
-I have 4 response variables(rgr, total biomass, above and below ground biomass) and 6 traits thus I fitted 24 models. Also I scaled (z-scores) the traits for being able to compare between parameters of different models.  
-
-After this I bootstrap the parameters for getting the Confidence intervals
-
-## Model comparisons
-
-### Aboveground biomass
-
-```{r}
-model.sel(models_q3_nlme$`abovebiomass~amax`,
-          models_q3_nlme$`abovebiomass~d13c`,
-          models_q3_nlme$`abovebiomass~gs`,
-          models_q3_nlme$`abovebiomass~pnue`,
-          models_q3_nlme$`abovebiomass~wue`)[,8:12]
-
-```
-
-
-```{r}
-model.sel(models_q3_nlme$`abovebiomass~amax`,
-          models_q3_nlme$`abovebiomass~d13c`,
-          models_q3_nlme$`abovebiomass~gs`,
-          models_q3_nlme$`abovebiomass~pnue`,
-          models_q3_nlme$`abovebiomass~wue`,
-          rank = "AIC")[,8:12]
-```
-
-
-### Belowgraound Biomass
-
-```{r}
-model.sel(models_q3_nlme$`belowbiomass~amax`,
-                    #models_q3_nlme$`belowbiomass~d15n`,
-                    models_q3_nlme$`belowbiomass~d13c`,
-                    models_q3_nlme$`belowbiomass~gs`,
-                    models_q3_nlme$`belowbiomass~pnue`,
-                    models_q3_nlme$`belowbiomass~wue`,
-                    rank = "AIC")[,8:12]
-```
-
-### rgr
-
-```{r}
-model.sel(models_q3_nlme$`rgr~amax`,
-                    models_q3_nlme$`rgr~d13c`,
-                    #models_q3_nlme$`rgr~d15n`,
-                    models_q3_nlme$`rgr~gs`,
-                    models_q3_nlme$`rgr~pnue`,
-                    models_q3_nlme$`rgr~wue`)[,8:12]
-```
-
-
-### Total Biomass
-
-```{r}
-model.sel(models_q3_nlme$`totalbiomass~amax`,
-                   
-                    models_q3_nlme$`totalbiomass~d13c`,
-                    models_q3_nlme$`totalbiomass~gs`,
-                    models_q3_nlme$`totalbiomass~pnue`,
-                    models_q3_nlme$`totalbiomass~wue`)[,8:12]
-```
 
 ## r2
 
 ```{r}
-map(models_q3_nlme, r.squaredGLMM)
+map(models_3way_q3, r.squaredGLMM)
 ```
 
-## Anova tables
+## Bootstraps
+
+### Total Biomass
+ 
+```{r}
+# Look results before bootstrap
+#report::report(models_3way_q3$lme_total_biom_3way)
+```
+
 
 ```{r}
-models_q3_nlme %>%
-    anova_table_tidy(., model_list = T)
+if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
+    
+    print("The bootstrap exists")
+    
+    bootstrap_ci_total_biomass <- readRDS("./processed_data/bootstrap_ci_total_biomass.RData")
+    
+    print("File read")
+    
+} else {
+    
+    print("The bootstrap does not exist, Creating bootstrap")
+    
+    bootstrap_ci_total_biomass <- 
+        bootstrap_model_ci_df(model = models_3way_q3$lme_total_biom_3way, 
+                              category = "all", 
+                              iter = 9999) 
+    
+    saveRDS(bootstrap_ci_total_biomass, 
+            file = "./processed_data/bootstrap_ci_total_biomass.RData")
+    
+}
 ```
 
-## Bootstrap parameters for getting confidence intervals
 
-```{r bootstrap__ci_three_way_params_models}
+#### Plot Total Biomass
 
-# #bootstrap_model_ci_df(model = models_q3_nlme$`abovebiomass~amax`,category = "all", iter = 100)
+```{r}
+colmn <- paste0("col_", 1:3)
 
-# bootstrap_ci_results <- map_dfr(models_q3_nlme,~ bootstrap_model_ci_df(model = .x,
-#                                                               category = "all",
-#                                                               iter = 9999))
+data_total_biomass_plot <- 
+        
+        bootstrap_ci_total_biomass %>%
+            tidyr::separate(data = ., col = term, 
+                     sep = ":",
+                     into = colmn,
+                     remove = F) %>% 
+            mutate(across(where(is.character), as.factor)) %>% 
+            filter(type == "norm")   
 
-#saveRDS(bootstrap_ci_results, file = "./processed_data/bootstrap_ci_results.RData")
+data_total_biomass_plot$term <- 
+    factor(data_total_biomass_plot$term,
+           levels = data_total_biomass_plot$term[order(data_total_biomass_plot$col_2)])
 
-bootstrap_ci_results <- readRDS("./processed_data/bootstrap_ci_results.RData")
+# Show estimates
+data_total_biomass_plot %>% 
+    arrange(desc(significance)) %>% 
+    dplyr::select(term,estimate,lower, upper, response_var,significance)
+```
+
+
+```{r total_biomass_plot, fig.width = 30, fig.height = 25, fig.align = 'center'}
+# Plot
+# 
+
+(total_biomass_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
+                                     color = significance,
+                                     ci_lower = lower, ci_upper = upper,
+                                     data = data_total_biomass_plot))
+
+ 
+```
+
+### Belowground Biomass
+
+```{r}
+# Look results before bootstrap
+#report::report_parameters(models_3way_q3$lme_below_biom_3way)
 ```
 
 
 
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_belowground_biomass.RData")) {
+    
+    print("The bootstrap exists")
+    
+    bootstrap_ci_belowground_biomass <- readRDS("./processed_data/bootstrap_ci_belowground_biomass.RData")
+    
+    print("File read")
+    
+} else {
+    
+    print("The bootstrap does not exist, Creating bootstrap")
+    
+    bootstrap_ci_belowground_biomass <- 
+        bootstrap_model_ci_df(model = models_3way_q3$lme_below_biom_3way, 
+                              category = "all", 
+                              iter = 9999) 
+       
+    saveRDS(bootstrap_ci_belowground_biomass, 
+            file = "./processed_data/bootstrap_ci_belowground_biomass.RData")
+}
+```
 
-## Plot
+#### Plot Belowground Biomass
 
-### Only significant coefficients
-
-```{r figure_3_three_way_q3, fig.width = 32, fig.height = 20, fig.align = 'center', echo = FALSE}
+```{r}
 
 colmn <- paste0("col_", 1:3)
-bootstrap_ci_results %>% 
-    tidyr::separate(data = ., col = term, 
-                    sep = ":",
-                    into = colmn,
-                    remove = F) %>% 
-    mutate(across(where(is.character), as.factor)) %>% 
-    filter(type == "norm" & significance == TRUE)  %>% 
 
-    ggplot2::ggplot(data = ., aes(x = term, y = estimate, color = significance,
-                                  shape = col_2)) +
-            ggplot2::geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
-            ggplot2::geom_point(size = 7, position = position_dodge(width = .9)) +
+data_belowground_plot <-
+    
+    # Clean data
+        bootstrap_ci_belowground_biomass %>% 
+            tidyr::separate(data = ., col = term, 
+                     sep = ":",
+                     into = colmn,
+                     remove = F) %>% 
+            mutate(across(where(is.character), as.factor)) %>% 
+            filter(type == "norm") 
 
-            # 95% C.I
-            ggplot2::geom_linerange(aes(ymin = lower, ymax = upper),
-                                    lwd = 1, position = position_dodge(width = .9)) +
+# Rearrange data
+data_belowground_plot$term <- 
+    factor(data_belowground_plot$term,
+           levels = data_belowground_plot$term[order(data_belowground_plot$col_2)])
 
-            ggplot2::theme_bw() +
 
-            ggplot2::theme(legend.position = "none",
-                           strip.text.x = element_text(size = 25),
-                           axis.text.y   = element_text(size= 25),
-                           axis.text.x   = element_text(size= 25),
-                           axis.title.y  = element_text(size= 25),
-                           axis.title.x  = element_text(size= 25),
-                           panel.grid.major.y = element_blank(),
-                           panel.grid.minor = element_blank(),
-                           axis.line = element_line(size = .4,colour = "black"),
-                           panel.border = element_rect(colour = "black", fill= NA,
-                                                       size = 1.3)) +
 
-            # Significance colors
-            ggplot2::scale_colour_manual(values = c("black")) +
-            ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
-            ggplot2::xlab("") +
+# Show estimates
+data_belowground_plot %>% 
+    arrange(desc(significance)) %>% 
+    dplyr::select(term,estimate,lower, upper, response_var,significance)
 
-            ggplot2::facet_wrap( ~ response_var, scales = "free", ncol = 2) +
-
-            ggplot2::coord_flip()
 
 ```
 
 
-### All coefficients
+```{r belowground_plot, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
+# Plot
+belowground_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
+                                   color = significance,
+                                   ci_lower = lower, ci_upper = upper,
+                                   data = data_belowground_plot)
 
-```{r supplementary_figure_3_three_way_q3, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
-bootstrap_ci_results %>% 
-    filter(type == "norm") %>% 
-
-ggplot2::ggplot(data = .,
-               # Highlight significant terms
-               aes(x = term, y = estimate, color = significance)) +
-
-
-            ggplot2::geom_hline(yintercept = 0, colour = gray(1/2), lty = 2) +
-            ggplot2::geom_point(size = 6, position = position_dodge(width = .9)) +
-
-            # 95% C.I
-            ggplot2::geom_linerange(aes(ymin = lower, ymax = upper),
-                                    lwd = 1, position = position_dodge(width = .9)) +
-
-            # 99% C.I
-            #geom_linerange(aes(ymin = !!yvar - !!se * interval2,
-            #                   ymax = !!yvar + !!se * interval2),
-            #               lwd = 1/2, position = position_dodge(width = .9)) +
-
-            ggplot2::theme_bw() +
-
-            ggplot2::theme(legend.position = "none",
-                           strip.text.x = element_text(size = 25),
-                           axis.text.y   = element_text(size= 25),
-                           axis.text.x   = element_text(size= 25),
-                           axis.title.y  = element_text(size= 25),
-                           axis.title.x  = element_text(size= 25),
-                           panel.grid.major.y = element_blank(),
-                           panel.grid.minor = element_blank(),
-                           axis.line = element_line(size = .4,colour = "black"),
-                           panel.border = element_rect(colour = "black", fill= NA,
-                                                       size = 1.3)) +
-            # Add name
-            #labs(title = paste0(response_variable)) +
-
-            # Significance colors
-            ggplot2::scale_colour_manual(values = c("grey","black")) +
-            ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
-            ggplot2::xlab("") +
-
-            ggplot2::facet_wrap(~ response_var, scales = "free", ncol = 2) +
+ 
+```
 
 
-            ggplot2::coord_flip()
+
+
+### Aboveground Biomass
+
+```{r}
+# Look results before bootstrap
+#report::report_parameters(models_3way_q3$lme_above_biom_3way)
+```
+
+```{r}
+# Look results before bootstrap
+AIC(models_3way_q3$lme_above_biom_3way)
+
+data.frame(intervals(models_3way_q3$lme_above_biom_3way)$fixed) %>% 
+    tibble::rownames_to_column("names") %>% 
+    filter(!names %in% c("(Intercept)","init_height")) %>% 
+    mutate(significance = ifelse((lower > 0 & upper > 0 | lower < 0 & upper < 0 ), 
+                                 TRUE, FALSE)) %>% 
+    filter(significance == TRUE) %>% 
+    reactable()
+```
+
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_aboveground_biomass.RData")) {
+    
+    print("The bootstrap exists")
+    
+    bootstrap_ci_aboveground_biomass <- readRDS("./processed_data/bootstrap_ci_aboveground_biomass.RData")
+    
+    print("File read")
+    
+} else {
+    
+    print("The bootstrap does not exist, Creating bootstrap")
+    
+    bootstrap_ci_aboveground_biomass <- 
+        bootstrap_model_ci_df(model = models_3way_q3$lme_above_biom_3way, 
+                              category = "all", 
+                              iter = 9999)
+        
+    saveRDS(bootstrap_ci_aboveground_biomass, 
+            file = "./processed_data/bootstrap_ci_aboveground_biomass.RData")
+}
+```
+#### Plot Aboveground Biomass
+
+```{r}
+colmn <- paste0("col_", 1:3)
+
+data_aboveground_plot <- 
+        
+        # Clean data
+        bootstrap_ci_aboveground_biomass %>%
+                tidyr::separate(data = ., col = term, 
+                                                sep = ":",
+                                                into = colmn,
+                                            remove = F) %>% 
+                mutate(across(where(is.character), as.factor))  %>% 
+                filter(type == "norm") 
+
+# Rearrange data
+data_aboveground_plot$term <- 
+    factor(data_aboveground_plot$term,
+           levels = data_aboveground_plot$term[order(data_aboveground_plot$col_2)])
+
+data_aboveground_plot %>% 
+    arrange(desc(significance)) %>% 
+    dplyr::select(term,estimate,lower, upper, response_var,significance)
+```
+
+
+```{r aboveground_plot, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
+# Plot
+(aboveground_plot <- cleveland_plot(x = term, y = estimate, shape = col_2, color = significance,
+               ci_lower = lower, ci_upper = upper,
+               data = data_aboveground_plot))
 
 ```
+
+
+
+### RGR
+
+```{r}
+# Look results before bootstrap
+#report::report_parameters(models_3way_q3$lme_rgr_3way)
+```
+
+
+```{r}
+# Look results before bootstrap
+
+AIC(models_3way_q3$lme_rgr_3way)
+
+data.frame(intervals(models_3way_q3$lme_rgr_3way)$fixed) %>% 
+    tibble::rownames_to_column("names") %>% 
+    filter(!names %in% c("(Intercept)","init_height")) %>% 
+    mutate(significance = ifelse((lower > 0 & upper > 0 | lower < 0 & upper < 0 ), 
+                                 TRUE, FALSE)) %>% 
+    filter(significance == TRUE)  %>% 
+    reactable()
+```
+
+
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
+    
+    print("The bootstrap exists")
+    
+    bootstrap_ci_rgr <- readRDS("./processed_data/bootstrap_ci_rgr.RData")
+    
+    print("File read")
+    
+} else {
+    
+    print("The bootstrap does not exist, Creating bootstrap")
+
+    bootstrap_ci_rgr <- 
+        bootstrap_model_ci_df(model = models_3way_q3$lme_rgr_3way, 
+                              category = "all", 
+                              iter = 9999) 
+    saveRDS(bootstrap_ci_rgr, 
+            file = "./processed_data/bootstrap_ci_rgr.RData")
+    
+}
+```
+
+#### Plot RGR
+```{r}
+colmn <- paste0("col_", 1:3)
+
+data_rgr_plot <- 
+    bootstrap_ci_rgr %>% 
+            tidyr::separate(data = ., col = term, 
+                     sep = ":",
+                     into = colmn,
+                     remove = F) %>% 
+            mutate(across(where(is.character), as.factor)) %>% 
+            filter(type == "norm")
+
+data_rgr_plot$term <- 
+    factor(data_rgr_plot$term,
+           levels = data_rgr_plot$term[order(data_rgr_plot$col_2)])
+           
+        
+# Plot
+rgr_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
+                           color = significance,
+                           ci_lower = lower, ci_upper = upper,
+                             data = data_rgr_plot)
+
+```
+
+ 
+##
+```{r figure_3_three_way_q3, fig.width = 40, fig.height = 30, fig.align = 'center', echo = FALSE}
+cowplot::plot_grid(total_biomass_plot,belowground_plot,aboveground_plot,rgr_plot, ncol = 2)
+```
+ 
+ 

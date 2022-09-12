@@ -4,12 +4,12 @@
 <svg
    version="1.1"
    id="svg2"
-   width="1536"
+   width="1200"
    height="412"
-   viewBox="0 0 1536 412"
+   viewBox="0 0 1200 412"
    sodipodi:docname="table_1_species.svg"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   inkscape:export-filename="table_1_species.png"
+   inkscape:export-filename="../final_figs_tables/table_1_species.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -70,8 +70,8 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="0.74531636"
-     inkscape:cx="611.82073"
-     inkscape:cy="231.44534"
+     inkscape:cx="615.84587"
+     inkscape:cy="230.10363"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="1920"
@@ -82,7 +82,7 @@
        x="0"
        y="0"
        id="page8"
-       width="1536"
+       width="1200"
        height="412" />
   </sodipodi:namedview>
   <g
@@ -90,492 +90,385 @@
      inkscape:groupmode="layer"
      inkscape:label="Page 1"
      transform="matrix(1.3333333,0,0,-1.3333333,0,412)">
-    <path
-       d="M -1,59 H 1368 V 174 H -1 Z"
-       style="fill:#efefef;fill-opacity:1;fill-rule:nonzero;stroke:none"
-       id="path24"
-       transform="matrix(0.72276262,0,0,-0.72276262,81.991748,309)"
-       clip-path="url(#clipPath1889)" />
-    <path
-       d="m -1,173 h 1369 v 39 H -1 Z"
-       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
-       id="path26"
-       transform="matrix(0.72276262,0,0,-0.72276262,81.991748,309)"
-       clip-path="url(#clipPath1885)" />
-    <path
-       d="M -1,59 H 1368 M -1,364 h 1369"
-       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       id="path30"
-       transform="matrix(0.72276262,0,0,-0.72276262,81.991748,309)"
-       clip-path="url(#clipPath1877)" />
     <g
-       id="g1915">
+       id="g2877"
+       transform="translate(-78.5048,2.0682801)">
+      <path
+         d="M -1,59 H 1368 V 174 H -1 Z"
+         style="fill:#efefef;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.06373"
+         id="path24"
+         transform="matrix(0.63875066,0,0,-0.72276262,91.918735,296.19242)"
+         clip-path="url(#clipPath1889)" />
+      <path
+         d="M -1,59 H 1368 M -1,364 h 1369"
+         style="fill:none;stroke:#000000;stroke-width:2.12746;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+         id="path30"
+         transform="matrix(0.63875066,0,0,-0.72276262,91.918735,296.19242)"
+         clip-path="url(#clipPath1877)" />
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         transform="matrix(1,0,0,-1,34.5,0)"
+         style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:267.777;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text34"
-         x="84.160034"
-         y="-273.71841"><tspan
-           x="84.160034 100.22141 109.37867 120.87175 132.36484 140.40585 145.57361 153.61462 165.10771 174.26497 183.42223 189.14809 198.30534"
-           y="-273.71841"
-           sodipodi:role="line"
-           id="tspan32"
-           style="stroke-width:0.722763">Genus species</tspan></text>
+         x="55.171032"
+         y="-260.91083"><tspan
+           x="55.171032"
+           y="-260.91083"
+           id="tspan304">Genus species</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:298.569;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text54"
          x="84.160034"
          y="-244.80789"><tspan
            x="84.160034"
            y="-244.80789"
-           id="tspan451">Dalbergia Retusa</tspan></text>
+           id="tspan306">Dalbergia Retusa</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:312.387;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text74"
          x="84.160034"
          y="-217.34291"><tspan
            x="84.160034"
            y="-217.34291"
-           id="tspan453">Gliricidia Sepium</tspan></text>
+           id="tspan308">Gliricidia Sepium</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:357.727;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text94"
          x="84.160034"
          y="-189.87793"><tspan
            x="84.160034"
            y="-189.87793"
-           id="tspan455">Enterolobium Cyclocarpum</tspan></text>
+           id="tspan310">Enterolobium Cyclocarpum</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:348.852;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text114"
          x="84.160034"
          y="-162.41295"><tspan
            x="84.160034"
            y="-162.41295"
-           id="tspan457">Hymenea Courbaril</tspan></text>
+           id="tspan312">Hymenea Courbaril</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:354.439;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text134"
          x="84.160034"
          y="-134.94797"><tspan
            x="84.160034"
            y="-134.94797"
-           id="tspan459">Pachira quinata</tspan></text>
+           id="tspan314">Pachira quinata</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:289.594;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text154"
          x="84.160034"
          y="-107.48298"><tspan
            x="84.160034"
            y="-107.48298"
-           id="tspan461">Simarouba glauca</tspan></text>
+           id="tspan316">Simarouba glauca</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:352.502;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text174"
          x="84.160034"
          y="-80.018005"><tspan
            x="84.160034"
            y="-80.018005"
-           id="tspan463">Tabebuia ochraceae</tspan></text>
+           id="tspan318">Tabebuia ochraceae</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:431.601;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         transform="matrix(1,0,0,-1,10.010999,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:431.601;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text194"
          x="84.160034"
          y="-53.275787"><tspan
            x="84.160034"
            y="-53.275787"
-           id="tspan465">Swietenia macrophylla</tspan></text>
-    </g>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text38"
-       x="491.76215"
-       y="-273.71841"><tspan
-         x="491.76215"
-         y="-273.71841"
-         id="tspan467">Family</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:253.207;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text58"
-       x="491.76215"
-       y="-244.80789"><tspan
-         x="491.76215"
-         y="-244.80789"
-         id="tspan469">Fabaceae</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:184.02;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text78"
-       x="491.76215"
-       y="-217.34291"><tspan
-         x="491.76215"
-         y="-217.34291"
-         id="tspan471">Fabaceae</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:199.799;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text98"
-       x="491.76215"
-       y="-189.87793"><tspan
-         x="491.76215"
-         y="-189.87793"
-         id="tspan473">Fabaceae</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:203.441;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text118"
-       x="491.76215"
-       y="-162.41295"><tspan
-         x="491.76215"
-         y="-162.41295"
-         id="tspan475">Fabaceae</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text138"
-       x="491.76215"
-       y="-134.94797"><tspan
-         x="491.76215"
-         y="-134.94797"
-         id="tspan477">Malvaceae</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text158"
-       x="491.76215"
-       y="-107.48298"><tspan
-         x="491.76215"
-         y="-107.48298"
-         id="tspan479">Simaroubaceae</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text178"
-       x="491.76215"
-       y="-80.018005"><tspan
-         x="491.76215"
-         y="-80.018005"
-         id="tspan481">Bignoniaceae</tspan></text>
-    <text
-       xml:space="preserve"
-       transform="scale(1,-1)"
-       style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:159.614;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-       id="text198"
-       x="491.76215"
-       y="-53.275787"><tspan
-         x="491.76215"
-         y="-53.275787"
-         id="tspan483">Meliaceae</tspan></text>
-    <g
-       id="g2237"
-       transform="translate(-60)">
+           id="tspan320">Swietenia macrophylla</tspan></text>
       <text
          xml:space="preserve"
-         transform="scale(1,-1)"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text38"
+         x="491.76215"
+         y="-273.71841"><tspan
+           x="491.76215"
+           y="-273.71841"
+           id="tspan322">Family</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:253.207;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text58"
+         x="491.76215"
+         y="-244.80789"><tspan
+           x="491.76215"
+           y="-244.80789"
+           id="tspan324">Fabaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:184.02;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text78"
+         x="491.76215"
+         y="-217.34291"><tspan
+           x="491.76215"
+           y="-217.34291"
+           id="tspan326">Fabaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:199.799;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text98"
+         x="491.76215"
+         y="-189.87793"><tspan
+           x="491.76215"
+           y="-189.87793"
+           id="tspan328">Fabaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:203.441;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text118"
+         x="491.76215"
+         y="-162.41295"><tspan
+           x="491.76215"
+           y="-162.41295"
+           id="tspan330">Fabaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text138"
+         x="491.76215"
+         y="-134.94797"><tspan
+           x="491.76215"
+           y="-134.94797"
+           id="tspan332">Malvaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text158"
+         x="491.76215"
+         y="-107.48298"><tspan
+           x="491.76215"
+           y="-107.48298"
+           id="tspan334">Simaroubaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:229.875;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text178"
+         x="491.76215"
+         y="-80.018005"><tspan
+           x="491.76215"
+           y="-80.018005"
+           id="tspan336">Bignoniaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:159.614;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text198"
+         x="491.76215"
+         y="-53.275787"><tspan
+           x="491.76215"
+           y="-53.275787"
+           id="tspan338">Meliaceae</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
          style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:237.043;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
          id="text122"
          x="721.63666"
          y="-162.41295"><tspan
            x="721.63666"
            y="-162.41295"
-           id="tspan485">semi-deciduous</tspan></text>
+           id="tspan340">semi-deciduous</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:221.747;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text42"
+         x="721.63666"
+         y="-273.71841"><tspan
+           x="721.63666"
+           y="-273.71841"
+           id="tspan342">Leaf habit</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:202.078;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text62"
+         x="721.63666"
+         y="-244.80789"><tspan
+           x="721.63666"
+           y="-244.80789"
+           id="tspan344">deciduous</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:214.216;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text82"
+         x="721.63666"
+         y="-217.34291"><tspan
+           x="721.63666"
+           y="-217.34291"
+           id="tspan346">deciduous</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:240.921;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text102"
+         x="721.63666"
+         y="-189.87793"><tspan
+           x="721.63666"
+           y="-189.87793"
+           id="tspan348">deciduous</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:220.286;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text142"
+         x="721.63666"
+         y="-134.94797"><tspan
+           x="721.63666"
+           y="-134.94797"
+           id="tspan350">deciduous</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:220.861;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text162"
+         x="721.63666"
+         y="-107.48298"><tspan
+           x="721.63666"
+           y="-107.48298"
+           id="tspan352">evergreen</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:204.506;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text182"
+         x="721.63666"
+         y="-80.018005"><tspan
+           x="721.63666"
+           y="-80.018005"
+           id="tspan354">deciduous</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(1,0,0,-1,-88.989001,-12.807583)"
+         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:222.713;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+         id="text202"
+         x="721.63666"
+         y="-53.275787"><tspan
+           x="721.63666"
+           y="-53.275787"
+           id="tspan356">deciduous</tspan></text>
       <g
-         id="g2216">
+         id="g1072"
+         transform="translate(-131.54483)">
         <text
            xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:221.747;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text42"
-           x="721.63666"
-           y="-273.71841"><tspan
-             x="721.63666"
-             y="-273.71841"
-             id="tspan487">Leaf habit</tspan></text>
-        <text
-           xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:202.078;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text62"
-           x="721.63666"
-           y="-244.80789"><tspan
-             x="721.63666"
-             y="-244.80789"
-             id="tspan489">deciduous</tspan></text>
-        <text
-           xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:214.216;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text82"
-           x="721.63666"
-           y="-217.34291"><tspan
-             x="721.63666"
-             y="-217.34291"
-             id="tspan491">deciduous</tspan></text>
-        <text
-           xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:240.921;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text102"
-           x="721.63666"
-           y="-189.87793"><tspan
-             x="721.63666"
-             y="-189.87793"
-             id="tspan493">deciduous</tspan></text>
-        <text
-           xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:220.286;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text142"
-           x="721.63666"
-           y="-134.94797"><tspan
-             x="721.63666"
-             y="-134.94797"
-             id="tspan495">deciduous</tspan></text>
-        <text
-           xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:220.861;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text162"
-           x="721.63666"
-           y="-107.48298"><tspan
-             x="721.63666"
-             y="-107.48298"
-             id="tspan497">evergreen</tspan></text>
-        <text
-           xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:204.506;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text182"
-           x="721.63666"
-           y="-80.018005"><tspan
-             x="721.63666"
-             y="-80.018005"
-             id="tspan499">deciduous</tspan></text>
-        <text
-           xml:space="preserve"
-           transform="scale(1,-1)"
-           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:222.713;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-           id="text202"
-           x="721.63666"
-           y="-53.275787"><tspan
-             x="721.63666"
-             y="-53.275787"
-             id="tspan501">deciduous</tspan></text>
-      </g>
-    </g>
-    <g
-       id="g2404"
-       transform="translate(-25.5)">
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:270.86;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text46"
-         x="854.625"
-         y="-273.71841"><tspan
-           x="854.625"
-           y="-273.71841"
-           id="tspan503">Leaf type</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:192.801;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text66"
-         x="854.625"
-         y="-244.80789"><tspan
-           x="854.625"
-           y="-244.80789"
-           id="tspan505">compound</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:147.69;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text86"
-         x="854.625"
-         y="-217.34291"><tspan
-           x="854.625"
-           y="-217.34291"
-           id="tspan507">compound</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:160.657;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text106"
-         x="854.625"
-         y="-189.87793"><tspan
-           x="854.625"
-           y="-189.87793"
-           id="tspan509">compound</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:167.161;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text126"
-         x="854.625"
-         y="-162.41295"><tspan
-           x="854.625"
-           y="-162.41295"
-           id="tspan511">compound</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:167.161;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text146"
-         x="854.625"
-         y="-134.94797"><tspan
-           x="854.625"
-           y="-134.94797"
-           id="tspan513">compound</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:167.161;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text166"
-         x="854.625"
-         y="-107.48298"><tspan
-           x="854.625"
-           y="-107.48298"
-           id="tspan515">compound</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:189.91;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text186"
-         x="854.625"
-         y="-80.018005"><tspan
-           x="854.625"
-           y="-80.018005"
-           id="tspan517">compound</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:179.026;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text206"
-         x="854.625"
-         y="-53.275787"><tspan
-           x="854.625"
-           y="-53.275787"
-           id="tspan519">compound</tspan></text>
-    </g>
-    <g
-       id="g2590">
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:228.749;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text50"
-         x="945.69305"
-         y="-273.71841"><tspan
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:bold;font-size:20.671px;font-family:TimesNewRomanPS;-inkscape-font-specification:TimesNewRomanPS-BoldMT;writing-mode:lr-tb;white-space:pre;inline-size:228.749;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text50"
            x="945.69305"
-           y="-273.71841"
-           id="tspan521">Nitrogen fixer</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:210.711;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text70"
-         x="992.67267"
-         y="-244.80789"><tspan
+           y="-273.71841"><tspan
+             x="945.69305"
+             y="-273.71841"
+             id="tspan358">Nitrogen fixer</tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:210.711;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text70"
            x="992.67267"
-           y="-244.80789"
-           id="tspan523">yes</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:148.806;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text90"
-         x="992.67267"
-         y="-217.34291"><tspan
+           y="-244.80789"><tspan
+             x="992.67267"
+             y="-244.80789"
+             id="tspan360">yes</tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:148.806;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text90"
            x="992.67267"
-           y="-217.34291"
-           id="tspan525">yes</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:184.006;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text110"
-         x="989.78162"
-         y="-189.87793"><tspan
+           y="-217.34291"><tspan
+             x="992.67267"
+             y="-217.34291"
+             id="tspan362">yes</tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:184.006;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text110"
            x="989.78162"
-           y="-189.87793"
-           id="tspan527">yes </tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:183.84;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text130"
-         x="996.28644"
-         y="-162.41295"><tspan
+           y="-189.87793"><tspan
+             x="989.78162"
+             y="-189.87793"
+             id="tspan364">yes </tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:183.84;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text130"
            x="996.28644"
-           y="-162.41295"
-           id="tspan529">no</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:138.929;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text150"
-         x="996.28644"
-         y="-134.94797"><tspan
+           y="-162.41295"><tspan
+             x="996.28644"
+             y="-162.41295"
+             id="tspan366">no</tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:138.929;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text150"
            x="996.28644"
-           y="-134.94797"
-           id="tspan531">no</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:186.268;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text170"
-         x="996.28644"
-         y="-107.48298"><tspan
+           y="-134.94797"><tspan
+             x="996.28644"
+             y="-134.94797"
+             id="tspan368">no</tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:186.268;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text170"
            x="996.28644"
-           y="-107.48298"
-           id="tspan533">no</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:195.978;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text190"
-         x="996.28644"
-         y="-80.018005"><tspan
+           y="-107.48298"><tspan
+             x="996.28644"
+             y="-107.48298"
+             id="tspan370">no</tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:195.978;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text190"
            x="996.28644"
-           y="-80.018005"
-           id="tspan535">no</tspan></text>
-      <text
-         xml:space="preserve"
-         transform="scale(1,-1)"
-         style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:155.714;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
-         id="text210"
-         x="996.28644"
-         y="-53.275787"><tspan
+           y="-80.018005"><tspan
+             x="996.28644"
+             y="-80.018005"
+             id="tspan372">no</tspan></text>
+        <text
+           xml:space="preserve"
+           transform="matrix(1,0,0,-1,-28.989001,-12.807583)"
+           style="font-variant:normal;font-weight:normal;font-size:20.671px;font-family:TimesNewRomanPSMT;-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;white-space:pre;inline-size:155.714;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.722763"
+           id="text210"
            x="996.28644"
-           y="-53.275787"
-           id="tspan537">no</tspan></text>
+           y="-53.275787"><tspan
+             x="996.28644"
+             y="-53.275787"
+             id="tspan374">no</tspan></text>
+      </g>
     </g>
   </g>
 </svg>
