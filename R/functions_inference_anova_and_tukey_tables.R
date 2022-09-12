@@ -18,7 +18,7 @@ anova_table_df <- function(model){
     #trait_var <- as.character(attr(terms, "variables"))[5]
     
     # Generate anova table
-    car::Anova(model, type = "III") %>% 
+    car::Anova(model, type = "III", test.statistic=c("F")) %>% 
         
         data.frame() %>%
         rownames_to_column("fixed_effects") %>% 
@@ -28,8 +28,8 @@ anova_table_df <- function(model){
         clean_names()  %>% 
  
         # Round p and f values
-        mutate(chisq = round(chisq,4),
-               pr_chisq = round(pr_chisq,20)) %>% 
+        mutate(f = round(f,4),
+               pr_f = round(pr_f,20)) %>% 
         dplyr::select(response_variable, fixed_effects, everything())
 }
 
@@ -59,11 +59,11 @@ anova_table_tidy <- function(model, single_model = FALSE, model_list = FALSE){
                       # Adjust columns width
                       response_variable = colDef(minWidth = 165),
                       fixed_effects = colDef(minWidth = 125),
-                      chisq = colDef(minWidth = 70),
+                      f = colDef(minWidth = 70),
                       df = colDef(minWidth = 70),
                       
                       # Color p_value if it is less than 0.05
-                      pr_chisq = colDef(style = function(value) {
+                      pr_f = colDef(style = function(value) {
                           if (value >= 0.05) {color <- "black"}
                           else {color <- "#008000"} 
                           list(color = color)})))
@@ -85,11 +85,11 @@ anova_table_tidy <- function(model, single_model = FALSE, model_list = FALSE){
                       
                       response_variable = colDef(minWidth = 165),
                       fixed_effects = colDef(minWidth = 125),
-                      chisq = colDef(minWidth = 70),
+                      f = colDef(minWidth = 70),
                       df = colDef(minWidth = 70), 
                       
                       # Color p_value if it is less than 0.05
-                      pr_chisq = colDef(style = function(value) {
+                      pr_f = colDef(style = function(value) {
                           if (value >= 0.05) {color <- "black"}
                           else {color <- "#008000"} 
                           list(color = color)})))
