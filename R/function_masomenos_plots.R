@@ -86,8 +86,8 @@ cleveland_plot <-function(x, y, color = NULL, shape  = NULL ,
     #labs(title = paste0(response_variable)) +
     ggplot2::facet_wrap(~ response_var, scales = "free", ncol = 2) +
     # Significance colors
-    ggplot2::scale_color_manual(values = c("#009E73",
-                                              "#56B4E9","#0072B2")) +
+    ggplot2::scale_color_manual(values = c("#F0E442","#009E73",
+                                           "#56B4E9","#0072B2")) +
     ggplot2::ylab("Estimated coefficients (median +/- 95CI)") +
     ggplot2::xlab("") +
     ggplot2::coord_flip()
