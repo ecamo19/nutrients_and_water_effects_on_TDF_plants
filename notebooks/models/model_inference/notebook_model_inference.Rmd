@@ -570,6 +570,7 @@ map(models_3way_q3, r.squaredGLMM)
 
 
 ```{r}
+
 if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
     
     print("The bootstrap exists")
@@ -584,7 +585,8 @@ if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
     
     bootstrap_ci_total_biomass <- 
         bootstrap_model_ci_df(model = models_3way_q3$lme_total_biom_3way, 
-                              category = "all", 
+                              category = "all",
+                              
                               iter = 9999) 
     
     saveRDS(bootstrap_ci_total_biomass, 
@@ -597,39 +599,47 @@ if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
 #### Plot Total Biomass
 
 ```{r}
+
 colmn <- paste0("col_", 1:3)
 
 data_total_biomass_plot <- 
         
         bootstrap_ci_total_biomass %>%
-            tidyr::separate(data = ., col = term, 
-                     sep = ":",
-                     into = colmn,
-                     remove = F) %>% 
+
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>% 
             mutate(across(where(is.character), as.factor)) %>% 
-            filter(type == "norm")   
-
-data_total_biomass_plot$term <- 
-    factor(data_total_biomass_plot$term,
-           levels = data_total_biomass_plot$term[order(data_total_biomass_plot$col_2)])
-
-# Show estimates
-data_total_biomass_plot %>% 
-    arrange(desc(significance)) %>% 
-    dplyr::select(term,estimate,lower, upper, response_var,significance)
+            filter(type == "norm") %>% 
+            mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
+                                                            "plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-gs"   ,
+                                                            "plus_water_nutrients-pnue" ,
+                                                            "plus_water_nutrients-wue",
+                                                            "plus_water-amax" ,      
+                                                            "plus_water-d13c",          
+                                                            "plus_water-gs"  ,          
+                                                            "plus_water-pnue",
+                                                            "plus_water-wue",
+                                                            "plus_nutrients-amax",       
+                                                            "plus_nutrients-d13c",       
+                                                            "plus_nutrients-gs"  ,       
+                                                            "plus_nutrients-pnue",       
+                                                            "plus_nutrients-wue" ,
+                                                            "no_additions-amax",         
+                                                            "no_additions-d13c",         
+                                                            "no_additions-gs"  ,         
+                                                            "no_additions-pnue",         
+                                                            "no_additions-wue")))
 ```
 
 
-```{r total_biomass_plot, fig.width = 30, fig.height = 25, fig.align = 'center'}
-# Plot
-# 
-
-(total_biomass_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
-                                     color = significance,
+```{r total_biomass_plot, fig.width = 30, fig.height = 15, fig.align = 'center'}
+total_biomass_plot <-
+    cleveland_plot(x = treat_trait, y = estimate, 
+                                     color = col_1,
                                      ci_lower = lower, ci_upper = upper,
-                                     data = data_total_biomass_plot))
+                                     data = data_total_biomass_plot) +
+        facet_wrap(.~col_2)
 
- 
 ```
 
 ### Belowground Biomass
@@ -638,7 +648,6 @@ data_total_biomass_plot %>%
 # Look results before bootstrap
 #report::report_parameters(models_3way_q3$lme_below_biom_3way)
 ```
-
 
 
 ```{r}
@@ -656,8 +665,9 @@ if (file.exists("./processed_data/bootstrap_ci_belowground_biomass.RData")) {
     
     bootstrap_ci_belowground_biomass <- 
         bootstrap_model_ci_df(model = models_3way_q3$lme_below_biom_3way, 
-                              category = "all", 
-                              iter = 9999) 
+                              category = "all",
+                              
+                                iter = 9999) 
        
     saveRDS(bootstrap_ci_belowground_biomass, 
             file = "./processed_data/bootstrap_ci_belowground_biomass.RData")
@@ -674,60 +684,49 @@ data_belowground_plot <-
     
     # Clean data
         bootstrap_ci_belowground_biomass %>% 
-            tidyr::separate(data = ., col = term, 
-                     sep = ":",
-                     into = colmn,
-                     remove = F) %>% 
+            
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>% 
             mutate(across(where(is.character), as.factor)) %>% 
-            filter(type == "norm") 
-
-# Rearrange data
-data_belowground_plot$term <- 
-    factor(data_belowground_plot$term,
-           levels = data_belowground_plot$term[order(data_belowground_plot$col_2)])
-
-
-
-# Show estimates
-data_belowground_plot %>% 
-    arrange(desc(significance)) %>% 
-    dplyr::select(term,estimate,lower, upper, response_var,significance)
-
-
+            filter(type == "norm") %>% 
+            mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
+                                                            "plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-gs"   ,
+                                                            "plus_water_nutrients-pnue" ,
+                                                            "plus_water_nutrients-wue",
+                                                            "plus_water-amax" ,      
+                                                            "plus_water-d13c",          
+                                                            "plus_water-gs"  ,          
+                                                            "plus_water-pnue",
+                                                            "plus_water-wue",
+                                                            "plus_nutrients-amax",       
+                                                            "plus_nutrients-d13c",       
+                                                            "plus_nutrients-gs"  ,       
+                                                            "plus_nutrients-pnue",       
+                                                            "plus_nutrients-wue" ,
+                                                            "no_additions-amax",         
+                                                            "no_additions-d13c",         
+                                                            "no_additions-gs"  ,         
+                                                            "no_additions-pnue",         
+                                                            "no_additions-wue")))
 ```
 
 
 ```{r belowground_plot, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
 # Plot
-belowground_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
-                                   color = significance,
+belowground_plot <- cleveland_plot(x = treat_trait, y = estimate,
+                                   color = col_1,
                                    ci_lower = lower, ci_upper = upper,
-                                   data = data_belowground_plot)
+                                   data = data_belowground_plot) +
+                    facet_wrap(.~col_2)
 
  
 ```
 
-
-
-
 ### Aboveground Biomass
-
+z
 ```{r}
 # Look results before bootstrap
 #report::report_parameters(models_3way_q3$lme_above_biom_3way)
-```
-
-```{r}
-# Look results before bootstrap
-AIC(models_3way_q3$lme_above_biom_3way)
-
-data.frame(intervals(models_3way_q3$lme_above_biom_3way)$fixed) %>% 
-    tibble::rownames_to_column("names") %>% 
-    filter(!names %in% c("(Intercept)","init_height")) %>% 
-    mutate(significance = ifelse((lower > 0 & upper > 0 | lower < 0 & upper < 0 ), 
-                                 TRUE, FALSE)) %>% 
-    filter(significance == TRUE) %>% 
-    reactable()
 ```
 
 ```{r}
@@ -746,7 +745,8 @@ if (file.exists("./processed_data/bootstrap_ci_aboveground_biomass.RData")) {
     bootstrap_ci_aboveground_biomass <- 
         bootstrap_model_ci_df(model = models_3way_q3$lme_above_biom_3way, 
                               category = "all", 
-                              iter = 9999)
+                                   
+                                    iter = 9999) 
         
     saveRDS(bootstrap_ci_aboveground_biomass, 
             file = "./processed_data/bootstrap_ci_aboveground_biomass.RData")
@@ -761,33 +761,41 @@ data_aboveground_plot <-
         
         # Clean data
         bootstrap_ci_aboveground_biomass %>%
-                tidyr::separate(data = ., col = term, 
-                                                sep = ":",
-                                                into = colmn,
-                                            remove = F) %>% 
-                mutate(across(where(is.character), as.factor))  %>% 
-                filter(type == "norm") 
-
-# Rearrange data
-data_aboveground_plot$term <- 
-    factor(data_aboveground_plot$term,
-           levels = data_aboveground_plot$term[order(data_aboveground_plot$col_2)])
-
-data_aboveground_plot %>% 
-    arrange(desc(significance)) %>% 
-    dplyr::select(term,estimate,lower, upper, response_var,significance)
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>% 
+            mutate(across(where(is.character), as.factor)) %>% 
+            filter(type == "norm") %>% 
+            mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
+                                                            "plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-gs"   ,
+                                                            "plus_water_nutrients-pnue" ,
+                                                            "plus_water_nutrients-wue",
+                                                            "plus_water-amax" ,      
+                                                            "plus_water-d13c",          
+                                                            "plus_water-gs"  ,          
+                                                            "plus_water-pnue",
+                                                            "plus_water-wue",
+                                                            "plus_nutrients-amax",       
+                                                            "plus_nutrients-d13c",       
+                                                            "plus_nutrients-gs"  ,       
+                                                            "plus_nutrients-pnue",       
+                                                            "plus_nutrients-wue" ,
+                                                            "no_additions-amax",         
+                                                            "no_additions-d13c",         
+                                                            "no_additions-gs"  ,         
+                                                            "no_additions-pnue",         
+                                                            "no_additions-wue")))
 ```
 
 
 ```{r aboveground_plot, fig.width = 30, fig.height = 25, fig.align = 'center', echo = FALSE}
 # Plot
-(aboveground_plot <- cleveland_plot(x = term, y = estimate, shape = col_2, color = significance,
-               ci_lower = lower, ci_upper = upper,
-               data = data_aboveground_plot))
-
+aboveground_plot <- 
+     cleveland_plot(x = treat_trait, y = estimate,
+                    color = col_1,
+                    ci_lower = lower, ci_upper = upper,
+                data = data_aboveground_plot) +
+                facet_grid(.~col_2)
 ```
-
-
 
 ### RGR
 
@@ -795,22 +803,6 @@ data_aboveground_plot %>%
 # Look results before bootstrap
 #report::report_parameters(models_3way_q3$lme_rgr_3way)
 ```
-
-
-```{r}
-# Look results before bootstrap
-
-AIC(models_3way_q3$lme_rgr_3way)
-
-data.frame(intervals(models_3way_q3$lme_rgr_3way)$fixed) %>% 
-    tibble::rownames_to_column("names") %>% 
-    filter(!names %in% c("(Intercept)","init_height")) %>% 
-    mutate(significance = ifelse((lower > 0 & upper > 0 | lower < 0 & upper < 0 ), 
-                                 TRUE, FALSE)) %>% 
-    filter(significance == TRUE)  %>% 
-    reactable()
-```
-
 
 ```{r}
 if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
@@ -827,11 +819,11 @@ if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
 
     bootstrap_ci_rgr <- 
         bootstrap_model_ci_df(model = models_3way_q3$lme_rgr_3way, 
-                              category = "all", 
-                              iter = 9999) 
+                              category = "all",
+                              
+                                iter = 9999) 
     saveRDS(bootstrap_ci_rgr, 
             file = "./processed_data/bootstrap_ci_rgr.RData")
-    
 }
 ```
 
@@ -840,30 +832,46 @@ if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
 colmn <- paste0("col_", 1:3)
 
 data_rgr_plot <- 
-    bootstrap_ci_rgr %>% 
-            tidyr::separate(data = ., col = term, 
-                     sep = ":",
-                     into = colmn,
-                     remove = F) %>% 
+    bootstrap_ci_rgr %>%
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>% 
             mutate(across(where(is.character), as.factor)) %>% 
-            filter(type == "norm")
+            filter(type == "norm") %>% 
+            mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
+                                                            "plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-gs"   ,
+                                                            "plus_water_nutrients-pnue" ,
+                                                            "plus_water_nutrients-wue",
+                                                            "plus_water-amax" ,      
+                                                            "plus_water-d13c",          
+                                                            "plus_water-gs"  ,          
+                                                            "plus_water-pnue",
+                                                            "plus_water-wue",
+                                                            "plus_nutrients-amax",       
+                                                            "plus_nutrients-d13c",       
+                                                            "plus_nutrients-gs"  ,       
+                                                            "plus_nutrients-pnue",       
+                                                            "plus_nutrients-wue" ,
+                                                            "no_additions-amax",         
+                                                            "no_additions-d13c",         
+                                                            "no_additions-gs"  ,         
+                                                            "no_additions-pnue",         
+                                                            "no_additions-wue")))
+```
 
-data_rgr_plot$term <- 
-    factor(data_rgr_plot$term,
-           levels = data_rgr_plot$term[order(data_rgr_plot$col_2)])
-           
-        
+
+```{r}
 # Plot
-rgr_plot <- cleveland_plot(x = term, y = estimate, shape = col_2,
-                           color = significance,
+rgr_plot <- 
+    cleveland_plot(x = treat_trait, y = estimate,
+                           color = col_1,
                            ci_lower = lower, ci_upper = upper,
-                             data = data_rgr_plot)
-
+                            data = data_rgr_plot) +
+    facet_grid(.~col_2)
 ```
 
  
-##
-```{r figure_3_three_way_q3, fig.width = 40, fig.height = 30, fig.align = 'center', echo = FALSE}
+# Join plots
+```{r figure_3_three_way_q3_2, fig.width = 40, fig.height = 20, fig.align = 'center'}
 cowplot::plot_grid(total_biomass_plot,belowground_plot,aboveground_plot,rgr_plot, ncol = 2)
 ```
  

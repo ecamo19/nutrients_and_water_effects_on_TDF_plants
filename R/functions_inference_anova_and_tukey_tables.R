@@ -343,7 +343,7 @@ bootstrap_model_ci_df <- function(model, iter = 100, category = "all"){
                                               type = "parametric",
                                               B = iter)
     
-    stats::confint(bootstrap_nlme,type = category) %>%  
+    stats::confint(bootstrap_nlme, type = category) %>%  
         
         as.data.frame(.) %>%
         
@@ -371,10 +371,11 @@ bootstrap_model_ci_df <- function(model, iter = 100, category = "all"){
             
             TRUE ~ col_2)) %>% 
         
-        filter(!col_1 %in% "no_additions") %>%
+        #filter(!col_1 %in% "no_additions") %>%
         arrange(col_1, col_2) %>%
-        unite("term", 1:3, sep = ":",remove = TRUE) %>%
-        mutate(term = forcats::fct_inorder(term)) %>%
+        #unite("term", 1:3, sep = ":" #,remove = TRUE
+        #      ) %>%
+        #mutate(term = forcats::fct_inorder(term)) %>%
         
         # Create significance column
         dplyr::mutate(significance = if_else((lower > 0 & upper > 0 | 
