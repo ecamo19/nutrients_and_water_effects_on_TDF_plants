@@ -187,7 +187,7 @@ vars %>%
       
       # Gererate plots
       pmap( ~ boxplot_plot_pmap(data = data_complete,
-                                y = !!sym(..1), x = !!sym(..2), 
+                                y = !!sym(..1), x = spcode, 
                                 fill = !!sym(..3))) %>% 
       cowplot::plot_grid(plotlist = ., ncol = 3)
 ```
@@ -221,7 +221,7 @@ vars %>%
       
       # Gererate plots
       pmap( ~ boxplot_plot_pmap(data = data_complete,
-                                y = !!sym(..1), x = !!sym(..2), 
+                                y = !!sym(..1), x = spcode, 
                                 fill = !!sym(..3))) %>% 
       cowplot::plot_grid(plotlist = ., ncol = 2)
 ```

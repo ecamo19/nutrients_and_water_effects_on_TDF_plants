@@ -26,7 +26,7 @@
 
 # Box plot for using it with pmap ----------------------------------------------
 
-boxplot_plot_pmap <-  function(x, y, fill, data) {
+boxplot_plot_pmap <-  function(x, y, fill = NULL, data) {
     
     xvar <- rlang::enquo(x)
     yvar <- rlang::enquo(y)
