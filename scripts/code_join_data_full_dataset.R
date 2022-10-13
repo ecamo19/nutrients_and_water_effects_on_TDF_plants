@@ -70,7 +70,10 @@ data_biomass_cleaned <-
             smf = (stem_dry_weight / total_biomass)*100,
             
             # % Leaf Mass Fraction
-            lmf = (whole_leaf_dry_weight / total_biomass)*100) %>%
+            lmf = (whole_leaf_dry_weight / total_biomass)*100, 
+    
+            # Root to shoot ratio
+            root_shoot_ratio = root_dry_weight/(stem_dry_weight + whole_leaf_dry_weight)) %>% 
     
         # Order Columns
         dplyr::select(id, spcode, treatment, rmf, smf, lmf,
@@ -97,8 +100,8 @@ data_ecophys_cleaned <-
 
 
 ## Leaf traits data ------------------------------------------------------------
-
 data_leaftraits_cleaned <- 
+    
 	raw_data_traits %>%
     
     	# Delete Harvested at the beginning treatment 
@@ -201,11 +204,7 @@ data_complete <-
                                         ambientrain_water      = "plus_water"))) %>% 
                
         # Order data set columns
-        dplyr::select(id, spcode, nfixer, treatment,init_height, everything()) %>%  
-        
-        # remove unused columns
-        dplyr::select(-c(la,leaf_dry_weight,N_mg, whole_leaf_dry_weight,
-                         root_dry_weight,stem_dry_weight))
+        dplyr::select(id, spcode, nfixer, treatment,init_height, everything()) 
 
 
 # Data set use for fitting the models ------------------------------------------
@@ -223,13 +222,13 @@ data_for_models <-
                   
                   # Plant preformance
                   total_biomass, above_biomass, below_biomass, 
-                  agr, rgr, rgr_slope,
+                  agr, rgr, rgr_slope, root_shoot_ratio,
                   
                   # Mass fractions
                   rmf, smf, lmf,
                   
                   # Traits
-                  amax, gs, wue, d13c, d15n, pnue) %>%
+                  amax, gs, wue, d13c, d15n, pnue, Narea_g_m2 ) %>%
     
     # add id to rownames for keep track of the rows
     column_to_rownames("id") %>% 
