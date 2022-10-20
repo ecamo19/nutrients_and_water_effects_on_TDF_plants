@@ -102,7 +102,7 @@ sys.source("./R/function_masomenos_plots.R", envir = knitr::knit_global())
 
 ```{r}
 # Load models
-models_q1_q2_and_mass_fractions <- readRDS("./processed_data/models_q1_q2_and_mass_fractions.RData")
+models_q1_q2 <- readRDS("./processed_data/models_q1_q2.RData")
 
 models_nodule_count <- readRDS("./processed_data/models_nodule_count.RData")
 
@@ -115,18 +115,25 @@ models_3way_q3 <- readRDS("./processed_data/models_3way_q3.RData")
 ## Models: Q1 and Q2
 
 ```{r}
-names(models_q1_q2_and_mass_fractions)
+names(models_q1_q2)
 ```
 
-## Nodule count seleted model
+## Nodule count selected model
 
 ```{r}
 names(models_nodule_count)
 ```
 
+## Q3 models selected
+
+```{r}
+names(models_3way_q3)
+```
+
+
 ```{r echo = FALSE}
 
-# Step done for getting predictions from model
+# Step done for getting predictions from nodule models
 source("./scripts/code_clean_data_nodules.R")
 
 data_pred_nodules <-
@@ -167,17 +174,18 @@ data_for_models <-
 ## Anova and Tuckey comparisons 
 
 ```{r}
-models_q1_q2_and_mass_fractions %>%
+models_q1_q2 %>%
     
     # Remove traits and mass fractions models
     purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                        "d13c" = NULL, "amax" = NULL, "gs" = NULL, 
-                       "wue_log" = NULL, "pnue_log" = NULL) %>% 
+                       "wue_log" = NULL, "pnue_log" = NULL, 
+                       "nitrogen_log" = NULL ) %>% 
     anova_table_tidy(., model_list = T)
 ```
 
 ```{r}
-models_q1_q2_and_mass_fractions %>%
+models_q1_q2 %>%
     
     # Remove traits and mass fractions models
     purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
@@ -190,7 +198,7 @@ models_q1_q2_and_mass_fractions %>%
 ## Percentange change
 
 ```{r message=FALSE, warning=FALSE}
-models_q1_q2_and_mass_fractions %>%
+models_q1_q2 %>%
     
     # Remove traits and mass fractions models
     purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
@@ -208,7 +216,7 @@ models_q1_q2_and_mass_fractions %>%
 ```{r message=FALSE, warning=FALSE}
 
 # Get predictions
-string <- c("models_q1_q2_and_mass_fractions")
+string <- c("models_q1_q2")
 
 data_pred_biomass_growth <- 
         
@@ -216,10 +224,11 @@ data_pred_biomass_growth <-
         gather_predictions(data_for_models,
                            
                            # Return predictions of:
-                            models_q1_q2_and_mass_fractions$rgr,
-                            models_q1_q2_and_mass_fractions$total_biomass,
-                            models_q1_q2_and_mass_fractions$above_biomass,
-                            models_q1_q2_and_mass_fractions$below_biomass) %>%
+                            models_q1_q2$rgr,
+                            models_q1_q2$total_biomass,
+                            models_q1_q2$above_biomass,
+                            models_q1_q2$below_biomass,
+                            models_q1_q2$ratio_log) %>%
             
             # Get fitted values
             pivot_wider(names_from = model, values_from = pred) %>% 
@@ -264,11 +273,11 @@ vars_q1 %>%
 ## r2 models
 
 ```{r}
-models_q1_q2_and_mass_fractions %>%
+models_q1_q2 %>%
     
     # Remove traits and mass fractions models
     purrr::list_modify("rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
-                       
+                       "nitroge_log" = NULL,
                        "d13c" = NULL, "amax" = NULL, "gs" = NULL, 
                        "wue_log" = NULL, "pnue_log" = NULL)%>%
     
@@ -283,11 +292,11 @@ models_q1_q2_and_mass_fractions %>%
 ## Anova and Tuckey comparisons 
 
 ```{r}
-models_q1_q2_and_mass_fractions %>% 
+models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, "ratio_log" = NULL,
                        
                        "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL) %>%
     
@@ -298,20 +307,20 @@ models_q1_q2_and_mass_fractions %>%
 ### Models with significant interaction
 
 ```{r}
-models_q1_q2_and_mass_fractions %>% 
+models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, "ratio_log" = NULL,
                        
                        
                         "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                        
                        # No interaction
-                       "d13c" = NULL,
+                       "d13c" = NULL, 
                        
                        # This only responded to the treatments 
-                       "pnue_log" = NULL, "gs" = NULL ) %>%
+                       "pnue_log" = NULL, "gs" = NULL, "nitrogen_log" = NULL ) %>%
     
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
@@ -319,11 +328,11 @@ models_q1_q2_and_mass_fractions %>%
 ### Models with signifcant treatment effect
 
 ```{r message=FALSE, warning=FALSE}
-models_q1_q2_and_mass_fractions %>% 
+models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, "ratio_log" = NULL,
                        
                         "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                         
@@ -335,11 +344,11 @@ models_q1_q2_and_mass_fractions %>%
 ### Models with signifcant nfixer effect
 
 ```{r}
-models_q1_q2_and_mass_fractions %>% 
+models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, "ratio_log" = NULL,
                        
                        "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                      
@@ -354,11 +363,11 @@ models_q1_q2_and_mass_fractions %>%
 ### Models with significant interaction
 
 ```{r}
-models_q1_q2_and_mass_fractions %>% 
+models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, "ratio_log" = NULL,
                        
                        "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                        
@@ -367,7 +376,7 @@ models_q1_q2_and_mass_fractions %>%
                        "d13c" = NULL, 
                        
                        # These variables only responded to the treatments 
-                       "pnue_log" = NULL, "gs" = NULL ) %>%
+                       "pnue_log" = NULL, "gs" = NULL, "nitrogen_log" = NULL ) %>%
     
     # Percentage difference
     emmeans_table_tidy(., model_list = T, 
@@ -378,11 +387,11 @@ models_q1_q2_and_mass_fractions %>%
 ### Models with significant treatment effect
 
 ```{r}
-models_q1_q2_and_mass_fractions %>% 
+models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL, 
+                       "below_biomass" = NULL, "rgr" = NULL, "ratio_log" = NULL,
                        
                        "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                      
@@ -403,7 +412,7 @@ models_q1_q2_and_mass_fractions %>%
 
 # Difference in gs between fixer non fixers
 # Percentage difference
-as.data.frame(emmeans(models_q1_q2_and_mass_fractions$gs,
+as.data.frame(emmeans(models_q1_q2$gs,
                           specs = pairwise ~ "nfixer",
                           type = "response",
                           adjust = "tukey")$emmeans)  %>% 
@@ -485,11 +494,11 @@ vars_q2 %>%
 
 
 ```{r}
-models_q1_q2_and_mass_fractions %>% 
+models_q1_q2 %>% 
     
     # Remove performance variables
     purrr::list_modify("total_biomass" = NULL, "above_biomass"  = NULL, 
-                       "below_biomass" = NULL, "rgr" = NULL,
+                       "below_biomass" = NULL, "rgr" = NULL,"ratio_log" = NULL,
                        
                         "rmf_log" = NULL, "smf_log" = NULL, "lmf_log" = NULL,
                        ) %>%
@@ -869,6 +878,14 @@ rgr_plot <-
     facet_grid(.~col_2)
 ```
 
+ 
+## Root to shoot ratio
+
+
+```{r}
+qqq
+anova.lme(models_3way_q3$lme_3way_root_shoot_ratio, type = "marginal")
+```
  
 # Join plots
 ```{r figure_3_three_way_q3_2, fig.width = 40, fig.height = 20, fig.align = 'center'}

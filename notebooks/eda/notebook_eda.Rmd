@@ -140,6 +140,23 @@ data_complete %>%
 ```
 
 
+# Check response variables distributions
+```{r}
+names(data_complete)
+```
+
+
+
+```{r}
+data_complete %>% 
+    select(is.numeric, -id) %>%  
+    map(hist)
+    #map(.,dlookr::plot_hist_numeric)
+hist(scale(data_complete$root_shoot_ratio))
+```
+
+
+
 ## Boxplots Plant's performace measures
 
 ```{r plant_performace_boxplots, fig.width = 20, fig.height = 25} 
