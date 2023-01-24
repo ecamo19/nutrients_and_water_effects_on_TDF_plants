@@ -10,30 +10,28 @@ output:
     toc: yes
     number_sections: no
     toc_depth: 2
-
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,comment = "", fig.align = 'center',
-					  fig.width = 11, fig.height = 7)
+                    fig.width = 11, fig.height = 7)
 ```
 
 
 ```{r knitr, include = FALSE}
 
 # Save figures in specific place
-
 knitr::opts_chunk$set(autodep        = TRUE,
                       cache          = FALSE,
                       cache.comments = TRUE,
-                      
+
                       # Include code?
                       echo           = TRUE,
-                      
+
                       error          = FALSE,
                       fig.align      = "center",
-                      
-                      # Path to where to store pdf single figures 
+
+                      # Path to where to store pdf single figures
                       fig.path       = paste0("./figures_models_validation", "/"),
                       fig.width      = 11,
                       fig.height     = 7,
@@ -48,7 +46,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
 # doc.files <- c(list.files(pattern = "pdf"),
 #                list.files(pattern = "html"),
 #                list.files(pattern = "docx"))
-# 
+#
 # for (file in doc.files) {
 #   cambiar nombre
 #     file.rename(file, file.path("../../hw1/", file))
@@ -69,35 +67,38 @@ library(performance)
 library(tibble)
 library(MuMIn)
 ```
+```{r}
+# setwd for Rmarkdowm
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
 
 ```{r message=FALSE, warning=FALSE}
 # Load data
-sys.source("./scripts/code_join_data_full_dataset.R", envir = knitr::knit_global())
+source("./scripts/code_join_data_full_dataset.R")
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
 # Load functions
 ## Models
-sys.source("./R/functions_models.R", envir = knitr::knit_global())
-sys.source("./R/function_nlme_validation_plots.R", envir = knitr::knit_global())
+source("./R/functions_models.R")
+source("./R/function_nlme_validation_plots.R")
 ```
 
 # Model Fitting
 
+## Models: Questions 1,2 and Mass fractions
 
-## Models: Questions 1,2 and Mass fractions   
-
-
-### Select performance and traits variables 
-
+### Select performance and traits variables
 
 ```{r}
 data_for_models <-
-    data_for_models %>% 
-    
+    data_for_models %>%
+
         # Select variables for analysis
-        dplyr::select(!c(rgr_slope, d15n, agr))
+        dplyr::select(!c(rgr_slope, d15n, agr, above_biomass, below_biomass,
+                        rmf, smf, lmf))
 ```
 
 
@@ -105,55 +106,53 @@ data_for_models <-
 $$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
 
 ```{r}
-# Take response variables names 
-response_vars_q1_q2 <- 
-    set_names(names(data_for_models)[c(5:18)])
+# Take response variables names
+response_vars_q1_q2 <-
+    set_names(names(data_for_models)[c(5:13)])
 
-response_vars_q1_q2 
+response_vars_q1_q2
 ```
 
 ```{r}
-models_q1_q2 <- map(response_vars_q1_q2, ~ mixed_model_1(response = .x, 
-                                                              data = data_for_models))
+models_q1_q2 <- map(response_vars_q1_q2, ~ mixed_model_1(response = .x,
+                                                        data = data_for_models))
 ```
 
 ```{r}
 # Log models
 
-model_q2_wue_log <- lmer(log(wue) ~ nfixer*treatment + init_height + (1|spcode), 
+## WUE log
+model_q2_wue_log <- lmer(log(wue) ~ nfixer*treatment + init_height + (1|spcode),
+                         data = data_for_models)
+## PNUE log
+model_q2_pnue_log <- lmer(log(pnue) ~ nfixer*treatment + init_height + (1|spcode),
                          data = data_for_models)
 
-model_q2_pnue_log <- lmer(log(pnue) ~ nfixer*treatment + init_height + (1|spcode), 
-                         data = data_for_models) 
-
-
-model_rmf_log <- lmer(log(rmf) ~ nfixer*treatment + init_height + (1|spcode), 
+## Root-Shoot ratio
+model_ratio_log <- lmer(log(root_shoot_ratio) ~ nfixer*treatment + init_height + (1|spcode),
+                         data = data_for_models)
+## Nitrogen log
+model_nitrogen_log <- lmer(log(Narea_g_m2) ~ nfixer*treatment + init_height + (1|spcode),
                          data = data_for_models)
 
-model_smf_log <- lmer(log(smf) ~ nfixer*treatment + init_height + (1|spcode), 
-                         data = data_for_models) 
-
-model_lmf_log <- lmer(log(lmf) ~ nfixer*treatment + init_height + (1|spcode), 
-                         data = data_for_models) 
-
-model_ratio_log <- lmer(log(root_shoot_ratio) ~ nfixer*treatment + init_height + (1|spcode), 
-                         data = data_for_models) 
-
-model_nitrogen_log <- lmer(log(Narea_g_m2) ~ nfixer*treatment + init_height + (1|spcode), 
-                         data = data_for_models) 
-
+#model_rmf_log <- lmer(log(rmf) ~ nfixer*treatment + init_height + (1|spcode),
+#                         data = data_for_models)
+#
+#model_smf_log <- lmer(log(smf) ~ nfixer*treatment + init_height + (1|spcode),
+#                         data = data_for_models)
+#
+#model_lmf_log <- lmer(log(lmf) ~ nfixer*treatment + init_height + (1|spcode),
+#                         data = data_for_models)
 ```
+
 
 ```{r}
 # Append log models to model list Q1 Q2
 log_models <- list(model_q2_wue_log, model_q2_pnue_log,
-                   model_rmf_log, model_smf_log, model_lmf_log, 
                    model_ratio_log, model_nitrogen_log)
 
 
-names(log_models) <- c("wue_log", "pnue_log", "rmf_log", 
-                       "smf_log", "lmf_log", "ratio_log",
-                       "nitrogen_log")
+names(log_models) <- c("wue_log", "pnue_log", "ratio_log", "nitrogen_log")
 
 models_q1_q2 <- append(log_models, models_q1_q2)
 
@@ -176,49 +175,25 @@ source("./scripts/code_clean_data_nodules.R")
 # Delete unused variables
 data_nodules_cleaned <-
     data_nodules_cleaned %>%
-        
+
         # add id to rownames for keep track of the rows
-        column_to_rownames("id") %>% 
-        dplyr::select(spcode,treatment, everything())
+        column_to_rownames("id") %>%
+        dplyr::select(spcode, treatment, everything())
 
 ```
 
-### lmer gaussian      
+
+__Previuosly I fitted non-log models and found out the log one is the best__
+
+### log models
 
 ```{r}
-lmer_gaussian <- lmer(number_of_root_nodulation ~ treatment + init_height + 
-                           (1 |spcode),data = data_nodules_cleaned)
-```
-
-
-### lmer gaussian log  
-
-```{r}
-lmer_gaussian_log <-  lmer(log(number_of_root_nodulation) ~ treatment + init_height + 
-                           (1 |spcode),data = data_nodules_cleaned)
-```
-
-#### Compare models
-```{r}
-# Based on this output I decided to use the log model
-MuMIn::model.sel(lmer_gaussian, lmer_gaussian_log)
-```
-
-```{r}
-AIC(lmer_gaussian, lmer_gaussian_log)
-```
-
-### Improving log model
-
-```{r}
-## After seeing the validation plots for the lmer_gaussian_log I decided to try 
+## After seeing the validation plots for the lmer_gaussian_log I decided to try
 ## to improve the log model using the nlme package
-
 
 nlme_gaussian_log <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
                                     random = ~1|spcode,
                                     data = data_nodules_cleaned)
-
 
 
 nlme_nodule_log_weights <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
@@ -232,62 +207,31 @@ nlme_nodule_log_weights <- lme(log(number_of_root_nodulation) ~ treatment + init
 # Check if the nlme_gaussian_log_weights is a better model
 
 # Compare between nlme objects
-anova(nlme_gaussian_log, nlme_nodule_log_weights )
+anova(nlme_gaussian_log, nlme_nodule_log_weights)
 
-model.sel(nlme_gaussian_log, lmer_gaussian_log,  nlme_nodule_log_weights)
+model.sel(nlme_gaussian_log, nlme_nodule_log_weights)
 
-AIC(lmer_gaussian_log, nlme_gaussian_log, nlme_nodule_log_weights)
-# Model improved, check assumptions for nlme_gaussian_log_weights 
+AIC(nlme_gaussian_log, nlme_nodule_log_weights)
+# Model improved, check assumptions for nlme_gaussian_log_weights
 
 ```
 
 
 ## Models: Question 3
 
-
 $$performance\sim treatment:fixer:scaled(trait)\ + initial\ height + random( 1|\ specie)$$
 
-### Scale preditors 
+### Scale preditors aka traits
 
 ```{r}
 data_for_models_scaled <-
-    data_for_models %>% 
-        mutate(across(c(4,13:18),scale)) 
+    data_for_models  %>%
+
+    #  Narea_g_m2 not included since it has a high correlation with amax
+    mutate(across(c(4, 8:12), scale))
 ```
 
 
-### Model Aboveground biomass
-
-```{r}
-lme_above_biom_3way <- lme(above_biomass ~  treatment:nfixer:amax +
-                                            treatment:nfixer:gs  +
-                                            treatment:nfixer:wue +
-                                            treatment:nfixer:pnue +
-                                            treatment:nfixer:d13c +
-                               
-                                            # Added
-                                            #treatment:nfixer:Narea_g_m2 +
-                                            init_height,
-                    random = ~1 | spcode, 
-                    data = data_for_models_scaled)
-```
-
-### Model Belowground biommass
-
-```{r}
-lme_below_biom_3way <- lme(below_biomass ~  treatment:nfixer:amax +
-                                            treatment:nfixer:gs  +
-                                            treatment:nfixer:wue +
-                                            treatment:nfixer:pnue +
-                                            treatment:nfixer:d13c +
-                                            
-                                            # Added
-                                            #treatment:nfixer:Narea_g_m2 +
-                                            
-                                            init_height ,
-                    random = ~1 | spcode, 
-                    data = data_for_models_scaled)
-```
 
 ### Model RGR
 
@@ -297,11 +241,11 @@ lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
                             treatment:nfixer:wue +
                             treatment:nfixer:pnue +
                             treatment:nfixer:d13c +
-                            
+
                             # Added
                             #treatment:nfixer:Narea_g_m2 +
                             init_height ,
-                  random = ~1 | spcode, 
+                  random = ~1 | spcode,
                   data = data_for_models_scaled)
 ```
 
@@ -314,15 +258,13 @@ lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
                                             treatment:nfixer:wue +
                                             treatment:nfixer:pnue +
                                             treatment:nfixer:d13c +
-                                            
-                                            # Added
-                                            #treatment:nfixer:Narea_g_m2 + 
+
                                             init_height,
-                            random = ~1 | spcode, 
+                            random = ~1 | spcode,
                             data = data_for_models_scaled)
 ```
 
-## Extra models Models: Question 3
+## Model shoot root ratios
 
 ```{r}
 lme_3way_root_shoot_ratio <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
@@ -330,62 +272,18 @@ lme_3way_root_shoot_ratio <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
                                                         treatment:nfixer:wue +
                                                         treatment:nfixer:pnue +
                                                         treatment:nfixer:d13c +
-                                            
+
                                                         # Added
-                                                        #treatment:nfixer:Narea_g_m2 + 
+                                                        #treatment:nfixer:Narea_g_m2 +
                                                         init_height,
-                            random = ~1 | spcode, 
+                            random = ~1 | spcode,
                             data = data_for_models_scaled)
 ```
 
-```{r}
-lme_3way_rmf <- lme(rmf ~  treatment:nfixer:amax +
-                                            treatment:nfixer:gs  +
-                                            treatment:nfixer:wue +
-                                            treatment:nfixer:pnue +
-                                            treatment:nfixer:d13c +
-                                            
-                                            # Added
-                                            #treatment:nfixer:Narea_g_m2 + 
-                                            init_height,
-                            random = ~1 | spcode, 
-                            data = data_for_models_scaled)
-```
-
-```{r}
-lme_3way_smf <- lme(smf ~  treatment:nfixer:amax +
-                                            treatment:nfixer:gs  +
-                                            treatment:nfixer:wue +
-                                            treatment:nfixer:pnue +
-                                            treatment:nfixer:d13c +
-                                            
-                                            # Added
-                                            #treatment:nfixer:Narea_g_m2 + 
-                                            init_height,
-                            random = ~1 | spcode, 
-                            data = data_for_models_scaled)
-```
+# Model Validation
 
 
-```{r}
-lme_3way_lmf <- lme(lmf ~  treatment:nfixer:amax +
-                                            treatment:nfixer:gs  +
-                                            treatment:nfixer:wue +
-                                            treatment:nfixer:pnue +
-                                            treatment:nfixer:d13c +
-                                            
-                                            # Added
-                                            #treatment:nfixer:Narea_g_m2 + 
-                                            init_height,
-                            random = ~1 | spcode, 
-                            data = data_for_models_scaled)
-```
-
-
-# Model Validation  
-
-
-## Validation of models for questions 1,2 and Mass fractions 
+## Validation of models for questions 1,2 and Mass fractions
 
 ### Collinearity
 
@@ -396,31 +294,20 @@ map(models_q1_q2, check_collinearity)
 
 ```{r validation_plots_q1_q2,fig.height = 15, fig.width = 10}
 # No problems found here
-
 map(models_q1_q2, check_model)
 ```
 
 
-## Validation of nodule count models 
+## Validation of nodule count models
 
 ### Checking log nodule count model's assumptions
 
-```{r,validation_plots_lme_nodule_log, fig.height = 14, fig.width = 12}
-check_model(lmer_gaussian_log)
-```
-
-```{r nlme_validation_func_lme_nodule_log, fig.height = 9, fig.width = 14}
-nlme_validation_plots(lmer_gaussian_log, data = data_nodules_cleaned, 
-                      group = "spcode", variables = c("treatment"))
-```
-
-#### Checking improved nlme log model assumptions
 
 Zuur et al pp 84:
 
-"Note that these residuals still show heterogeneity, but this is now allowed 
-(because the residual variation differs depending on the chosen variance 
-structure and values of the variance covariate). Hence, these residuals are 
+"Note that these residuals still show heterogeneity, but this is now allowed
+(because the residual variation differs depending on the chosen variance
+structure and values of the variance covariate). Hence, these residuals are
 less useful for the model validation process."
 
 ```{r, validation_plots_nodule_log_weights,  fig.height = 9, fig.width = 14}
@@ -429,22 +316,6 @@ nlme_validation_plots(nlme_nodule_log_weights, data = data_nodules_cleaned,
 ```
 
 ## Validation of models for question 3
-
-### Aboveground biomass
-
-```{r validation_lme_above_biom_3way, fig.height = 9, fig.width = 14}
-nlme_validation_plots(lme_above_biom_3way, data = data_for_models_scaled,
-                      group = "spcode")
-```
-
-
-### Belowground biomass
-
-```{r validation_lme_below_biom_3way, fig.height = 9, fig.width = 14}
-nlme_validation_plots(lme_below_biom_3way, data = data_for_models_scaled,
-                      group = "spcode")
-```
-
 
 ### RGR biomass
 
@@ -460,23 +331,8 @@ nlme_validation_plots(lme_total_biom_3way, data = data_for_models_scaled,
                       group = "spcode")
 ```
 
-### lme_3way_rmf 
 
-```{r}
-nlme_validation_plots(lme_3way_rmf, data = data_for_models_scaled,
-                      group = "spcode")
-```
-
-```{r}
-nlme_validation_plots(lme_3way_smf, data = data_for_models_scaled,
-                      group = "spcode")
-```
-
-
-```{r}
-nlme_validation_plots(lme_3way_lmf, data = data_for_models_scaled,
-                      group = "spcode")
-```
+### Root-shoot ratio
 
 ```{r}
 nlme_validation_plots(lme_3way_root_shoot_ratio, data = data_for_models_scaled,
@@ -491,12 +347,11 @@ nlme_validation_plots(lme_3way_root_shoot_ratio, data = data_for_models_scaled,
 
 ```{r}
 models_q1_q2 <-
-    
+
     models_q1_q2 %>%
-  
+
     # Remove models that showed violation of the assumptions
-    purrr::list_modify("pnue" = NULL, "wue" = NULL, 
-                       "rmf" = NULL, "smf" = NULL, "lmf" = NULL,
+    purrr::list_modify("pnue" = NULL, "wue" = NULL,
                        "Narea_g_m2" = NULL, "root_shoot_ratio" = NULL)
 
 ```
@@ -512,21 +367,16 @@ names(models_nodule_count) <- c("nlme_gaussian_log", "nlme_gaussian_log_weights"
 ## 3-way models
 
 ```{r}
-models_3way_q3<- list(lme_above_biom_3way, lme_below_biom_3way,
-                            lme_rgr_3way, lme_total_biom_3way, 
-                            lme_3way_lmf, lme_3way_rmf, lme_3way_smf,
+models_3way_q3 <- list(lme_rgr_3way, lme_total_biom_3way,
                             lme_3way_root_shoot_ratio)
 
-names(models_3way_q3) <- c("lme_above_biom_3way", "lme_below_biom_3way",
-                                "lme_rgr_3way", "lme_total_biom_3way",
-                                "lme_3way_lmf", "lme_3way_rmf", "lme_3way_smf",
+names(models_3way_q3) <- c("lme_rgr_3way", "lme_total_biom_3way",
                                 "lme_3way_root_shoot_ratio")
-
 ```
 
 
 ```{r}
-saveRDS(models_q1_q2, file = "./processed_data/models_q1_q2.RData") 
-saveRDS(models_nodule_count, file = "./processed_data/models_nodule_count.RData") 
+saveRDS(models_q1_q2, file = "./processed_data/models_q1_q2.RData")
+saveRDS(models_nodule_count, file = "./processed_data/models_nodule_count.RData")
 saveRDS(models_3way_q3, file = "./processed_data/models_3way_q3.RData")
 ```
