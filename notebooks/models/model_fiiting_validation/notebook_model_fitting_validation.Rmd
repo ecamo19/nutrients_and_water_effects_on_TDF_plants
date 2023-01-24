@@ -97,7 +97,7 @@ data_for_models <-
     data_for_models %>%
 
         # Select variables for analysis
-        dplyr::select(!c(rgr_slope, d15n, agr, above_biomass, below_biomass,
+        dplyr::select(!c(rgr_slope, d15n, above_biomass, below_biomass,
                         rmf, smf, lmf))
 ```
 
@@ -108,7 +108,7 @@ $$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
 ```{r}
 # Take response variables names
 response_vars_q1_q2 <-
-    set_names(names(data_for_models)[c(5:13)])
+    set_names(names(data_for_models)[c(5:14)])
 
 response_vars_q1_q2
 ```
@@ -116,6 +116,8 @@ response_vars_q1_q2
 ```{r}
 models_q1_q2 <- map(response_vars_q1_q2, ~ mixed_model_1(response = .x,
                                                         data = data_for_models))
+
+names(models_q1_q2)
 ```
 
 ```{r}
@@ -135,24 +137,22 @@ model_ratio_log <- lmer(log(root_shoot_ratio) ~ nfixer*treatment + init_height +
 model_nitrogen_log <- lmer(log(Narea_g_m2) ~ nfixer*treatment + init_height + (1|spcode),
                          data = data_for_models)
 
-#model_rmf_log <- lmer(log(rmf) ~ nfixer*treatment + init_height + (1|spcode),
-#                         data = data_for_models)
-#
-#model_smf_log <- lmer(log(smf) ~ nfixer*treatment + init_height + (1|spcode),
-#                         data = data_for_models)
-#
-#model_lmf_log <- lmer(log(lmf) ~ nfixer*treatment + init_height + (1|spcode),
-#                         data = data_for_models)
+## Absolute growth rate
+model_agr_log <- lmer(log(agr) ~ nfixer*treatment + init_height + (1|spcode),
+                         data = data_for_models)
+
 ```
 
 
 ```{r}
 # Append log models to model list Q1 Q2
 log_models <- list(model_q2_wue_log, model_q2_pnue_log,
-                   model_ratio_log, model_nitrogen_log)
+                   model_ratio_log, model_nitrogen_log,
+                   model_agr_log)
 
 
-names(log_models) <- c("wue_log", "pnue_log", "ratio_log", "nitrogen_log")
+names(log_models) <- c("wue_log", "pnue_log", "ratio_log", "nitrogen_log",
+                        "agr_log")
 
 models_q1_q2 <- append(log_models, models_q1_q2)
 
@@ -225,10 +225,10 @@ $$performance\sim treatment:fixer:scaled(trait)\ + initial\ height + random( 1|\
 
 ```{r}
 data_for_models_scaled <-
-    data_for_models  %>%
+    data_for_models %>%
 
     #  Narea_g_m2 not included since it has a high correlation with amax
-    mutate(across(c(4, 8:12), scale))
+    mutate(across(c(4, 9:13), scale))
 ```
 
 
@@ -237,6 +237,23 @@ data_for_models_scaled <-
 
 ```{r}
 lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
+                            treatment:nfixer:gs  +
+                            treatment:nfixer:wue +
+                            treatment:nfixer:pnue +
+                            treatment:nfixer:d13c +
+
+                            # Added
+                            #treatment:nfixer:Narea_g_m2 +
+                            init_height ,
+                  random = ~1 | spcode,
+                  data = data_for_models_scaled)
+```
+
+
+### Model AGR
+
+```{r}
+lme_agr_3way <- lme(agr ~   treatment:nfixer:amax +
                             treatment:nfixer:gs  +
                             treatment:nfixer:wue +
                             treatment:nfixer:pnue +
@@ -317,10 +334,15 @@ nlme_validation_plots(nlme_nodule_log_weights, data = data_nodules_cleaned,
 
 ## Validation of models for question 3
 
-### RGR biomass
+### RGR
 
 ```{r validation_rgr_3way, fig.height = 9, fig.width = 14}
 nlme_validation_plots(lme_rgr_3way, data = data_for_models_scaled, group = "spcode")
+```
+
+### AGR
+```{r validation_agr_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_agr_3way, data = data_for_models_scaled, group = "spcode")
 ```
 
 
@@ -331,13 +353,11 @@ nlme_validation_plots(lme_total_biom_3way, data = data_for_models_scaled,
                       group = "spcode")
 ```
 
-
 ### Root-shoot ratio
 
 ```{r}
 nlme_validation_plots(lme_3way_root_shoot_ratio, data = data_for_models_scaled,
                       group = "spcode")
-
 ```
 
 
@@ -360,7 +380,6 @@ models_q1_q2 <-
 
 ```{r}
 models_nodule_count <- list(nlme_gaussian_log, nlme_nodule_log_weights)
-
 names(models_nodule_count) <- c("nlme_gaussian_log", "nlme_gaussian_log_weights")
 ```
 
