@@ -387,10 +387,10 @@ names(models_nodule_count) <- c("nlme_gaussian_log", "nlme_gaussian_log_weights"
 
 ```{r}
 models_3way_q3 <- list(lme_rgr_3way, lme_total_biom_3way,
-                            lme_3way_root_shoot_ratio)
+                            lme_3way_root_shoot_ratio, lme_agr_3way)
 
 names(models_3way_q3) <- c("lme_rgr_3way", "lme_total_biom_3way",
-                                "lme_3way_root_shoot_ratio")
+                                "lme_3way_root_shoot_ratio", "lme_agr_3way")
 ```
 
 
