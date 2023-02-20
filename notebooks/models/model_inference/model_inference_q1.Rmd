@@ -1,0 +1,236 @@
+---
+title: 'Model inference Q1'
+author: "Erick Calderon-Morales"
+date: ''
+due_date: ""
+output:
+  prettydoc::html_pretty:
+    highlight: pygments
+    theme: tactile
+    toc: yes
+    number_sections: no
+    toc_depth: 1
+---
+
+```{r, setup, include=FALSE}
+# Set knit directory
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      cache.comments = TRUE,
+
+                      # Save figures as pdf ?
+                      # dev = c( "png", "pdf"),
+
+                      # Include code?
+                      echo           = FALSE,
+
+                      error          = FALSE,
+                      fig.align      = "center",
+
+                      # Path where figures are going to be store pdf single
+                      # figures
+                      fig.path       = paste0("./figures_inference", "/"),
+                      fig.width      = 11,
+                      fig.height     = 7,
+                      message        = FALSE,
+                      warning        = FALSE)
+```
+
+```{r cleanup-docs, cache = FALSE,echo = FALSE}
+# save a html copy file in a specific place
+# doc.files <- c(list.files(pattern = "pdf"),
+#                list.files(pattern = "html"),
+#                list.files(pattern = "docx"))
+#
+# for (file in doc.files) {
+#     file.rename(file, file.path("../../[insert_folder_name]/", file))
+# }
+```
+
+
+```{r libaries, message = FALSE, warning = FALSE, cache = FALSE}
+library(dplyr)
+# For tables appearance
+library(reactablefmtr)
+# For cleaning colnames
+library(janitor)
+# For add column function
+library(tibble)
+library(purrr)
+library(performance)
+# For bootstrap confidence intervals
+library(lmeresampler)
+library(nlme)
+library(lme4)
+# For model comparison
+library(MuMIn)
+# For get preditions
+library(modelr)
+# For reporting results
+library(report)
+library(emmeans)
+```
+
+# Load functions and data
+
+```{r message=FALSE, warning=FALSE}
+# Load dataset for adding predictions
+source("./scripts/code_join_data_full_dataset.R")
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load functions
+
+## Inference
+source("./R/functions_inference_anova_and_tukey_tables.R")
+
+## Plots
+source("./R/function_masomenos_plots.R")
+```
+
+
+__Q1: What is the relative influence of water and/or nutrient availability on
+tropical dry forest seedling growth and biomass allocation__
+
+
+# Load models
+
+```{r}
+models_q1 <- readRDS("./processed_data/models_q1.RData")
+
+```
+
+
+```{r}
+names(models_q1)
+```
+
+```{r echo=FALSE}
+
+# Step done for getting predictions from models for Q1
+data_for_models <-
+    data_for_models %>%
+
+        rownames_to_column("id") %>%
+
+        # Remove unused variables
+        dplyr::select(id, spcode, treatment, nfixer, init_height)
+```
+
+
+# ANOVAs
+
+```{r}
+models_q1 %>%
+
+    # Remove traits and mass fractions models
+    purrr::list_modify("agr_log" = NULL, "agr" = NULL) %>%
+    anova_table_tidy(., model_list = T)
+
+```
+
+# Tuckey comparisons
+
+```{r}
+models_q1 %>%
+
+    purrr::list_modify("agr_log" = NULL, "agr" = NULL) %>%
+
+    tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
+```
+
+
+# Percentange change
+
+```{r message=FALSE, warning=FALSE}
+models_q1 %>%
+
+    # Remove traits and mass fractions models
+    purrr::list_modify("agr_log" = NULL, "agr" = NULL) %>%
+
+    # Percentage difference
+    emmeans_table_tidy(., model_list = T,
+                        formula = "treatment|nfixer",
+                        grouping_var = "nfixer")
+```
+
+
+# Plot Biomass and growth boxplot
+
+```{r message=FALSE, warning=FALSE}
+
+# Get predictions
+string <- c("models_q1")
+
+data_pred_biomass_growth <-
+
+        # Get models prediction
+        gather_predictions(data_for_models,
+
+                           # Return predictions of:
+                            models_q1$rgr,
+                            models_q1$total_biomass,
+                            models_q1$root_shoot_ratio_log)  %>%
+
+            # Get fitted values
+            pivot_wider(names_from = model, values_from = pred) %>%
+             rename_all(
+              funs(
+
+                # rename columns
+                stringr::str_to_lower(.) %>%
+
+                # Remove string from name and replace it with pred_
+                stringr::str_replace(., c(string),"pred_") %>%
+
+                # Remove dollar sing
+                gsub("\\$", "", .))) %>%
+        # Select only pred variables
+        dplyr::select(-init_height)
+```
+
+```{r warning=FALSE}
+
+# Generate plot combinations
+vars_q1 <-
+  crossing(
+
+    # Get all numeric variables to plot (all y)
+    as_tibble(t(combn(dplyr::select(data_pred_biomass_growth, where(is.numeric)) %>% names, 1))),
+
+    # Select factor variables to plot
+    x_axis_var = dplyr::select(data_pred_biomass_growth, nfixer) %>%  names,
+    group_var = dplyr::select(data_pred_biomass_growth, treatment) %>%  names)
+```
+
+```{r fig_1_biomass_growth_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
+par(mfrow = c(2,2))
+vars_q1 %>%
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_pred_biomass_growth,
+                                y = !!sym(..1), x = !!sym(..2),
+                                fill = !!sym(..3)))
+      #cowplot::plot_grid(plotlist = ., ncol = 2)
+```
+
+## r2 models
+
+```{r}
+models_q1 %>%
+
+    # Remove traits and mass fractions models
+    purrr::list_modify("agr_log" = NULL, "agr" = NULL) %>%
+
+    map(., r2) %>%
+    unlist()
+```
+
+
