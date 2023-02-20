@@ -1,0 +1,237 @@
+---
+title: 'Model fitting and validation for Q3'
+author: "Erick Calderon-Morales"
+date: ''
+due_date: ""
+output:
+  prettydoc::html_pretty:
+    highlight: pygments
+    theme: tactile
+    toc: yes
+    number_sections: no
+    toc_depth: 1
+---
+
+```{r, setup, include=FALSE}
+# Set knit directory
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(
+  autodep = TRUE,
+  cache = FALSE,
+  cache.comments = TRUE,
+
+  # Save figures as pdf ?
+  # dev = c( "png", "pdf"),
+
+  # Include code?
+  echo = TRUE,
+  error = FALSE,
+  fig.align = "center",
+
+  # Path where figures are going to be store pdf single
+  # figures
+  fig.path = paste0("figures/"),
+  fig.width = 11,
+  fig.height = 7,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r cleanup-docs, cache = FALSE,echo = FALSE}
+# save a html copy file in a specific place
+# doc.files <- c(list.files(pattern = "pdf"),
+#                list.files(pattern = "html"),
+#                list.files(pattern = "docx"))
+#
+# for (file in doc.files) {
+#     file.rename(file, file.path("../../[insert_folder_name]/", file))
+# }
+```
+
+
+```{r libaries, message = FALSE, warning = FALSE, cache = FALSE}
+library(dplyr)
+# For Model fitting
+library(lme4)
+library(nlme)
+library(purrr)
+# For diagnostics
+library(performance)
+# library(see)
+# For adding new columns
+library(tibble)
+library(MuMIn)
+```
+
+```{r}
+# setwd for Rmarkdowm
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Load data
+source("./scripts/code_join_data_full_dataset.R")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Load functions
+## Models
+source("./R/functions_models.R")
+source("./R/function_nlme_validation_plots.R")
+```
+
+# Model Fitting
+
+__Q3: How do seedling-level functional traits, treatment, and N-fixing status
+interact to influence seedling-level growth rates and biomass accumulation?__
+
+```{r}
+data_for_models <-
+    data_for_models %>%
+
+    # Select variables for analysis
+    dplyr::select(!c(
+        rgr_slope, d15n, above_biomass, below_biomass,
+        rmf, smf, lmf))
+```
+
+
+### Scale preditors aka traits
+
+```{r}
+data_for_models_scaled <-
+    data_for_models %>%
+
+    #  Narea_g_m2 not included since it has a high correlation with amax
+    mutate(across(c(4, 9:13), scale))
+```
+
+
+## Model formula
+
+$$performance\sim treatment:fixer:scaled(trait)\ + initial\ height + random( 1|\ specie)$$
+
+
+## Fit models
+
+### Model RGR
+
+```{r}
+lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
+                            treatment:nfixer:gs  +
+                            treatment:nfixer:wue +
+                            treatment:nfixer:pnue +
+                            treatment:nfixer:d13c +
+
+                            # Added
+                            #treatment:nfixer:Narea_g_m2 +
+                            init_height ,
+                  random = ~1 | spcode,
+                  data = data_for_models_scaled)
+```
+
+
+### Model AGR
+
+```{r}
+lme_agr_3way <- lme(agr ~   treatment:nfixer:amax +
+                            treatment:nfixer:gs  +
+                            treatment:nfixer:wue +
+                            treatment:nfixer:pnue +
+                            treatment:nfixer:d13c +
+
+                            # Added
+                            #treatment:nfixer:Narea_g_m2 +
+                            init_height ,
+                  random = ~1 | spcode,
+                  data = data_for_models_scaled)
+```
+
+
+### Model Total Biomass
+
+```{r}
+lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
+                                            treatment:nfixer:gs  +
+                                            treatment:nfixer:wue +
+                                            treatment:nfixer:pnue +
+                                            treatment:nfixer:d13c +
+
+                                            init_height,
+                            random = ~1 | spcode,
+                            data = data_for_models_scaled)
+```
+
+## Model shoot root ratios
+
+```{r}
+lme_3way_root_shoot_ratio <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
+                                                        treatment:nfixer:gs  +
+                                                        treatment:nfixer:wue +
+                                                        treatment:nfixer:pnue +
+                                                        treatment:nfixer:d13c +
+
+                                                        # Added
+                                                        #treatment:nfixer:Narea_g_m2 +
+                                                        init_height,
+                            random = ~1 | spcode,
+                            data = data_for_models_scaled)
+```
+
+
+
+# Model Validation
+
+### RGR
+
+```{r validation_rgr_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_rgr_3way, data = data_for_models_scaled, group = "spcode")
+```
+
+### AGR
+```{r validation_agr_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_agr_3way, data = data_for_models_scaled, group = "spcode")
+```
+
+
+### Total biomass
+
+```{r validation_lme_total_biom_3way, fig.height = 9, fig.width = 14}
+nlme_validation_plots(lme_total_biom_3way, data = data_for_models_scaled,
+                      group = "spcode")
+```
+
+### Root-shoot ratio
+
+```{r}
+nlme_validation_plots(lme_3way_root_shoot_ratio, data = data_for_models_scaled,
+                      group = "spcode")
+```
+
+
+# Save model lists as .RData
+
+## 3-way models
+
+```{r}
+models_3way_q3 <- list(lme_rgr_3way, lme_total_biom_3way,
+                            lme_3way_root_shoot_ratio, lme_agr_3way)
+
+names(models_3way_q3) <- c("lme_rgr_3way", "lme_total_biom_3way",
+                                "lme_3way_root_shoot_ratio", "lme_agr_3way")
+```
+
+
+```{r}
+saveRDS(models_3way_q3, file = "./processed_data/models_3way_q3.RData")
+```
