@@ -159,6 +159,9 @@ models_q2 %>%
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```
 
+```{r}
+tukey_table_tidy(models_q2$amax, single_model = TRUE, formula = "treatment|nfixer")
+```
 
 ### Models with signifcant treatment effect
 
