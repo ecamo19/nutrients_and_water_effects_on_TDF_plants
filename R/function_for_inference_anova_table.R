@@ -1,8 +1,6 @@
-library(emmeans)
-
 # Model inference: Anova tidy table ---------------------------------------------
 
-## First, get table as dataframe -------------------------------------------------
+## First, get table as dataframe ------------------------------------------------
 anova_table_df <- function(model){
 
     # get the response variable name from the model
@@ -19,7 +17,7 @@ anova_table_df <- function(model){
 
         # create column with the name of the response variable
         tibble::add_column(response_variable = response_var) %>%
-        janitor::clean_names()  %>%
+        janitor::clean_names() %>%
 
         # Round p and f values
         dplyr::mutate(f = round(f, 4),
@@ -33,7 +31,7 @@ anova_table_tidy <- function(model, model_list = FALSE){
 
     if(model_list == TRUE) {
 
-       reactablefmtr::reactable(map_df(model, anova_table_df),
+       reactablefmtr::reactable(purrr::map_df(model, anova_table_df),
 
                   groupBy = "response_variable",
 
