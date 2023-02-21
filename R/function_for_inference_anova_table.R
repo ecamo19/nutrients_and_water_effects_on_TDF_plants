@@ -13,7 +13,7 @@ anova_table_df <- function(model){
     car::Anova(model, type = "III", test.statistic = c("F")) %>%
 
         data.frame() %>%
-        tiible::rownames_to_column("fixed_effects") %>%
+        tibble::rownames_to_column("fixed_effects") %>%
 
         # create column with the name of the response variable
         tibble::add_column(response_variable = response_var) %>%
@@ -31,7 +31,7 @@ anova_table_tidy <- function(model, model_list = FALSE){
 
     if(model_list == TRUE) {
 
-       reactablefmtr::reactable(purrr::map_df(model, anova_table_df),
+       reactable::reactable(purrr::map_df(model, anova_table_df),
 
                   groupBy = "response_variable",
 
@@ -55,7 +55,7 @@ anova_table_tidy <- function(model, model_list = FALSE){
                           else {color <- "#008000"}
                           list(color = color)})))
     } else
-        reactablefmtr::reactable(anova_table_df(model),
+        reactable::reactable(anova_table_df(model),
 
                   groupBy = "response_variable",
 

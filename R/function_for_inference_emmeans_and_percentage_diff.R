@@ -61,7 +61,7 @@ emmeans_table_tidy <- function(model, grouping_var = NULL, model_list = FALSE,
 
     if(model_list == TRUE) {
 
-        reactablefmtr::reactable(purrr::map_df(model, ~ emmeans_df(.x, formula, grouping_var)),
+        reactable::reactable(purrr::map_df(model, ~ emmeans_df(.x, formula, grouping_var)),
 
                   groupBy = "resp_var",
 
@@ -88,7 +88,7 @@ emmeans_table_tidy <- function(model, grouping_var = NULL, model_list = FALSE,
     }
 
     else
-        reactablefmtr::reactable(emmeans_df(model, formula, grouping_var),
+        reactable::reactable(emmeans_df(model, formula, grouping_var),
 
                   groupBy = "resp_var",
 

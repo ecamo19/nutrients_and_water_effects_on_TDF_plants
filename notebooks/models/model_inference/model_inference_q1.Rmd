@@ -21,7 +21,6 @@ knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effect
 ```{r knitr, include = FALSE}
 
 # Save figures in specific place
-
 knitr::opts_chunk$set(autodep        = TRUE,
                       cache          = FALSE,
                       cache.comments = TRUE,
@@ -59,15 +58,8 @@ knitr::opts_chunk$set(autodep        = TRUE,
 ```{r libaries, message = FALSE, warning = FALSE, cache = FALSE}
 library(dplyr)
 # For tables appearance
-library(reactablefmtr)
-# For cleaning colnames
-library(janitor)
-# For add column function
-library(tibble)
-library(purrr)
 library(performance)
 # For bootstrap confidence intervals
-library(lmeresampler)
 library(nlme)
 library(lme4)
 # For model comparison
@@ -76,7 +68,8 @@ library(MuMIn)
 library(modelr)
 # For reporting results
 library(report)
-library(emmeans)
+# For rendering tables
+library(reactablefmtr)
 ```
 
 # Load functions and data
@@ -90,7 +83,9 @@ source("./scripts/code_join_data_full_dataset.R")
 # Load functions
 
 ## Inference
-source("./R/functions_inference_anova_and_tukey_tables.R")
+source("./R/function_for_inference_anova_table.R")
+source("./R/function_for_inference_tukey_tables.R")
+source("./R/function_for_inference_emmeans_and_percentage_diff.R")
 
 ## Plots
 source("./R/function_masomenos_plots.R")
@@ -105,7 +100,6 @@ tropical dry forest seedling growth and biomass allocation__
 
 ```{r}
 models_q1 <- readRDS("./processed_data/models_q1.RData")
-
 ```
 
 
@@ -140,9 +134,14 @@ models_q1 %>%
 # Tuckey comparisons
 
 ```{r}
+tukey_table_tidy(models_q1$root_shoot_ratio_log,  formula = "treatment|nfixer")
+```
+
+```{r}
 models_q1 %>%
 
-    purrr::list_modify("agr_log" = NULL, "agr" = NULL) %>%
+    purrr::list_modify("agr_log" = NULL, "agr" = NULL,
+                        "root_shoot_ratio_log" = NULL) %>%
 
     tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
 ```

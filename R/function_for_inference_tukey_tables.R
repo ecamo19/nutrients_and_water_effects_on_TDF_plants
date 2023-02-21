@@ -45,7 +45,7 @@ tukey_table_tidy <- function(model, model_list = FALSE, formula = NULL){
 
     if(model_list == TRUE) {
 
-        reactablefmtr::reactable(purrr::map_df(model, ~tukey_table_df(.x, formula)),
+        reactable::reactable(purrr::map_df(model, ~tukey_table_df(.x, formula)),
 
                   groupBy = "response_variable",
 
@@ -72,7 +72,7 @@ tukey_table_tidy <- function(model, model_list = FALSE, formula = NULL){
     }
 
     else
-        reactablefmtr::reactable(tukey_table_df(model, formula),
+        reactable::reactable(tukey_table_df(model, formula),
 
                   groupBy = "response_variable",
 
@@ -96,4 +96,4 @@ tukey_table_tidy <- function(model, model_list = FALSE, formula = NULL){
                             else {color <- "#008000"}
                             list(color = color)})))
     }
-}
+
