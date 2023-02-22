@@ -1,5 +1,5 @@
 ---
-title: 'Model inference Q1'
+title: 'Model inference Q2'
 author: "Erick Calderon-Morales"
 date: ''
 due_date: ""
@@ -77,6 +77,7 @@ library(modelr)
 # For reporting results
 library(report)
 library(emmeans)
+library(ggplot2)
 ```
 
 # Load functions and data
@@ -222,7 +223,7 @@ emmeans_table_tidy(models_q2$nitrogen_log, formula = "treatment")
 
 # Difference in gs between fixer non fixers
 # Percentage difference
-as.data.frame(emmeans(models_q1_q2$gs,
+as.data.frame(emmeans(models_q2$gs,
                           specs = pairwise ~ "nfixer",
                           type = "response",
                           adjust = "tukey")$emmeans) %>%
@@ -240,7 +241,7 @@ as.data.frame(emmeans(models_q1_q2$gs,
 
 
 ```{r}
-as.data.frame(emmeans(models_q1_q2$nitrogen_log,
+as.data.frame(emmeans(models_q2$nitrogen_log,
                           specs = pairwise ~ "nfixer",
                           type = "response",
                           adjust = "tukey")$emmeans)  %>%
@@ -274,8 +275,6 @@ data_pred_traits <-
                             models_q2$gs,
                             models_q2$wue_log,
                             models_q2$pnue_log) %>%
-
-
 
         pivot_wider(names_from = model, values_from = pred) %>%
             rename_all(funs(
