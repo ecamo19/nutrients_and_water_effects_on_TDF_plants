@@ -12,7 +12,9 @@ tukey_table_df <- function(model, formula){
     }
     else
         formula <- formula(paste0("pairwise ~ ", formula))
-        print(paste0("The formula to be used in the pairwise comp is ", formula))
+
+    print("Formula for pairwise comparisons: ")
+    print(formula)
 
     # Get contrasts
     # estimate: of the effect size, that is the difference

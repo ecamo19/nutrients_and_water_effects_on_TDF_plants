@@ -20,7 +20,9 @@ emmeans_df <- function(model,formula, grouping_var = NULL){
     }
     else
         formula <- formula(paste0("pairwise ~ ", formula))
-        print(paste0("The formula to be used in the pairwise comp is ", formula))
+
+    print("Formula for pairwise comparisons: ")
+    print(formula)
 
     # Get contrasts tukey
     # estimate: of the effect size, that is the difference
