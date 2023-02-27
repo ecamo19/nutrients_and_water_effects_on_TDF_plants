@@ -76,8 +76,7 @@ library(MuMIn)
 # For get preditions
 #library(modelr)
 # For reporting results
-#library(report)
-#library(emmeans)
+library(report)
 library(ggplot2)
 ```
 
@@ -104,7 +103,6 @@ __Q3: How do seedling-level functional traits, treatment, and N-fixing status
 interact to influence seedling-level growth rates and biomass accumulation?__
 
 
-
 # Load data
 
 ```{r}
@@ -125,8 +123,7 @@ data_for_models_scaled <-
     data_for_models  %>%
 
     #  Narea_g_m2 not included since it has a high correlation with amax
-    mutate(across(c("init_height", "amax", "gs", "wue", "d13c", "pnue"),
-            scale))
+    mutate(across(c("init_height", "amax", "gs", "wue", "pnue"), scale))
 ```
 
 
@@ -216,6 +213,11 @@ r.squaredGLMM(lme_total_biom_3way)
 ```
 
 
+```{r}
+# Look results before bootstrap
+report::report(lme_total_biom_3way)
+```
+
 # Root to shoot ratio
 
 ```{r}
@@ -249,12 +251,6 @@ r.squaredGLMM(lme_root_shoot_ratio_3way)
 # Bootstraps
 
 ## Total Biomass
-
-```{r}
-# Look results before bootstrap
-#report::report(models_3way_q3$lme_total_biom_3way)
-```
-
 
 ```{r}
 if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
@@ -328,13 +324,4 @@ cleveland_plot(x = treat_trait, y = estimate,
         facet_wrap(. ~col_2)
 
 ```
-
-
-```{r}
-names(data_total_biomass_plot)
-
-data_total_biomass_plot %>%
-    filter(significance == TRUE)
-```
-
 
