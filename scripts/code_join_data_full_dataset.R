@@ -15,7 +15,7 @@ source("./scripts/code_clean_and_calculate_growth_measurements.R")
 
 ## Biomass data -----------------------------------------------------------------
 raw_data_biomass <-
-    read.csv("./raw_data/6_plant_dry_weights_data.csv",header = T) %>%
+    read.csv("./raw_data/6_plant_dry_weights_data.csv", header = T) %>%
 	clean_names()
 
 ## Ecophys data -----------------------------------------------------------------
@@ -222,7 +222,7 @@ data_for_models <-
     # Calculate nitrogen use efficiency column
     # I followed Leaf traits explaining the growth of tree
     # species planted in a Central Amazonian disturbed area
-    mutate(pnue = amax/Narea_mol_m2)
+    mutate(pnue = amax/Narea_mol_m2)  %>%
 
     # select variables that are going to be used in the models
     dplyr::select(id, spcode, treatment,nfixer, init_height,
