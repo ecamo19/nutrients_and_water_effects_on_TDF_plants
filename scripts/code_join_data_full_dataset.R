@@ -225,7 +225,7 @@ data_for_models <-
     mutate(pnue = amax/Narea_mol_m2)  %>%
 
     # select variables that are going to be used in the models
-    dplyr::select(id, spcode, treatment,nfixer, init_height,
+    dplyr::select(id, spcode, treatment, nfixer, init_height,
 
                   # Plant preformance
                   total_biomass, above_biomass, below_biomass,
@@ -235,17 +235,17 @@ data_for_models <-
                   rmf, smf, lmf,
 
                   # Traits
-                  amax, gs, wue, d13c, d15n, pnue, Narea_g_cm2) %>%
+                  amax, gs, wue, d13c, d15n, pnue) %>%
 
     # add id to rownames for keep track of the rows
     column_to_rownames("id") %>%
-    mutate(nfixer = factor(nfixer, levels = c("nonfixer","fixer")))
+    mutate(nfixer = factor(nfixer, levels = c("nonfixer", "fixer")))
 
 
 # Remove all unused data --------------------------------------------------------
 items <- c("data_biomass_cleaned", "data_ecophys_cleaned", "data_initheight_cleaned",
            "data_isotopes_cleaned", "data_leaftraits_cleaned", "data_rgr_agr_cleaned",
-            "raw_data_biomass", "raw_data_ecophys","raw_data_initheight",
+            "raw_data_biomass", "raw_data_ecophys", "raw_data_initheight",
            "raw_data_isotopes", "raw_data_traits")
 
 remove(items, list = items)
