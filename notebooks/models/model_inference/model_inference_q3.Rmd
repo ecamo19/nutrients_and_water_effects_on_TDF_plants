@@ -123,7 +123,7 @@ data_for_models_scaled <-
     data_for_models  %>%
 
     #  Narea_g_m2 not included since it has a high correlation with amax
-    mutate(across(c("init_height", "amax", "gs", "wue", "pnue"), scale))
+    mutate(across(c("init_height", "amax", "gs", "wue", "pnue", "d13c"), scale))
 ```
 
 
@@ -134,7 +134,7 @@ lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
                             treatment:nfixer:gs  +
                             treatment:nfixer:wue +
                             treatment:nfixer:pnue +
-                            treatment:nfixer:d13c +
+                            #treatment:nfixer:d13c +
 
                             # Added
                             #treatment:nfixer:Narea_g_m2 +
@@ -225,7 +225,7 @@ lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
                                                         treatment:nfixer:gs  +
                                                         treatment:nfixer:wue +
                                                         treatment:nfixer:pnue +
-                                                        treatment:nfixer:d13c +
+                                                        #treatment:nfixer:d13c +
 
                                                         # Added
                                                         #treatment:nfixer:Narea_g_m2 +
@@ -238,7 +238,7 @@ lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
 ## Model Selection
 
 ```{r}
-dredge(lme_root_shoot_ratio_3way)
+#dredge(lme_root_shoot_ratio_3way)
 ```
 
 
@@ -293,22 +293,22 @@ data_total_biomass_plot <-
             mutate(across(where(is.character), as.factor)) %>%
             filter(type == "norm") %>%
             mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
-                                                            #"plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-d13c" ,
                                                             "plus_water_nutrients-gs"   ,
                                                             "plus_water_nutrients-pnue" ,
                                                             "plus_water_nutrients-wue",
                                                             "plus_water-amax" ,
-                                                            #"plus_water-d13c",
+                                                            "plus_water-d13c",
                                                             "plus_water-gs"  ,
                                                             "plus_water-pnue",
                                                             "plus_water-wue",
                                                             "plus_nutrients-amax",
-                                                            #"plus_nutrients-d13c",
+                                                            "plus_nutrients-d13c",
                                                             "plus_nutrients-gs"  ,
                                                             "plus_nutrients-pnue",
                                                             "plus_nutrients-wue" ,
                                                             "no_additions-amax",
-                                                            #"no_additions-d13c",
+                                                            "no_additions-d13c",
                                                             "no_additions-gs"  ,
                                                             "no_additions-pnue",
                                                             "no_additions-wue")))

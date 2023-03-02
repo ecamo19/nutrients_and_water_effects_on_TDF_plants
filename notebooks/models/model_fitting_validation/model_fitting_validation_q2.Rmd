@@ -114,7 +114,7 @@ $$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
 ```{r}
 # Take response variables names
 response_vars_q2 <-
-  set_names(names(data_for_models)[c(9:11,13, 14)])
+  set_names(names(data_for_models)[c(9:14)])
 
 response_vars_q2
 ```
