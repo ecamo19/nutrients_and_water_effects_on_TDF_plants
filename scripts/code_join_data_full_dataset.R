@@ -222,7 +222,7 @@ data_for_models <-
     # Calculate nitrogen use efficiency column
     # I followed Leaf traits explaining the growth of tree
     # species planted in a Central Amazonian disturbed area
-    mutate(pnue = amax/Narea_mol_m2)  %>%
+    mutate(pnue = amax/ Narea_mol_m2)  %>%
 
     # select variables that are going to be used in the models
     dplyr::select(id, spcode, treatment, nfixer, init_height,
