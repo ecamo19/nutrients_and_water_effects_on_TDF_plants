@@ -123,7 +123,8 @@ data_for_models_scaled <-
     data_for_models  %>%
 
     #  Narea_g_m2 not included since it has a high correlation with amax
-    mutate(across(c("init_height", "amax", "gs", "wue", "pnue", "d13c"), scale))
+    mutate(across(c("init_height", "amax", "gs", "wue", "pnue", "d13c"), scale)) %>%
+    dplyr::select(-Narea_g_m2)
 ```
 
 
@@ -134,11 +135,11 @@ lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
                             treatment:nfixer:gs  +
                             treatment:nfixer:wue +
                             treatment:nfixer:pnue +
-                            #treatment:nfixer:d13c +
+                            treatment:nfixer:d13c +
 
                             # Added
                             #treatment:nfixer:Narea_g_m2 +
-                            init_height ,
+                            init_height,
                   random = ~1 | spcode,
                   data = data_for_models_scaled)
 ```
@@ -184,7 +185,6 @@ r.squaredGLMM(lme_rgr_3way)
 #sr.squaredGLMM(lme_agr_3way)
 ```
 
-
 # Total Biomass
 
 ```{r}
@@ -225,7 +225,7 @@ lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
                                                         treatment:nfixer:gs  +
                                                         treatment:nfixer:wue +
                                                         treatment:nfixer:pnue +
-                                                        #treatment:nfixer:d13c +
+                                                        treatment:nfixer:d13c +
 
                                                         # Added
                                                         #treatment:nfixer:Narea_g_m2 +
@@ -251,6 +251,78 @@ r.squaredGLMM(lme_root_shoot_ratio_3way)
 # Bootstraps
 
 ## RGRh
+
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
+
+    print("The bootstrap exists")
+
+    bootstrap_ci_rgr <- readRDS("./processed_data/bootstrap_ci_rgr.RData")
+
+    print("File read")
+
+} else {
+
+    print("The bootstrap does not exist, Creating bootstrap")
+
+    bootstrap_ci_rgr <-
+        bootstrap_model_ci_df(model = lme_rgr_3way,
+                              category = "all",
+
+                              iter = 9999)
+
+    saveRDS(bootstrap_ci_rgr,
+            file = "./processed_data/bootstrap_ci_rgr.RData")
+
+}
+```
+
+## Plot RGRh
+```{r}
+
+colmn <- paste0("col_", 1:3)
+
+data_rgr_plot <-
+
+        bootstrap_ci_rgr %>%
+
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>%
+            mutate(across(where(is.character), as.factor)) %>%
+            filter(type == "norm") %>%
+            mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
+                                                            "plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-gs"   ,
+                                                            "plus_water_nutrients-pnue" ,
+                                                            "plus_water_nutrients-wue",
+                                                            "plus_water-amax" ,
+                                                            "plus_water-d13c",
+                                                            "plus_water-gs"  ,
+                                                            "plus_water-pnue",
+                                                            "plus_water-wue",
+                                                            "plus_nutrients-amax",
+                                                            "plus_nutrients-d13c",
+                                                            "plus_nutrients-gs"  ,
+                                                            "plus_nutrients-pnue",
+                                                            "plus_nutrients-wue" ,
+                                                            "no_additions-amax",
+                                                            "no_additions-d13c",
+                                                            "no_additions-gs"  ,
+                                                            "no_additions-pnue",
+                                                            "no_additions-wue")))
+```
+
+
+```{r rgr_biomass_plot, fig.width = 16, fig.height = 13, fig.align = 'center'}
+
+cleveland_plot(x = treat_trait, y = estimate,
+                                     color = col_1,
+                                     shape = significance,
+                                     ci_lower = lower, ci_upper = upper,
+                                     data = data_rgr_plot) +
+        facet_wrap(. ~col_2)
+```
+
+
 
 ## Total Biomass
 
@@ -328,3 +400,75 @@ cleveland_plot(x = treat_trait, y = estimate,
 
 
 ## Root to shoot ratio
+
+
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_root_shoot_ratio.RData")) {
+
+    print("The bootstrap exists")
+
+    bootstrap_ci_root_shoot_ratio <- readRDS("./processed_data/bootstrap_ci_root_shoot_ratio.RData")
+
+    print("File read")
+
+} else {
+
+    print("The bootstrap does not exist, Creating bootstrap")
+
+    bootstrap_ci_root_shoot_ratio <-
+        bootstrap_model_ci_df(model = lme_root_shoot_ratio_3way,
+                              category = "all",
+
+                              iter = 9999)
+
+    saveRDS(bootstrap_ci_root_shoot_ratio,
+            file = "./processed_data/bootstrap_ci_root_shoot_ratio.RData")
+
+}
+```
+
+
+## Plot Root shoot ratio
+```{r}
+
+colmn <- paste0("col_", 1:3)
+
+data_root_shoot_plot <-
+
+        bootstrap_ci_root_shoot_ratio %>%
+
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>%
+            mutate(across(where(is.character), as.factor)) %>%
+            filter(type == "norm") %>%
+            mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
+                                                            "plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-gs"   ,
+                                                            "plus_water_nutrients-pnue" ,
+                                                            "plus_water_nutrients-wue",
+                                                            "plus_water-amax" ,
+                                                            "plus_water-d13c",
+                                                            "plus_water-gs"  ,
+                                                            "plus_water-pnue",
+                                                            "plus_water-wue",
+                                                            "plus_nutrients-amax",
+                                                            "plus_nutrients-d13c",
+                                                            "plus_nutrients-gs"  ,
+                                                            "plus_nutrients-pnue",
+                                                            "plus_nutrients-wue" ,
+                                                            "no_additions-amax",
+                                                            "no_additions-d13c",
+                                                            "no_additions-gs"  ,
+                                                            "no_additions-pnue",
+                                                            "no_additions-wue")))
+```
+
+```{r root_shoot_plot, fig.width = 16, fig.height = 13, fig.align = 'center'}
+
+cleveland_plot(x = treat_trait, y = estimate,
+                                     color = col_1,
+                                     shape = significance,
+                                     ci_lower = lower, ci_upper = upper,
+                                     data = data_root_shoot_plot) +
+        facet_wrap(. ~col_2)
+
+```
