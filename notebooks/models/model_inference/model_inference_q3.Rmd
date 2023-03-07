@@ -133,7 +133,7 @@ data_for_models_scaled <-
 ```{r}
 lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
                             treatment:nfixer:gs  +
-                            treatment:nfixer:wue +
+                            #treatment:nfixer:wue +
                             treatment:nfixer:pnue +
                             treatment:nfixer:d13c +
 
@@ -157,100 +157,7 @@ r.squaredGLMM(lme_rgr_3way)
 ```
 
 
-# AGR
-
-```{r}
-#lme_agr_3way <- lme(agr ~   treatment:nfixer:amax +
-#                            treatment:nfixer:gs  +
-#                            treatment:nfixer:wue +
-#                            treatment:nfixer:pnue +
-#                            treatment:nfixer:d13c +#
-
-#                            # Added
-#                            #treatment:nfixer:Narea_g_m2 +
-#                            init_height ,
-#                  random = ~1 | spcode,
-#                  data = data_for_models_scaled)
-```
-
-## Model Selection
-
-```{r}
-#dredge(lme_agr_3way)
-```
-
-## R2
-
-```{r}
-#sr.squaredGLMM(lme_agr_3way)
-```
-
-# Total Biomass
-
-```{r}
-lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
-                                            treatment:nfixer:gs  +
-                                            treatment:nfixer:wue +
-                                            treatment:nfixer:pnue +
-                                            treatment:nfixer:d13c +
-
-                                            init_height,
-                            random = ~1 | spcode,
-                            data = data_for_models_scaled)
-```
-
-
-## Model Selection
-
-```{r}
-#dredge(lme_total_biom_3way)
-```
-
-## R2
-
-```{r}
-r.squaredGLMM(lme_total_biom_3way)
-```
-
-
-```{r}
-# Look results before bootstrap
-report::report(lme_total_biom_3way)
-```
-
-# Root to shoot ratio
-
-```{r}
-lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
-                                                        treatment:nfixer:gs  +
-                                                        treatment:nfixer:wue +
-                                                        treatment:nfixer:pnue +
-                                                        treatment:nfixer:d13c +
-
-                                                        # Added
-                                                        #treatment:nfixer:Narea_g_m2 +
-                                                        init_height,
-                            random = ~1 | spcode,
-                            data = data_for_models_scaled)
-```
-
-
-## Model Selection
-
-```{r}
-#dredge(lme_root_shoot_ratio_3way)
-```
-
-
-## R2
-
-```{r}
-r.squaredGLMM(lme_root_shoot_ratio_3way)
-```
-
-# Bootstraps
-
-## RGRh
+## Bootstrap RGRh
 
 ```{r}
 if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
@@ -293,22 +200,23 @@ data_rgr_plot <-
                                                             "plus_water_nutrients-d13c" ,
                                                             "plus_water_nutrients-gs"   ,
                                                             "plus_water_nutrients-pnue" ,
-                                                            "plus_water_nutrients-wue",
+                                                            #"plus_water_nutrients-wue",
                                                             "plus_water-amax" ,
                                                             "plus_water-d13c",
                                                             "plus_water-gs"  ,
                                                             "plus_water-pnue",
-                                                            "plus_water-wue",
+                                                            #"plus_water-wue",
                                                             "plus_nutrients-amax",
                                                             "plus_nutrients-d13c",
                                                             "plus_nutrients-gs"  ,
                                                             "plus_nutrients-pnue",
-                                                            "plus_nutrients-wue" ,
+                                                            #"plus_nutrients-wue" ,
                                                             "no_additions-amax",
                                                             "no_additions-d13c",
                                                             "no_additions-gs"  ,
-                                                            "no_additions-pnue",
-                                                            "no_additions-wue")))
+                                                            "no_additions-pnue"
+                                                            #"no_additions-wue"
+                                                            )))
 ```
 
 
@@ -323,8 +231,40 @@ cleveland_plot(x = treat_trait, y = estimate,
 ```
 
 
+# Total Biomass
 
-## Total Biomass
+```{r}
+lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
+                                            #treatment:nfixer:wue +
+                                            treatment:nfixer:pnue +
+                                            treatment:nfixer:gs  +
+                                            treatment:nfixer:d13c +
+
+                                            init_height,
+                            random = ~1 | spcode,
+                            data = data_for_models_scaled)
+```
+
+
+## Model Selection
+
+```{r}
+#dredge(lme_total_biom_3way)
+```
+
+## R2
+
+```{r}
+r.squaredGLMM(lme_total_biom_3way)
+```
+
+
+```{r}
+# Look results before bootstrap
+#report::report(lme_total_biom_3way)
+```
+
+## Bootstrap Total Biomass
 
 ```{r}
 if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
@@ -368,22 +308,23 @@ data_total_biomass_plot <-
                                                             "plus_water_nutrients-d13c" ,
                                                             "plus_water_nutrients-gs"   ,
                                                             "plus_water_nutrients-pnue" ,
-                                                            "plus_water_nutrients-wue",
+                                                            #"plus_water_nutrients-wue",
                                                             "plus_water-amax" ,
                                                             "plus_water-d13c",
                                                             "plus_water-gs"  ,
                                                             "plus_water-pnue",
-                                                            "plus_water-wue",
+                                                            #"plus_water-wue",
                                                             "plus_nutrients-amax",
                                                             "plus_nutrients-d13c",
                                                             "plus_nutrients-gs"  ,
                                                             "plus_nutrients-pnue",
-                                                            "plus_nutrients-wue" ,
+                                                            #"plus_nutrients-wue" ,
                                                             "no_additions-amax",
                                                             "no_additions-d13c",
                                                             "no_additions-gs"  ,
-                                                            "no_additions-pnue",
-                                                            "no_additions-wue")))
+                                                            "no_additions-pnue"
+                                                            #"no_additions-wue"
+                                                            )))
 ```
 
 
@@ -399,8 +340,38 @@ cleveland_plot(x = treat_trait, y = estimate,
 ```
 
 
-## Root to shoot ratio
+# Root to shoot ratio
 
+```{r}
+lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
+                                                        treatment:nfixer:gs  +
+                                                        #treatment:nfixer:wue +
+                                                        treatment:nfixer:pnue +
+                                                        treatment:nfixer:d13c +
+
+                                                        # Added
+                                                        #treatment:nfixer:Narea_g_m2 +
+                                                        init_height,
+                            random = ~1 | spcode,
+                            data = data_for_models_scaled)
+```
+
+
+## Model Selection
+
+```{r}
+#dredge(lme_root_shoot_ratio_3way)
+```
+
+
+## R2
+
+```{r}
+r.squaredGLMM(lme_root_shoot_ratio_3way)
+```
+
+
+## Bootstrap Root to shoot ratio
 
 ```{r}
 if (file.exists("./processed_data/bootstrap_ci_root_shoot_ratio.RData")) {
@@ -444,22 +415,23 @@ data_root_shoot_plot <-
                                                             "plus_water_nutrients-d13c" ,
                                                             "plus_water_nutrients-gs"   ,
                                                             "plus_water_nutrients-pnue" ,
-                                                            "plus_water_nutrients-wue",
+                                                            #"plus_water_nutrients-wue",
                                                             "plus_water-amax" ,
                                                             "plus_water-d13c",
                                                             "plus_water-gs"  ,
                                                             "plus_water-pnue",
-                                                            "plus_water-wue",
+                                                            #"plus_water-wue",
                                                             "plus_nutrients-amax",
                                                             "plus_nutrients-d13c",
                                                             "plus_nutrients-gs"  ,
                                                             "plus_nutrients-pnue",
-                                                            "plus_nutrients-wue" ,
+                                                            #"plus_nutrients-wue" ,
                                                             "no_additions-amax",
                                                             "no_additions-d13c",
                                                             "no_additions-gs"  ,
-                                                            "no_additions-pnue",
-                                                            "no_additions-wue")))
+                                                            "no_additions-pnue"
+                                                            #"no_additions-wue"
+                                                            )))
 ```
 
 ```{r root_shoot_plot, fig.width = 16, fig.height = 13, fig.align = 'center'}
@@ -472,3 +444,5 @@ cleveland_plot(x = treat_trait, y = estimate,
         facet_wrap(. ~col_2)
 
 ```
+
+
