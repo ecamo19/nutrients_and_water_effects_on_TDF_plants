@@ -67,11 +67,12 @@ library(lme4)
 library(MuMIn)
 # For get preditions
 library(modelr)
-# For reporting results
-library(report)
 # For rendering tables
 library(reactablefmtr)
 library(ggplot2)
+# For effect sizes
+library(effectsize)
+library(emmeans)
 ```
 
 # Load functions and data
@@ -133,19 +134,78 @@ models_q1 %>%
 
 ```
 
+# Effect sizes
+
+#### Negligible [0,0.2)
+#### Small [0.2, 0.5)
+#### Medium [0.5, 0.8)
+#### Large [0.8, inf)
+
 # Tuckey comparisons
 
+## Root shoot ratio
 ```{r}
+# I did this because is a log model
 tukey_table_tidy(models_q1$root_shoot_ratio_log,  formula = "treatment|nfixer")
 ```
 
+
+## For double-ckeck
 ```{r}
-models_q1 %>%
+tukey_rgr <- emmeans(models_q1$root_shoot_ratio_log,
+                                ~treatment|nfixer, type = "response") %>%
+                            pairs(adjust = "Tukey")
+```
 
-    purrr::list_modify("agr_log" = NULL, "agr" = NULL,
-                        "root_shoot_ratio_log" = NULL) %>%
 
-    tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
+```{r}
+eff_size(emmeans(models_q1$root_shoot_ratio_log,
+                    ~treatment|nfixer), type = "response",
+                    sigma = sigma(models_q1$root_shoot_ratio_log),
+                    edf = df.residual(models_q1$root_shoot_ratio_log))
+```
+
+
+## Total Biomass
+
+```{r}
+tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
+                formula = "treatment|nfixer")
+```
+
+
+```{r}
+emmeans(models_q1$total_biomass, ~treatment|nfixer) %>%
+        pairs(adjust = "Tukey")
+```
+
+
+```{r}
+eff_size(emmeans(models_q1$total_biomass, ~treatment|nfixer),
+         sigma = sigma(models_q1$total_biomass),
+         edf = df.residual(models_q1$total_biomass))
+```
+
+
+## RGR
+
+```{r}
+tukey_table_tidy(models_q1$rgr, model_list = FALSE,
+                formula = "treatment|nfixer")
+```
+
+
+```{r}
+emmeans(models_q1$rgr, ~treatment|nfixer) %>%
+        pairs(adjust = "Tukey")
+
+```
+
+```{r}
+eff_size(emmeans(models_q1$rgr, ~treatment|nfixer),
+         sigma = sigma(models_q1$rgr),
+         edf = df.residual(models_q1$rgr))
+
 ```
 
 
@@ -246,3 +306,6 @@ models_q1 %>%
 ```
 
 
+# Double check plots
+
+https://www.youtube.com/watch?v=Te74FlbnkdE&t=331s
