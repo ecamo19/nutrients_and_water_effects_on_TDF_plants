@@ -11,13 +11,6 @@ output:
     number_sections: true
 
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, comment = "", fig.align = 'center',
-					  fig.width = 11, fig.height = 7)
-
-options(knitr.graphics.auto_pdf = TRUE, scipen = 9999, digits = 10)
-```
-
 
 ```{r knitr, include = FALSE}
 
@@ -44,6 +37,11 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       warning        = FALSE)
 ```
 
+
+```{r, setup, include=FALSE}
+# Set knit directory
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
 
 
 
@@ -79,8 +77,11 @@ summary_soil_moisture <-
     arrange(nfixer) %>%
 	arrange(date_day_month)
 
+```
 
 ### Round the numbers
+```{r}
+
 summary_soil_moisture[,5:ncol(summary_soil_moisture)] <-
 	round(summary_soil_moisture[,5:ncol(summary_soil_moisture)],2)
 
@@ -88,7 +89,6 @@ summary_soil_moisture[,5:ncol(summary_soil_moisture)] <-
 ```
 
 
-## Boxplot
 
 ```{r}
 # Change labels names
@@ -101,23 +101,24 @@ data_soil_moisture_cleaned$treatment <-
 
 data_soil_moisture_cleaned$date_day_month <-
 	factor(data_soil_moisture_cleaned$date_day_month,
-		   labels = c("31-Aug",
-		   			"19-Sep",
-					"4-Oct",
-					"17-Oct",
-					"31-Oct",
-					"15-Nov"))
+		   labels = c("31-August",
+		   			"19-September",
+					"4-October",
+					"17-October",
+					"31-October",
+					"15-November"))
 data_soil_moisture_cleaned$sm_measured <-
 	factor(data_soil_moisture_cleaned$sm_measured,
 		   labels = c(
-					"Before Watering",
-					"After Watering"
+					"Before Applying Treatments",
+					"After Applying Treatments"
 					))
 
 ```
 
+## Boxplot
 
-```{r treatment_effects, fig.width = 25, fig.height = 10}
+```{r boxplot_treatment_effects, fig.width = 25, fig.height = 10}
 
 ggplot(data = data_soil_moisture_cleaned,
 	   aes(x = date_day_month, y = soil_moisture,
@@ -125,22 +126,22 @@ ggplot(data = data_soil_moisture_cleaned,
 	#facet_wrap(~treatment,nrow = 4, scales = "free_y") +
 
 	#Adjust boxplots side by side
-	geom_boxplot(position = position_dodge( width=.8)) +
+	geom_boxplot(position = position_dodge(width=.8)) +
 	theme_bw() +
 
     facet_wrap(~ sm_measured, scales = "free_y") +
 
 	#Define colors
-	scale_colour_manual(values = c("#F0E442","#0072B2"))+
-	xlab("Date") + ylab("Mean Soil Moisture %") +
+	#scale_colour_manual(values = c("#F0E442","#0072B2"))+
+	xlab("Date") + ylab("Mean Pot Soil Moisture %") +
 
 	#Delete lines around facet labels
 	theme(strip.background = element_rect( color="white", fill="white"),
 
      #Font size
      axis.text = element_text(size = 18),
-     axis.title = element_text(size = 18,face="bold"),
-     strip.text.x = element_text(size = 18,face="bold"),
+     axis.title = element_text(size = 18,face = "bold"),
+     strip.text.x = element_text(size = 18,face = "bold"),
 
      # Legend position and size
      legend.position = "bottom",
@@ -153,135 +154,94 @@ ggplot(data = data_soil_moisture_cleaned,
 	 	   ) +
     ggplot2::scale_fill_manual(values = c("#F0E442","#009E73",
                                               "#56B4E9","#0072B2"))
-
-
 ```
 
-# Mass fractions
+# Plot Mean values
 
-```{r message=FALSE, warning=FALSE}
-# Load data
-sys.source("./scripts/code_join_data_full_dataset.R", envir = knitr::knit_global())
+```{r mean_treatment_effects, fig.width = 20, fig.height = 10}
+data_soil_moisture_cleaned  %>%
+        group_by(date_day_month, sm_measured, treatment) %>%
+        summarise(mean_soil_moisture = mean(soil_moisture),
 
-ls()
-data_mass_fractions <-
-    data_for_models %>%
-    tibble::rownames_to_column("id") %>%
-    select(id,spcode, treatment, nfixer, init_height)
-```
+                se_soil_moisture = (sd(soil_moisture) / sqrt(n()))) %>%
 
-```{r}
-## Load functions
-sys.source("./R/functions_inference_anova_and_tukey_tables.R", envir = knitr::knit_global())
-```
+        ggplot(data = ., aes(x = date_day_month, y = mean_soil_moisture,
+                            color = treatment)) +
+            geom_point(position = position_dodge(width = .4), size = 4) +
+            facet_wrap(~sm_measured) +
+
+            scale_color_manual(values = c("#F0E442","#009E73", "#56B4E9",
+                                            "#0072B2")) +
+
+            xlab("Date") + ylab("Mean Pot Soil Moisture %") +
+            theme_bw() +
+
+            # Add Standard error bars
+            geom_errorbar(aes(ymin = mean_soil_moisture - se_soil_moisture,
+                              ymax = mean_soil_moisture + se_soil_moisture),
+                            width = .2,
+                            position = position_dodge(width = .4)) +
 
 
-## Models
+            #Delete lines around facet labels
+	        theme(
 
-```{r}
-# Load models
-models_q1_q2_and_mass_fractions <- readRDS("./processed_data/models_q1_q2_and_mass_fractions.RData")
-```
+                    #Font size
+                    axis.text = element_text(size = 18),
+                    axis.title = element_text(size = 18, face = "bold"),
+                    strip.text.x = element_text(size = 18, face = "bold"),
 
-
-## Anovas
-
-## Anova
-```{r}
-models_q1_q2_and_mass_fractions %>%
-
-    # Remove traits and mass fractions models
-    purrr::list_modify("total_biomass" = NULL, "above_biomass" = NULL,
-                       "below_biomass" = NULL,  "rgr" = NULL,
-                       "d13c" = NULL, "amax" = NULL, "gs" = NULL,
-                       "wue_log" = NULL, "pnue_log" = NULL) %>%
-    anova_table_tidy(., model_list = T)
-
-```
-
-```{r}
-models_q1_q2_and_mass_fractions %>%
-
-    # Remove traits and mass fractions models
-   purrr::list_modify("total_biomass" = NULL, "above_biomass" = NULL,
-                       "below_biomass" = NULL,  "rgr" = NULL,
-                       "d13c" = NULL, "amax" = NULL, "gs" = NULL,
-                       "wue_log" = NULL, "pnue_log" = NULL) %>%
-
-    tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
+                    # Legend position and size
+                    legend.position = "bottom",
+                    legend.title = element_text(size = 18),
+                    legend.text = element_text(size = 18)) +
+	                guides(col = guide_legend(ncol = 1, title.position = "left",
+                            title.hjust = .59))
 ```
 
 
-```{r}
-models_q1_q2_and_mass_fractions %>%
+# Plot Mean values data scaled
 
-    # Remove traits and mass fractions models
-   purrr::list_modify("total_biomass" = NULL, "above_biomass" = NULL,
-                       "below_biomass" = NULL,  "rgr" = NULL,
-                       "d13c" = NULL, "amax" = NULL, "gs" = NULL,
-                       "wue_log" = NULL, "pnue_log" = NULL) %>%
+```{r mean_treatment_effects_scaled, fig.width = 20, fig.height = 10}
+data_soil_moisture_cleaned  %>%
 
-    # Percentage difference
-    emmeans_table_tidy(., model_list = T,
-                        formula = "treatment|nfixer",
-                        grouping_var = "nfixer")
+        # Scale data
+        mutate(soil_moisture = scale(soil_moisture)) %>%
+        group_by(date_day_month, sm_measured, treatment) %>%
+        summarise(mean_soil_moisture = mean(soil_moisture),
+
+                se_soil_moisture = (sd(soil_moisture) / sqrt(n()))) %>%
+
+        ggplot(data = ., aes(x = date_day_month, y = mean_soil_moisture,
+                            color = treatment)) +
+            geom_point(position = position_dodge(width = .4), size = 4) +
+            facet_wrap(~sm_measured) +
+
+            scale_color_manual(values = c("#F0E442","#009E73", "#56B4E9",
+                                            "#0072B2")) +
+
+            xlab("Date") + ylab("Mean Pot Soil Moisture Scaled ") +
+            theme_bw() +
+
+            # Add Standard error bars
+            geom_errorbar(aes(ymin = mean_soil_moisture - se_soil_moisture,
+                              ymax = mean_soil_moisture + se_soil_moisture),
+                            width = .2,
+                            position = position_dodge(width = .4)) +
+
+
+            #Delete lines around facet labels
+	        theme(
+
+                    #Font size
+                    axis.text = element_text(size = 18),
+                    axis.title = element_text(size = 18, face = "bold"),
+                    strip.text.x = element_text(size = 18, face = "bold"),
+
+                    # Legend position and size
+                    legend.position = "bottom",
+                    legend.title = element_text(size = 18),
+                    legend.text = element_text(size = 18)) +
+	                guides(col = guide_legend(ncol = 1, title.position = "left",
+                            title.hjust = .59))
 ```
-
-
-```{r}
-# Get predictions
-string <- c("models_q1_q2_and_mass_fractions")
-
-data_pred_mass_fractions <-
-
-        # Get models prediction
-        modelr::gather_predictions(data_mass_fractions,
-
-                           # Return predictions
-                            models_q1_q2_and_mass_fractions$rmf_log,
-                            models_q1_q2_and_mass_fractions$smf_log,
-                            models_q1_q2_and_mass_fractions$lmf_log) %>%
-
-        pivot_wider(names_from = model, values_from = pred) %>%
-            rename_all(funs(
-
-                # rename columns
-                stringr::str_to_lower(.) %>%
-                stringr::str_replace(., c(string),"pred_") %>%
-
-                # Remove dollar sing
-                gsub("\\$", "", .)
-                )) %>%
-
-        # Back transform log variables
-        mutate(pred_rmf = exp(pred_rmf_log),
-                pred_smf = exp(pred_smf_log),
-               pred_lmf = exp(pred_lmf_log)) %>%
-
-        # Remove log predictions and init height
-        dplyr::select(-c(init_height, pred_smf_log ,pred_rmf_log, pred_lmf_log))
-```
-
-```{r}
-vars_q2 <-
-  crossing(
-
-    # Get all numeric variables to plot (all y)
-    as_tibble(t(combn(dplyr::select(data_pred_mass_fractions,
-                                    where(is.numeric)) %>% names, 1))),
-
-    # Select factor variables to plot
-    x_axis_var = dplyr::select(data_pred_mass_fractions, nfixer) %>%  names,
-    group_var = dplyr::select(data_pred_mass_fractions, treatment) %>%  names)
-```
-
-```{r, mass_fractions, fig.height = 8, fig.width = 25 }
-vars_q2 %>%
-      # Gererate plots
-      pmap( ~ boxplot_plot_pmap(data = data_pred_mass_fractions,
-                                y = !!sym(..1), x = !!sym(..2),
-                                fill = !!sym(..3))) %>%
-      cowplot::plot_grid(plotlist = ., ncol = 3)
-
-```
-
