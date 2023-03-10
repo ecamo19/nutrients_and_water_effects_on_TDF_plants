@@ -110,8 +110,8 @@ data_soil_moisture_cleaned$date_day_month <-
 data_soil_moisture_cleaned$sm_measured <-
 	factor(data_soil_moisture_cleaned$sm_measured,
 		   labels = c(
-					"Before Applying Treatments",
-					"After Applying Treatments"
+					"Before applying the treatments",
+					"After applying the treatments"
 					))
 
 ```
