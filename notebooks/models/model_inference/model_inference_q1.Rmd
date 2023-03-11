@@ -141,32 +141,8 @@ models_q1 %>%
 #### Medium [0.5, 0.8)
 #### Large [0.8, inf)
 
-# Tuckey comparisons
 
-## Root shoot ratio
-```{r}
-# I did this because is a log model
-tukey_table_tidy(models_q1$root_shoot_ratio_log,  formula = "treatment|nfixer")
-```
-
-
-## For double-ckeck
-```{r}
-tukey_rgr <- emmeans(models_q1$root_shoot_ratio_log,
-                                ~treatment|nfixer, type = "response") %>%
-                            pairs(adjust = "Tukey")
-```
-
-
-```{r}
-eff_size(emmeans(models_q1$root_shoot_ratio_log,
-                    ~treatment|nfixer), type = "response",
-                    sigma = sigma(models_q1$root_shoot_ratio_log),
-                    edf = df.residual(models_q1$root_shoot_ratio_log))
-```
-
-
-## Total Biomass
+# Total Biomass
 
 ```{r}
 tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
@@ -175,8 +151,9 @@ tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
 
 
 ```{r}
-emmeans(models_q1$total_biomass, ~treatment|nfixer) %>%
-        pairs(adjust = "Tukey")
+data.frame(emmeans(models_q1$total_biomass, ~treatment|nfixer) %>%
+        pairs(adjust = "Tukey"))  %>%
+        reactable::reactable(.)
 ```
 
 
@@ -186,8 +163,16 @@ eff_size(emmeans(models_q1$total_biomass, ~treatment|nfixer),
          edf = df.residual(models_q1$total_biomass))
 ```
 
+## Percentage of Change
+```{r}
+emmeans_table_tidy(models_q1$total_biomass,
+                        formula = "treatment|nfixer",
+                        grouping_var = "nfixer")
+```
 
-## RGR
+
+
+# RGR
 
 ```{r}
 tukey_table_tidy(models_q1$rgr, model_list = FALSE,
@@ -195,42 +180,58 @@ tukey_table_tidy(models_q1$rgr, model_list = FALSE,
 ```
 
 
-```{r}
-emmeans(models_q1$rgr, ~treatment|nfixer) %>%
-        pairs(adjust = "Tukey")
 
+```{r}
+data.frame(emmeans(models_q1$rgr, ~treatment|nfixer) %>%
+        pairs(adjust = "Tukey"))  %>%
+        reactable::reactable(.)
 ```
+
 
 ```{r}
 eff_size(emmeans(models_q1$rgr, ~treatment|nfixer),
          sigma = sigma(models_q1$rgr),
          edf = df.residual(models_q1$rgr))
-
 ```
 
-
-# Percentange change
-
+## Percentage of Change
 ```{r}
-emmeans_table_tidy(models_q1$root_shoot_ratio_log,  formula = "treatment|nfixer",
-                    grouping_var = "nfixer")
-```
-
-```{r message=FALSE, warning=FALSE}
-models_q1 %>%
-
-    # Remove traits and mass fractions models
-    purrr::list_modify("agr_log" = NULL, "agr" = NULL,
-                        "root_shoot_ratio_log" = NULL) %>%
-
-    # Percentage difference
-    emmeans_table_tidy(., model_list = T,
+emmeans_table_tidy(models_q1$rgr,
                         formula = "treatment|nfixer",
                         grouping_var = "nfixer")
 ```
 
 
-# Plot Biomass and growth boxplot
+# Root shoot ratio
+```{r}
+# I did this because is a log model
+tukey_table_tidy(models_q1$root_shoot_ratio_log,  formula = "treatment|nfixer")
+```
+
+```{r}
+data.frame(emmeans(models_q1$root_shoot_ratio_log, ~treatment|nfixer) %>%
+        pairs(adjust = "Tukey"))  %>%
+        reactable::reactable(.)
+```
+
+
+```{r}
+eff_size(emmeans(models_q1$root_shoot_ratio_log, ~treatment|nfixer),
+         sigma = sigma(models_q1$root_shoot_ratio_log),
+         edf = df.residual(models_q1$root_shoot_ratio_log))
+```
+
+## Percentage of Change
+```{r}
+emmeans_table_tidy(models_q1$root_shoot_ratio_log,
+                        formula = "treatment|nfixer",
+                        grouping_var = "nfixer")
+```
+
+
+
+
+# Plots Biomass and growth boxplot
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -256,7 +257,7 @@ data_pred_biomass_growth <-
                 stringr::str_to_lower(.) %>%
 
                 # Remove string from name and replace it with pred_
-                stringr::str_replace(., c(string),"pred_") %>%
+                stringr::str_replace(., c(string), "pred_") %>%
 
                 # Remove dollar sing
                 gsub("\\$", "", .))) %>%
@@ -305,7 +306,3 @@ models_q1 %>%
     unlist()
 ```
 
-
-# Double check plots
-
-https://www.youtube.com/watch?v=Te74FlbnkdE&t=331s
