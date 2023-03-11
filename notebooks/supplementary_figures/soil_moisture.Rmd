@@ -44,13 +44,11 @@ knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effect
 ```
 
 
-
 # Load packages
 ```{r message=FALSE, warning=FALSE}
 library(janitor)
 library(ggpubr)
 library(tidyverse)
-library(ggsci)
 library(knitr)
 ```
 
@@ -81,13 +79,9 @@ summary_soil_moisture <-
 
 ### Round the numbers
 ```{r}
-
 summary_soil_moisture[,5:ncol(summary_soil_moisture)] <-
 	round(summary_soil_moisture[,5:ncol(summary_soil_moisture)],2)
-
-
 ```
-
 
 
 ```{r}
@@ -157,6 +151,21 @@ ggplot(data = data_soil_moisture_cleaned,
 ```
 
 # Plot Mean values
+
+```{r}
+data_soil_moisture_cleaned  %>%
+        group_by(date_day_month, sm_measured, treatment) %>%
+        summarise(mean_soil_moisture = mean(soil_moisture),
+
+                se_soil_moisture = (sd(soil_moisture) / sqrt(n())))  %>%
+
+        mutate(difference = ((mean_soil_moisture - first(mean_soil_moisture)))) %>%
+        filter(sm_measured == "After applying the treatments" &
+                treatment %in% c("Ambient Rain plus Water",
+                                "Ambient Rain plus Nutrients and Water")) %>%
+        reactable::reactable()
+```
+
 
 ```{r mean_treatment_effects, fig.width = 20, fig.height = 10}
 data_soil_moisture_cleaned  %>%
