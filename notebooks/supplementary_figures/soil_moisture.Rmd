@@ -206,6 +206,8 @@ data_soil_moisture_cleaned  %>%
                     legend.text = element_text(size = 18)) +
 	                guides(col = guide_legend(ncol = 1, title.position = "left",
                             title.hjust = .59))
+
+
 ```
 
 
