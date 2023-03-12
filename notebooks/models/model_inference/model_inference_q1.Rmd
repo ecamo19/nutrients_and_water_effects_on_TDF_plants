@@ -281,14 +281,13 @@ vars_q1 <-
     group_var = dplyr::select(data_pred_biomass_growth, treatment) %>%  names)
 ```
 
-```{r fig_1_biomass_growth_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
+```{r fig_1_biomass_growth_boxplot, fig.align = 'center', out.width=1000, out.height=900, dpi=350}
 par(mfrow = c(2,2))
 vars_q1 %>%
       # Gererate plots
       pmap( ~boxplot_plot_pmap(data = data_pred_biomass_growth,
                                 y = !!sym(..1), x = !!sym(..2),
                                 fill = !!sym(..3)))
-
 ```
 
 ## r2 models
