@@ -66,8 +66,6 @@ library(janitor)
 library(tibble)
 library(purrr)
 library(performance)
-# For bootstrap confidence intervals
-library(lmeresampler)
 library(nlme)
 library(lme4)
 # For model comparison
@@ -78,6 +76,8 @@ library(modelr)
 library(report)
 library(emmeans)
 library(ggplot2)
+# For effect sizes
+library(effectsize)
 ```
 
 # Load functions and data
@@ -138,128 +138,163 @@ data_pred_nodules <-
 
 ```
 
-# Traits
 
-## ANOVAs
+
+# ANOVAs
+```{r}
+names(models_q2)
+```
 
 ```{r}
 models_q2 %>%
 
     # Remove traits and mass fractions models
-    anova_table_tidy(., model_list = T)
+    purrr::list_modify("wue_log" = NULL) %>%
+
+    # Remove traits and mass fractions models
+    anova_table_tidy(., model_list = TRUE)
 ```
 
-## Tuckey comparisons
+# Amax
 
-### Models with significant interaction
-
+## Tukey
 ```{r}
 tukey_table_tidy(models_q2$amax, formula = "treatment|nfixer")
 ```
 
 ```{r}
-tukey_table_tidy(models_q2$wue_log, formula = "treatment|nfixer")
+data.frame(emmeans(models_q2$amax, ~treatment|nfixer) %>%
+        pairs(adjust = "Tukey"))  %>%
+        reactable::reactable(.)
 ```
 
-### Models with signifcant treatment effect
+## Effect sizes
 
+```{r}
+eff_size(emmeans(models_q2$amax, ~treatment|nfixer),
+         sigma = sigma(models_q2$amax),
+         edf = df.residual(models_q2$amax))
+```
+
+## Percentage of Change
+```{r}
+emmeans_table_tidy(models_q2$amax,
+                        formula = "treatment|nfixer",
+                        grouping_var = "nfixer")
+```
+
+
+# gs
+
+## Tukey
 ```{r}
 tukey_table_tidy(models_q2$gs, formula = "treatment")
 ```
 
 ```{r}
-tukey_table_tidy(models_q2$pnue_log, formula = "treatment")
-```
-
-```{r}
-tukey_table_tidy(models_q2$nitrogen_log, formula = "treatment")
-```
-
-
-### Models with signifcant nfixer effect
-
-```{r}
 tukey_table_tidy(models_q2$gs, formula = "nfixer")
 ```
 
-```{r}
-tukey_table_tidy(models_q2$nitrogen_log, formula = "nfixer")
-```
-
-## Percentange change
-
-### Models with significant interaction
+## Effect sizes
 
 ```{r}
-emmeans_table_tidy(models_q2$amax, formula = "treatment|nfixer",
-                    grouping_var = "nfixer")
+eff_size(emmeans(models_q2$gs, ~treatment),
+         sigma = sigma(models_q2$gs),
+         edf = df.residual(models_q2$gs))
 ```
 
 
 ```{r}
-emmeans_table_tidy(models_q2$wue_log, formula = "treatment|nfixer",
-                    grouping_var = "nfixer")
+eff_size(emmeans(models_q2$gs, ~nfixer),
+         sigma = sigma(models_q2$gs),
+         edf = df.residual(models_q2$gs))
 ```
 
 
-### Models with significant treatment effect
+## Percentage of Change
 
 ```{r}
 emmeans_table_tidy(models_q2$gs, formula = "treatment")
 ```
 
 ```{r}
+#emmeans_table_tidy(models_q2$gs, formula = "nfixer")
+```
+
+# PNUE
+
+## Tukey
+
+```{r}
+tukey_table_tidy(models_q2$pnue_log, formula = "treatment")
+```
+
+
+```{r}
+data.frame(emmeans(models_q2$pnue_log, ~treatment, type = "response") %>%
+        pairs(adjust = "Tukey"))  %>%
+        reactable::reactable(.)
+```
+
+## Effect sizes
+
+```{r}
+eff_size(emmeans(models_q2$pnue_log, ~treatment),
+         sigma = sigma(models_q2$pnue_log),
+         edf = df.residual(models_q2$pnue_log))
+```
+
+## Percentage of Change
+
+```{r}
 emmeans_table_tidy(models_q2$pnue_log, formula = "treatment")
 ```
+
+
+# d13c
+## Tukey
+## Effect sizes
+
+```{r}
+eff_size(emmeans(models_q2$d13c, ~treatment),
+         sigma = sigma(models_q2$d13c),
+         edf = df.residual(models_q2$d13c))
+```
+
+## Percentage of Change
+
+
+# Nitrogen
+
+## Tukey
+
+```{r}
+tukey_table_tidy(models_q2$nitrogen_log, formula = "treatment")
+```
+
+
+```{r}
+tukey_table_tidy(models_q2$nitrogen_log, formula = "nfixer")
+```
+
+## Effect sizes
+## Percentage of Change
 
 ```{r}
 emmeans_table_tidy(models_q2$nitrogen_log, formula = "treatment")
 ```
 
 
-### Models with signifcant nfixer effect
 
+# R2
 ```{r}
-
-# Difference in gs between fixer non fixers
-# Percentage difference
-as.data.frame(emmeans(models_q2$gs,
-                          specs = pairwise ~ "nfixer",
-                          type = "response",
-                          adjust = "tukey")$emmeans) %>%
-
-        clean_names() %>%
-        dplyr::select(-c(df,lower_cl, upper_cl,se)) %>%
-
-        # Rename response to emmean, this is done when models is log
-
-
-        mutate(difference = ((emmean - first(emmean))),
-               perc_difference =((emmean - first(emmean) )/first(emmean))*100) %>%
-        mutate_if(is.numeric, round, 3)
+models_q2 %>%
+    map(., r2) %>%
+    unlist()
 ```
 
 
-```{r}
-as.data.frame(emmeans(models_q2$nitrogen_log,
-                          specs = pairwise ~ "nfixer",
-                          type = "response",
-                          adjust = "tukey")$emmeans)  %>%
-
-        clean_names() %>%
-        dplyr::select(-c(df, lower_cl, upper_cl, se)) %>%
-
-        # Rename response to emmean, this is done when models is log
-
-
-        mutate(difference = ((response - first(response))),
-               perc_difference =((response - first(response) )/first(response))*100) %>%
-        mutate_if(is.numeric, round, 3)
-
-```
-
-
-## Plot Traits boxplot
+# Plot Traits boxplot
 
 ```{r}
 string <- c("models_q2")
@@ -271,9 +306,8 @@ data_pred_traits <-
 
                            # Return predictions
                             models_q2$amax,
-                            #models_q2$d13c,
+                            models_q2$d13c,
                             models_q2$gs,
-                            models_q2$wue_log,
                             models_q2$pnue_log) %>%
 
         pivot_wider(names_from = model, values_from = pred) %>%
@@ -288,11 +322,10 @@ data_pred_traits <-
                 )) %>%
 
         # Back transform log variables
-        mutate(pred_wue = exp(pred_wue_log),
-               pred_pnue = exp(pred_pnue_log)) %>%
+        mutate(pred_pnue = exp(pred_pnue_log)) %>%
 
         # Remove log predictions and init height
-        dplyr::select(-c(init_height, pred_wue_log, pred_pnue_log))
+        dplyr::select(-c(init_height,  pred_pnue_log))
 ```
 
 
@@ -319,15 +352,6 @@ vars_q2 %>%
 ```
 
 
-
-
-```{r}
-models_q2 %>%
-    map(., r2) %>%
-    unlist()
-```
-
-
 # Nodule Count
 
 ```{r}
@@ -351,6 +375,9 @@ as.data.frame(emmeans(model_nodule_count,
          clean_names() %>%
          reactable()
 ```
+
+
+
 
 ## Percentage of change
 
