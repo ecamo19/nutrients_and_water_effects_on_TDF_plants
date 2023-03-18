@@ -139,8 +139,8 @@ data_pred_nodules <-
 ```
 
 
-
 # ANOVAs
+
 ```{r}
 names(models_q2)
 ```
@@ -278,6 +278,14 @@ tukey_table_tidy(models_q2$nitrogen_log, formula = "nfixer")
 ```
 
 ## Effect sizes
+
+```{r}
+eff_size(emmeans(models_q2$nitrogen_log, ~treatment, type = "response"),
+         sigma = sigma(models_q2$nitrogen_log),
+         edf = df.residual(models_q2$nitrogen_log))
+```
+
+
 ## Percentage of Change
 
 ```{r}
@@ -297,60 +305,59 @@ models_q2 %>%
 # Plot Traits boxplot
 
 ```{r}
-string <- c("models_q2")
+#string <- c("models_q2")
 
-data_pred_traits <-
-
-        # Get models prediction
-        gather_predictions(data_for_models,
-
-                           # Return predictions
-                            models_q2$amax,
-                            models_q2$d13c,
-                            models_q2$gs,
-                            models_q2$pnue_log) %>%
-
-        pivot_wider(names_from = model, values_from = pred) %>%
-            rename_all(funs(
-
-                # rename columns
-                stringr::str_to_lower(.) %>%
-                stringr::str_replace(., c(string),"pred_") %>%
-
-                # Remove dollar sing
-                gsub("\\$", "", .)
-                )) %>%
-
-        # Back transform log variables
-        mutate(pred_pnue = exp(pred_pnue_log)) %>%
-
-        # Remove log predictions and init height
-        dplyr::select(-c(init_height,  pred_pnue_log))
+#data_pred_traits <-
+#
+#        # Get models prediction
+#        gather_predictions(data_for_models,
+#
+#                           # Return predictions
+#                            models_q2$amax,
+#                            models_q2$d13c,
+#                            models_q2$gs,
+#                            models_q2$pnue_log) %>%
+#
+#        pivot_wider(names_from = model, values_from = pred) %>%
+#            rename_all(funs(
+#
+#                # rename columns
+#                stringr::str_to_lower(.) %>%
+#                stringr::str_replace(., c(string),"pred_") %>%
+#
+#                # Remove dollar sing
+#                gsub("\\$", "", .)
+#                )) %>%
+#
+#        # Back transform log variables
+#        mutate(pred_pnue = exp(pred_pnue_log)) %>%
+#
+#        # Remove log predictions and init height
+#        dplyr::select(-c(init_height,  pred_pnue_log))
 ```
 
 
 ```{r}
-vars_q2 <-
-  crossing(
-
-    # Get all numeric variables to plot (all y)
-    as_tibble(t(combn(dplyr::select(data_pred_traits, where(is.numeric)) %>% names, 1))),
-
-    # Select factor variables to plot
-    x_axis_var = dplyr::select(data_pred_traits, nfixer) %>%  names,
-    group_var = dplyr::select(data_pred_traits, treatment) %>%  names)
+#vars_q2 <-
+#  crossing(
+#
+#    # Get all numeric variables to plot (all y)
+#    as_tibble(t(combn(dplyr::select(data_pred_traits, where(is.numeric)) %>% names, 1))),
+#
+#    # Select factor variables to plot
+#    x_axis_var = dplyr::select(data_pred_traits, nfixer) %>%  names,
+#    group_var = dplyr::select(data_pred_traits, treatment) %>%  names)
 ```
 
 ```{r fig_2_traits_q2_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
-vars_q2 %>%
-      # Gererate plots
-      pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
-                                y = !!sym(..1), x = !!sym(..2),
-                                fill = !!sym(..3)))
+#vars_q2 %>%
+#      # Gererate plots
+#      pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
+#                                y = !!sym(..1), x = !!sym(..2),
+#                                fill = !!sym(..3)))
 #      cowplot::plot_grid(plotlist = ., ncol = 2)
 
 ```
-
 
 # Nodule Count
 
@@ -375,8 +382,6 @@ as.data.frame(emmeans(model_nodule_count,
          clean_names() %>%
          reactable()
 ```
-
-
 
 
 ## Percentage of change
