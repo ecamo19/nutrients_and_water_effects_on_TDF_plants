@@ -74,6 +74,7 @@ library(MuMIn)
 # For reporting results
 library(report)
 library(ggplot2)
+library(sjPlot)
 ```
 
 # Load functions and data
@@ -119,18 +120,24 @@ data_for_models_scaled <-
     data_for_models  %>%
 
     #  Narea_g_m2 not included since it has a high correlation with amax
-    mutate(across(c("init_height", "amax", "gs", "pnue", "d13c"), scale)) %>%
-    dplyr::select(-Narea_g_m2)
+    mutate(across(c("init_height", "amax", "gs", "wue", "d13c", "pnue",
+                    "Narea_g_m2"), scale))
+
 ```
 
+```{r}
+names(data_for_models_scaled)
+```
 
 # RGR
 
 ```{r}
 lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
                             treatment:nfixer:gs  +
+                            treatment:nfixer:wue +
                             treatment:nfixer:pnue +
-                            treatment:nfixer:d13c +
+                            #treatment:nfixer:d13c +
+                            #treatment:nfixer:Narea_g_m2 +
 
                             init_height,
                   random = ~1 | spcode,
@@ -138,15 +145,16 @@ lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
 ```
 
 
+
 ## Report
 
 ```{r}
-report(lme_rgr_3way)
+#report(lme_rgr_3way)
 ```
 
 ## R2
 ```{r}
-#r.squaredGLMM(lme_rgr_3way)
+r.squaredGLMM(lme_rgr_3way)
 ```
 
 
@@ -190,20 +198,24 @@ data_rgr_plot <-
             mutate(across(where(is.character), as.factor)) %>%
             filter(type == "norm") %>%
             mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
-                                                            "plus_water_nutrients-d13c" ,
+                                                            #"plus_water_nutrients-d13c" ,
                                                             "plus_water_nutrients-gs"   ,
+                                                            "plus_water_nutrients-wue" ,
                                                             "plus_water_nutrients-pnue" ,
                                                             "plus_water-amax" ,
-                                                            "plus_water-d13c",
+                                                            #"plus_water-d13c",
                                                             "plus_water-gs"  ,
+                                                            "plus_water-wue",
                                                             "plus_water-pnue",
                                                             "plus_nutrients-amax",
-                                                            "plus_nutrients-d13c",
+                                                            #"plus_nutrients-d13c",
                                                             "plus_nutrients-gs"  ,
+                                                            "plus_nutrients-wue",
                                                             "plus_nutrients-pnue",
                                                             "no_additions-amax",
-                                                            "no_additions-d13c",
+                                                            #"no_additions-d13c",
                                                             "no_additions-gs"  ,
+                                                            "no_additions-wue",
                                                             "no_additions-pnue"
                                                             )))
 ```
@@ -218,7 +230,13 @@ cleveland_plot(x = treat_trait, y = estimate,
         facet_wrap(. ~col_2)
 ```
 
-
+```{r}
+min(data_for_models_scaled$amax)
+max(data_for_models_scaled$amax)
+plot_model(lme_rgr_3way,
+            type = "pred",
+            terms = c("amax[-1.13,2.80]", "treatment", "nfixer"))
+```
 
 # Root to shoot ratio
 
@@ -226,7 +244,8 @@ cleveland_plot(x = treat_trait, y = estimate,
 lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
                                                         treatment:nfixer:gs  +
                                                         treatment:nfixer:pnue +
-                                                        treatment:nfixer:d13c +
+                                                        treatment:nfixer:wue +
+                                                        #treatment:nfixer:d13c +
 
                                                         init_height,
                             random = ~1 | spcode,
@@ -237,7 +256,7 @@ lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
 ## Report
 
 ```{r}
-report(lme_root_shoot_ratio_3way)
+#report(lme_root_shoot_ratio_3way)
 ```
 
 ## R2
@@ -288,19 +307,23 @@ data_root_shoot_plot <-
             mutate(across(where(is.character), as.factor)) %>%
             filter(type == "norm") %>%
             mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
-                                                            "plus_water_nutrients-d13c" ,
+                                                            #"plus_water_nutrients-d13c" ,
+                                                            "plus_water_nutrients-wue",
                                                             "plus_water_nutrients-gs"   ,
                                                             "plus_water_nutrients-pnue" ,
                                                             "plus_water-amax" ,
-                                                            "plus_water-d13c",
+                                                            #"plus_water-d13c",
+                                                            "plus_water-wue",
                                                             "plus_water-gs"  ,
                                                             "plus_water-pnue",
                                                             "plus_nutrients-amax",
-                                                            "plus_nutrients-d13c",
+                                                            "plus_nutrients-wue",
+                                                            #"plus_nutrients-d13c",
                                                             "plus_nutrients-gs"  ,
                                                             "plus_nutrients-pnue",
                                                             "no_additions-amax",
-                                                            "no_additions-d13c",
+                                                            "no_additions-wue",
+                                                            #"no_additions-d13c",
                                                             "no_additions-gs"  ,
                                                             "no_additions-pnue"
                                                             )))
@@ -323,7 +346,7 @@ min(data_for_models_scaled$pnue)
 max(data_for_models_scaled$pnue)
 plot_model(lme_root_shoot_ratio_3way,
             type = "pred",
-            terms = c("nfixer", "pnue[-1.8,3.6]", "treatment"))
+            terms = c("pnue[-1.8,3.6]", "nfixer", "treatment"))
 ```
 
 
@@ -331,9 +354,11 @@ plot_model(lme_root_shoot_ratio_3way,
 
 ```{r}
 lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
-                                            treatment:nfixer:pnue +
+                                            #treatment:nfixer:pnue +
                                             treatment:nfixer:gs  +
+                                            #treatment:nfixer:wue +
                                             treatment:nfixer:d13c +
+                                            treatment:nfixer:Narea_g_m2 +
 
                                             init_height,
                             random = ~1 | spcode,
@@ -344,7 +369,7 @@ lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
 ## Report
 
 ```{r}
-report(lme_total_biom_3way)
+#report(lme_total_biom_3way)
 ```
 
 ## R2
@@ -396,19 +421,23 @@ data_total_biomass_plot <-
             mutate(treat_trait = factor(treat_trait, levels = c("plus_water_nutrients-amax",
                                                             "plus_water_nutrients-d13c" ,
                                                             "plus_water_nutrients-gs"   ,
-                                                            "plus_water_nutrients-pnue" ,
+                                                            "plus_water_nutrients-Narea_g_m2" ,
+                                                            #"plus_water_nutrients-pnue"
                                                             "plus_water-amax" ,
                                                             "plus_water-d13c",
                                                             "plus_water-gs"  ,
-                                                            "plus_water-pnue",
+                                                            "plus_water-Narea_g_m2",
+                                                            #"plus_water-pnue"
                                                             "plus_nutrients-amax",
                                                             "plus_nutrients-d13c",
                                                             "plus_nutrients-gs"  ,
-                                                            "plus_nutrients-pnue",
+                                                            "plus_nutrients-Narea_g_m2",
+                                                            #"plus_nutrients-pnue"
                                                             "no_additions-amax",
                                                             "no_additions-d13c",
                                                             "no_additions-gs"  ,
-                                                            "no_additions-pnue"
+                                                            "no_additions-Narea_g_m2"
+                                                            #"no_additions-pnue"
                                                             )))
 ```
 
@@ -425,13 +454,13 @@ cleveland_plot(x = treat_trait, y = estimate,
 ```
 
 
+
 ```{r}
-library(sjPlot)
 min(data_for_models_scaled$pnue)
 max(data_for_models_scaled$pnue)
 plot_model(lme_total_biom_3way,
             type = "pred",
-            terms = c("pnue[-1.8,3.6]","nfixer", "treatment" ))
+            terms = c("pnue[-1.8,3.6]", "treatment", "nfixer"))
 ```
 
 ```{r}
@@ -439,6 +468,10 @@ min(data_for_models_scaled$d13c)
 max(data_for_models_scaled$d13c)
 plot_model(lme_total_biom_3way,
             type = "pred",
-            terms = c("d13c[-2.3, 2.8]","nfixer", "treatment"))
+            terms = c("d13c[-2.3, 2.8]","treatment", "nfixer"))
 ```
 
+# Buscar relacion entre scaled and unscaled d13c
+```{r}
+plot(data_for_models$d13c, data_for_models_scaled$d13c)
+```
