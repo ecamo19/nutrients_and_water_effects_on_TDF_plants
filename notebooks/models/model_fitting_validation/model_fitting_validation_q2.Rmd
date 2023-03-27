@@ -99,10 +99,12 @@ water and nutrient-use traits and the relationships with N-fixing bacteria?__
 data_for_models <-
     data_for_models %>%
 
+    mutate(wue_2 = amax/gs) %>%
+
     # Select variables for analysis
     dplyr::select(!c(
-        rgr_slope, d15n, above_biomass, below_biomass,
-        rmf, smf, lmf))
+        rgr_slope, d15n, above_biomass, below_biomass, amax, rmf, smf, lmf,
+        agr))
 ```
 
 ## Model formula
@@ -114,7 +116,7 @@ $$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
 ```{r}
 # Take response variables names
 response_vars_q2 <-
-  set_names(names(data_for_models)[c(9:14)])
+  set_names(names(data_for_models)[c(8:13)])
 
 response_vars_q2
 ```
@@ -226,6 +228,7 @@ nlme_validation_plots(nlme_nodule_log_weights, data = data_nodules_cleaned,
 ## WUE log
 model_q2_wue_log <- lmer(log(wue) ~ nfixer*treatment + init_height + (1|spcode),
                          data = data_for_models)
+
 ## PNUE log
 model_q2_pnue_log <- lmer(log(pnue) ~ nfixer*treatment + init_height + (1|spcode),
                          data = data_for_models)
@@ -234,14 +237,20 @@ model_q2_pnue_log <- lmer(log(pnue) ~ nfixer*treatment + init_height + (1|spcode
 model_q2_nitrogen_log <- lmer(log(Narea_g_m2) ~ nfixer*treatment + init_height + (1|spcode),
                          data = data_for_models)
 
+## WUE Amax/gs
+model_q2_wue_2_log <- lmer(log(wue_2) ~ nfixer*treatment + init_height + (1|spcode),
+                         data = data_for_models)
+
 ```
 
 
 ```{r}
 # Append log models to model list Q2
-log_models_q2 <- list(model_q2_wue_log, model_q2_pnue_log, model_q2_nitrogen_log)
+log_models_q2 <- list(model_q2_wue_log, model_q2_pnue_log,
+                      model_q2_nitrogen_log, model_q2_wue_2_log)
 
-names(log_models_q2) <- c("wue_log", "pnue_log", "nitrogen_log")
+names(log_models_q2) <- c("wue_log", "pnue_log", "nitrogen_log",
+                          "wue_amax_gs_log")
 ```
 
 
@@ -258,7 +267,6 @@ map(log_models_q2, check_model)
 ```
 
 
-
 ```{r}
 # Remove models that showed bad performance
 models_q2 <-
@@ -266,7 +274,8 @@ models_q2 <-
     models_q2 %>%
 
     # Remove models that showed violation of the assumptions
-    purrr::list_modify("pnue" = NULL, "wue" = NULL, "Narea_g_m2" = NULL)
+    purrr::list_modify("pnue" = NULL, "wue" = NULL, "Narea_g_m2" = NULL,
+                        "wue_2" = NULL)
 ```
 
 ```{r}
