@@ -1787,6 +1787,98 @@ module.exports = window.Shiny;
 //# sourceMappingURL=reactable.js.map</script>
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+/* A workaround for https://github.com/jgm/pandoc/issues/4278 */
+a.sourceLine {
+  pointer-events: auto;
+}
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -1819,95 +1911,171 @@ module.exports = window.Shiny;
 <li><a href="#load-functions-and-data">Load functions and data</a></li>
 <li><a href="#load-models">Load models</a></li>
 <li><a href="#anovas">ANOVAs</a></li>
-<li><a href="#amax">Amax</a></li>
+<li><a href="#wue">WUE</a></li>
 <li><a href="#gs">gs</a></li>
 <li><a href="#pnue">PNUE</a></li>
 <li><a href="#d13c">d13c</a></li>
-<li><a href="#nitrogen">Nitrogen</a></li>
+<li><a href="#nitrogen-area">Nitrogen area</a></li>
 <li><a href="#r2">R2</a></li>
 <li><a href="#plot-traits-boxplot">Plot Traits boxplot</a></li>
 <li><a href="#nodule-count">Nodule Count</a></li>
 </ul>
 </div>
 
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="co"># For tables appearance</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">library</span>(reactablefmtr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co"># For cleaning colnames</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">library</span>(janitor)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"># For add column function</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">library</span>(tibble)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw">library</span>(purrr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">library</span>(performance)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw">library</span>(nlme)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co"># For model comparison</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="kw">library</span>(MuMIn)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co"># For get preditions</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="kw">library</span>(modelr)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="co"># For reporting results</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="kw">library</span>(report)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="kw">library</span>(emmeans)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co"># For effect sizes</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="kw">library</span>(effectsize)</span></code></pre></div>
 <div id="load-functions-and-data" class="section level1">
 <h1>Load functions and data</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># Load dataset for adding predictions</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">source</span>(<span class="st">&quot;./scripts/code_join_data_full_dataset.R&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># Load functions</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co">## Inference</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">source</span>(<span class="st">&quot;./R/function_for_inference_anova_table.R&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="kw">source</span>(<span class="st">&quot;./R/function_for_inference_tukey_tables.R&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="kw">source</span>(<span class="st">&quot;./R/function_for_inference_emmeans_and_percentage_diff.R&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="co">## Plots</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="kw">source</span>(<span class="st">&quot;./R/function_masomenos_plots.R&quot;</span>)</span></code></pre></div>
 <p><strong>Q2: How does increased nutrient and/or water availability influence seedling water- and nutrient-use traits and the relationships with N-fixing bacteria?</strong></p>
 </div>
 <div id="load-models" class="section level1">
 <h1>Load models</h1>
-<pre><code>## [1] &quot;wue_log&quot;      &quot;pnue_log&quot;     &quot;nitrogen_log&quot; &quot;amax&quot;         &quot;gs&quot;          
-## [6] &quot;d13c&quot;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>models_q2 &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;./processed_data/models_q2.RData&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>model_nodule_count &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;./processed_data/model_nodule_log.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">names</span>(models_q2)</span></code></pre></div>
+<pre><code>## [1] &quot;wue_log&quot;         &quot;pnue_log&quot;        &quot;nitrogen_log&quot;    &quot;wue_amax_gs_log&quot;
+## [5] &quot;gs&quot;              &quot;d13c&quot;</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># Step done for getting predictions from nodule models</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">source</span>(<span class="st">&quot;./scripts/code_clean_data_nodules.R&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>data_pred_nodules &lt;-</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="st">     </span>data_nodules_cleaned <span class="op">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="st">         </span><span class="co"># add id to rownames for keep track of the rows</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="st">         </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;spcode&quot;</span>, <span class="st">&quot;treatment&quot;</span>, <span class="st">&quot;init_height&quot;</span>))</span></code></pre></div>
 </div>
 <div id="anovas" class="section level1">
 <h1>ANOVAs</h1>
-<pre><code>## [1] &quot;wue_log&quot;      &quot;pnue_log&quot;     &quot;nitrogen_log&quot; &quot;amax&quot;         &quot;gs&quot;          
-## [6] &quot;d13c&quot;</code></pre>
-<div id="htmlwidget-9a0f3dec97bb942a5186" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-9a0f3dec97bb942a5186">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","amax","amax","amax","amax","amax","gs","gs","gs","gs","gs","d13c","d13c","d13c","d13c","d13c"],"fixed_effects":["(Intercept)","nfixer","treatment","init_height","nfixer:treatment","(Intercept)","nfixer","treatment","init_height","nfixer:treatment","(Intercept)","treatment","nfixer","init_height","treatment:nfixer","(Intercept)","treatment","nfixer","init_height","treatment:nfixer","(Intercept)","treatment","nfixer","init_height","treatment:nfixer"],"f":[872.5863,0.5166,3.6223,1.8313,1.7856,0.5883,15.9628,7.365,0.5198,2.3843,12.3075,0.257,7.9692,5.3512,7.3837,8.1567,18.6434,6.3961,0.8571,1.6952,4480.3912,0.9486,1.372,1.0058,0.7592],"df":[1,1,3,1,3,1,1,3,1,3,1,3,1,1,3,1,3,1,1,3,1,3,1,1,3],"df_res":[13.7677001272888,8.99166418830399,102.57880166961,28.8086147552001,102.427018670529,11.1810017235541,6.75348687764346,102.259961445089,84.6725390717489,102.166533996225,7.85940070683224,102.088796376408,6.20159971665039,107.997177046954,102.053467013523,13.3034156545615,102.924011603011,18.1886157185145,10.4382459896808,102.822993279315,13.3905894284431,102.452772648218,7.81668063796048,44.9788021162688,102.31453772116],"pr_f":[7.524213e-14,0.490543015649412,0.0156068310316392,0.186502227454032,0.154601214945988,0.458960298507279,0.00561816283831458,0.000161823527772777,0.472893161302843,0.0736042661380071,0.0082101418726905,0.856184402621832,0.0291754845148003,0.0226019230348977,0.000158545656792925,0.0132427715720311,9.8269162096e-10,0.0208896405892014,0.375468060083072,0.172698227607175,2.63e-18,0.420123352598125,0.275931153089936,0.321271751849309,0.519563177961311]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"character","minWidth":165},{"accessor":"fixed_effects","name":"fixed_effects","type":"character","minWidth":125},{"accessor":"f","name":"f","type":"numeric","minWidth":70},{"accessor":"df","name":"df","type":"numeric","minWidth":70},{"accessor":"df_res","name":"df_res","type":"numeric"},{"accessor":"pr_f","name":"pr_f","type":"numeric","style":[{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"74d4a97e7325478ea386c6b6fd3d4dde"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">names</span>(models_q2)</span></code></pre></div>
+<pre><code>## [1] &quot;wue_log&quot;         &quot;pnue_log&quot;        &quot;nitrogen_log&quot;    &quot;wue_amax_gs_log&quot;
+## [5] &quot;gs&quot;              &quot;d13c&quot;</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>models_q2 <span class="op">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">anova_table_tidy</span>(., <span class="dt">model_list =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div id="htmlwidget-33382c044e3213ac768b" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-33382c044e3213ac768b">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(wue_2)","log(wue_2)","log(wue_2)","log(wue_2)","log(wue_2)","gs","gs","gs","gs","gs","d13c","d13c","d13c","d13c","d13c"],"fixed_effects":["(Intercept)","nfixer","treatment","init_height","nfixer:treatment","(Intercept)","nfixer","treatment","init_height","nfixer:treatment","(Intercept)","nfixer","treatment","init_height","nfixer:treatment","(Intercept)","nfixer","treatment","init_height","nfixer:treatment","(Intercept)","treatment","nfixer","init_height","treatment:nfixer","(Intercept)","treatment","nfixer","init_height","treatment:nfixer"],"f":[33.4628,4.085,26.8453,0.3386,4.6623,872.5863,0.5166,3.6223,1.8313,1.7856,0.5883,15.9628,7.365,0.5198,2.3843,681.7095,0.9976,30.9901,0.073,6.7662,8.1567,18.6434,6.3961,0.8571,1.6952,4480.3912,0.9486,1.372,1.0058,0.7592],"df":[1,1,3,1,3,1,1,3,1,3,1,1,3,1,3,1,1,3,1,3,1,3,1,1,3,1,3,1,1,3],"df_res":[13.7685777907372,9.06073406258371,102.584659493593,28.2341535553749,102.432609878841,13.7677001272888,8.99166418830399,102.57880166961,28.8086147552001,102.427018670529,11.1810017235541,6.75348687764346,102.259961445089,84.6725390717489,102.166533996225,13.2791892101265,17.5280996457854,102.910996370922,10.7592044221725,102.80561565393,13.3034156545615,102.924011603011,18.1886157185145,10.4382459896808,102.822993279315,13.3905894284431,102.452772648218,7.81668063796048,44.9788021162688,102.31453772116],"pr_f":[5.04954778804841e-05,0.0737740934832847,6.7529925e-13,0.56525803473094,0.00427545775780836,7.524213e-14,0.490543015649412,0.0156068310316392,0.186502227454032,0.154601214945988,0.458960298507279,0.00561816283831458,0.000161823527772777,0.472893161302843,0.0736042661380071,8.3877738e-13,0.331489260641971,2.347414e-14,0.79213402300469,0.000328692955401683,0.0132427715720311,9.8269162096e-10,0.0208896405892014,0.375468060083072,0.172698227607175,2.63e-18,0.420123352598125,0.275931153089936,0.321271751849309,0.519563177961311]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"character","minWidth":165},{"accessor":"fixed_effects","name":"fixed_effects","type":"character","minWidth":125},{"accessor":"f","name":"f","type":"numeric","minWidth":70},{"accessor":"df","name":"df","type":"numeric","minWidth":70},{"accessor":"df_res","name":"df_res","type":"numeric"},{"accessor":"pr_f","name":"pr_f","type":"numeric","style":[{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"5b7fe5a2edb6feee79434b1eb0a0a666"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
-<div id="amax" class="section level1">
-<h1>Amax</h1>
+<div id="wue" class="section level1">
+<h1>WUE</h1>
 <div id="tukey" class="section level2">
 <h2>Tukey</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">tukey_table_tidy</span>(models_q2<span class="op">$</span>wue_log, <span class="dt">formula =</span> <span class="st">&quot;treatment|nfixer&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment | nfixer
-## &lt;environment: 0x55e270ddf5c8&gt;</code></pre>
-<div id="htmlwidget-7819e0ebf4a4fc873c76" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-7819e0ebf4a4fc873c76">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["amax","amax","amax","amax","amax","amax","amax","amax","amax","amax","amax","amax"],"contrast":["no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients","no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients"],"nfixer":["nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","fixer","fixer","fixer","fixer","fixer","fixer"],"estimate":[-0.1287,-0.431,-0.0716,-0.3024,0.057,0.3594,2.0688,-2.3342,-0.6947,-4.403,-2.7635,1.6395],"se":[0.5158,0.5208,0.4988,0.538,0.5177,0.5209,0.7108,0.6752,0.6819,0.7133,0.7241,0.676],"t_ratio":[-0.2494,-0.8277,-0.1436,-0.562,0.1101,0.69,2.9106,-3.4571,-1.0186,-6.1728,-3.8163,2.4254],"p_value":[0.9945,0.8412,0.9989,0.943,0.9995,0.9007,0.0226,0.0044,0.7389,0,0.0013,0.0787]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"nfixer","name":"nfixer","type":"factor"},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"7bbcf7a8d85e37050b52677812a3c134"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
-<div id="htmlwidget-698cf39f88f45717a038" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-698cf39f88f45717a038">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"contrast":["no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients","no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients"],"nfixer":["nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","fixer","fixer","fixer","fixer","fixer","fixer"],"estimate":[-0.128656571633205,-0.431035212108732,-0.0716494267880105,-0.302378640475527,0.0570071448451944,0.359385785320722,2.06882231884045,-2.33421291307449,-0.69466493987044,-4.40303523191495,-2.76348725871089,1.63954797320405],"SE":[0.515764632728111,0.52079086194384,0.498836162367732,0.538010777669516,0.51771981654756,0.520875305405131,0.710784679815606,0.675201879008815,0.681949060674475,0.713295892550803,0.724118972947485,0.675983939178087],"df":[102.144768136838,102.004652502372,102.014215482609,102.126655952583,102.23039845162,102.018772520739,102.043108289586,102.044341361529,102.276898457596,102.130457528436,102.452896266168,102.123919241282],"t.ratio":[-0.249448223994504,-0.827655098439906,-0.143633184987884,-0.562030823593035,0.110111962152327,0.689965106027047,2.91061748739035,-3.45705926722401,-1.01864637687658,-6.1728032894867,-3.81634422236207,2.42542444898549],"p.value":[0.994517068186558,0.841231993429454,0.99893638042539,0.943040790720252,0.999519224010239,0.900715227958056,0.0226248063007911,0.00437031880122807,0.73892784015771,8.18997710760883e-08,0.00130899385076966,0.078683414382576]},"columns":[{"accessor":"contrast","name":"contrast","type":"factor"},{"accessor":"nfixer","name":"nfixer","type":"factor"},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"SE","name":"SE","type":"numeric"},{"accessor":"df","name":"df","type":"numeric"},{"accessor":"t.ratio","name":"t.ratio","type":"numeric"},{"accessor":"p.value","name":"p.value","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"2487f73ce80f2b15f6b6dfbde9ba4c5e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6f2180d68&gt;</code></pre>
+<div id="htmlwidget-ac13528cbb4dd7a51225" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ac13528cbb4dd7a51225">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)"],"contrast":["no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients","no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients"],"nfixer":["nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","fixer","fixer","fixer","fixer","fixer","fixer"],"ratio":[1.0229,1.931,2.0036,1.8878,1.9587,1.0376,0.8383,1.1333,1.1701,1.3519,1.3957,1.0324],"se":[0.1071,0.2046,0.2033,0.2063,0.2057,0.1099,0.1212,0.1556,0.1618,0.1959,0.2044,0.1417],"null":[1,1,1,1,1,1,1,1,1,1,1,1],"t_ratio":[0.2165,6.2115,6.8494,5.8143,6.402,0.3483,-1.2203,0.9116,1.136,2.0813,2.2767,0.2323],"p_value":[0.9964,0,0,0,0,0.9854,0.6154,0.7987,0.6682,0.1661,0.1102,0.9956]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"nfixer","name":"nfixer","type":"factor"},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"8e7fa0f868264faefd91fff5789d439e"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">data.frame</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>wue_log, <span class="op">~</span>treatment<span class="op">|</span>nfixer) <span class="op">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="st">        </span><span class="kw">pairs</span>(<span class="dt">adjust =</span> <span class="st">&quot;Tukey&quot;</span>))  <span class="op">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="st">        </span>reactable<span class="op">::</span><span class="kw">reactable</span>(.)</span></code></pre></div>
+<div id="htmlwidget-e5228344b6d252a53078" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e5228344b6d252a53078">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"contrast":["no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients","no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients"],"nfixer":["nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","nonfixer","fixer","fixer","fixer","fixer","fixer","fixer"],"estimate":[0.0226721730196312,0.658058088151095,0.694960096111703,0.635385915131464,0.672287923092072,0.0369020079606082,-0.176363236919891,0.125153429628213,0.157051596055588,0.301516666548104,0.333414832975479,0.0318981664273746],"SE":[0.104732235717604,0.105942195789769,0.10146228959915,0.109278972340645,0.105012129231036,0.105940205909053,0.144522284337384,0.137294317965475,0.138247728455764,0.144870005158183,0.146446108229632,0.13729968592454],"df":[102.853046991274,102.180123446396,102.212724067544,102.801769159989,103.243318724761,102.247268976348,102.374943625007,102.447756661366,103.506877923142,102.786363729725,104.213061053486,102.728397151552],"t.ratio":[0.216477504411952,6.21148243384477,6.8494422790704,5.8143474588216,6.4020025878437,0.348328641085404,-1.22031863617776,0.911570351073708,1.13601574369333,2.08129119771121,2.2767066807448,0.232325123051672],"p.value":[0.996395440466376,6.84486318736077e-08,3.40113570640455e-09,4.11846973302765e-07,2.74770973751615e-08,0.985404775468668,0.615448002037393,0.798722888873489,0.668195149889665,0.166118618396762,0.110152769108639,0.995556560355691]},"columns":[{"accessor":"contrast","name":"contrast","type":"factor"},{"accessor":"nfixer","name":"nfixer","type":"factor"},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"SE","name":"SE","type":"numeric"},{"accessor":"df","name":"df","type":"numeric"},{"accessor":"t.ratio","name":"t.ratio","type":"numeric"},{"accessor":"p.value","name":"p.value","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"d1f90c408eb7c046ad06e4fc35c826c1"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="effect-sizes" class="section level2">
 <h2>Effect sizes</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">eff_size</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>wue_log, <span class="op">~</span>treatment<span class="op">|</span>nfixer),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>         <span class="dt">sigma =</span> <span class="kw">sigma</span>(models_q2<span class="op">$</span>wue_log),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>         <span class="dt">edf =</span> <span class="kw">df.residual</span>(models_q2<span class="op">$</span>wue_log))</span></code></pre></div>
 <pre><code>## nfixer = nonfixer:
-##  contrast                              effect.size    SE   df lower.CL upper.CL
-##  no_additions - plus_nutrients             -0.0816 0.327 6.18  -0.8766    0.713
-##  no_additions - plus_water                 -0.2734 0.331 6.18  -1.0773    0.531
-##  no_additions - plus_water_nutrients       -0.0454 0.316 6.18  -0.8144    0.723
-##  plus_nutrients - plus_water               -0.1918 0.341 6.24  -1.0195    0.636
-##  plus_nutrients - plus_water_nutrients      0.0362 0.328 6.18  -0.7618    0.834
-##  plus_water - plus_water_nutrients          0.2279 0.331 6.18  -0.5758    1.032
+##  contrast                              effect.size    SE   df  lower.CL
+##  no_additions - plus_nutrients              0.0707 0.327 8.75 -0.671338
+##  no_additions - plus_water                  2.0517 0.359 8.75  1.235776
+##  no_additions - plus_water_nutrients        2.1668 0.350 8.74  1.372295
+##  plus_nutrients - plus_water                1.9810 0.367 9.42  1.156698
+##  plus_nutrients - plus_water_nutrients      2.0961 0.358 8.74  1.283279
+##  plus_water - plus_water_nutrients          0.1151 0.330 8.74 -0.635807
+##  upper.CL
+##     0.813
+##     2.868
+##     2.961
+##     2.805
+##     2.909
+##     0.866
 ## 
 ## nfixer = fixer:
-##  contrast                              effect.size    SE   df lower.CL upper.CL
-##  no_additions - plus_nutrients              1.3122 0.460 6.21   0.1965    2.428
-##  no_additions - plus_water                 -1.4805 0.440 6.21  -2.5486   -0.412
-##  no_additions - plus_water_nutrients       -0.4406 0.434 6.21  -1.4928    0.612
-##  plus_nutrients - plus_water               -2.7927 0.491 6.22  -3.9850   -1.600
-##  plus_nutrients - plus_water_nutrients     -1.7528 0.475 6.24  -2.9039   -0.602
-##  plus_water - plus_water_nutrients          1.0399 0.435 6.22  -0.0148    2.095
+##  contrast                              effect.size    SE   df  lower.CL
+##  no_additions - plus_nutrients             -0.5499 0.452 9.23 -1.568827
+##  no_additions - plus_water                  0.3902 0.429 9.23 -0.576286
+##  no_additions - plus_water_nutrients        0.4897 0.432 9.23 -0.484594
+##  plus_nutrients - plus_water                0.9401 0.456 9.25 -0.087925
+##  plus_nutrients - plus_water_nutrients      1.0395 0.462 9.33 -0.000354
+##  plus_water - plus_water_nutrients          0.0995 0.428 9.25 -0.865157
+##  upper.CL
+##     0.469
+##     1.357
+##     1.464
+##     1.968
+##     2.079
+##     1.064
 ## 
-## sigma used for effect sizes: 1.577 
+## sigma used for effect sizes: 0.3207 
 ## Degrees-of-freedom method: inherited from kenward-roger when re-gridding 
 ## Confidence level used: 0.95</code></pre>
 </div>
 <div id="percentage-of-change" class="section level2">
 <h2>Percentage of Change</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">emmeans_table_tidy</span>(models_q2<span class="op">$</span>wue_log,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>                        <span class="dt">formula =</span> <span class="st">&quot;treatment|nfixer&quot;</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>                        <span class="dt">grouping_var =</span> <span class="st">&quot;nfixer&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment | nfixer
-## &lt;environment: 0x55e2761b8470&gt;</code></pre>
-<div id="htmlwidget-e67f5fc33ca0b570cd92" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e67f5fc33ca0b570cd92">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["amax","amax","amax","amax","amax","amax","amax","amax"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients","no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"nfixer":["nonfixer","nonfixer","nonfixer","nonfixer","fixer","fixer","fixer","fixer"],"emmean":[5.578,5.707,6.009,5.65,14.667,12.598,17.001,15.362],"difference":[0,0.129,0.431,0.072,0,-2.069,2.334,0.695],"perc_difference":[0,2.306,7.727,1.284,0,-14.105,15.915,4.736]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"nfixer","name":"nfixer","type":"factor"},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"red"},{"color":"red"},{"color":"#008000"},{"color":"#008000"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"2d97074624e2d861275e8e2f365ce96f"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6e62650c8&gt;</code></pre>
+<div id="htmlwidget-b0b5dfca7a916322664c" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b0b5dfca7a916322664c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)","log(wue)"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients","no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"nfixer":["nonfixer","nonfixer","nonfixer","nonfixer","fixer","fixer","fixer","fixer"],"emmean":[2.664,2.604,1.379,1.329,4.115,4.909,3.631,3.517],"difference":[0,-0.06,-1.284,-1.334,0,0.794,-0.484,-0.598],"perc_difference":[0,-2.242,-48.214,-50.091,0,19.287,-11.764,-14.534]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"nfixer","name":"nfixer","type":"factor"},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"red"},{"color":"red"},{"color":"red"},{"color":"red"},{"color":"#008000"},{"color":"red"},{"color":"red"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"376489cd269452d04fe91d951d583c5a"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="gs" class="section level1">
 <h1>gs</h1>
 <div id="tukey-1" class="section level2">
 <h2>Tukey</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">tukey_table_tidy</span>(models_q2<span class="op">$</span>gs, <span class="dt">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment
-## &lt;environment: 0x55e275a61800&gt;</code></pre>
-<div id="htmlwidget-76f386b071b5f1aa7db6" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-76f386b071b5f1aa7db6">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["gs","gs","gs","gs","gs","gs"],"contrast":["no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients"],"estimate":[0.0282,-0.1245,-0.1041,-0.1527,-0.1323,0.0204],"se":[0.0247,0.024,0.0237,0.0251,0.0249,0.0239],"t_ratio":[1.1416,-5.1947,-4.4025,-6.0837,-5.318,0.8504],"p_value":[0.6647,0,0.0002,0,0,0.8301]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"ede59514872bb0ae0d7b85aa162b2e66"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6e745d220&gt;</code></pre>
+<div id="htmlwidget-9c27ed78451555fd4d59" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9c27ed78451555fd4d59">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["gs","gs","gs","gs","gs","gs"],"contrast":["no_additions - plus_nutrients","no_additions - plus_water","no_additions - plus_water_nutrients","plus_nutrients - plus_water","plus_nutrients - plus_water_nutrients","plus_water - plus_water_nutrients"],"estimate":[0.0282,-0.1245,-0.1041,-0.1527,-0.1323,0.0204],"se":[0.0247,0.024,0.0237,0.0251,0.0249,0.0239],"t_ratio":[1.1416,-5.1947,-4.4025,-6.0837,-5.318,0.8504],"p_value":[0.6647,0,0.0002,0,0,0.8301]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"ede59514872bb0ae0d7b85aa162b2e66"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">tukey_table_tidy</span>(models_q2<span class="op">$</span>gs, <span class="dt">formula =</span> <span class="st">&quot;nfixer&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ nfixer
-## &lt;environment: 0x55e27990efa8&gt;</code></pre>
-<div id="htmlwidget-2e038a3ae7812069e0a3" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-2e038a3ae7812069e0a3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["gs"],"contrast":["nonfixer - fixer"],"estimate":[-0.0412],"se":[0.03],"t_ratio":[-1.3734],"p_value":[0.2262]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"1b5290d4f443e43185571ba003614df6"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6ede8e7b8&gt;</code></pre>
+<div id="htmlwidget-b1ce439dee812ae0b10f" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b1ce439dee812ae0b10f">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["gs"],"contrast":["nonfixer - fixer"],"estimate":[-0.0412],"se":[0.03],"t_ratio":[-1.3734],"p_value":[0.2262]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"estimate","name":"estimate","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"1b5290d4f443e43185571ba003614df6"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
 <div id="effect-sizes-1" class="section level2">
 <h2>Effect sizes</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">eff_size</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>gs, <span class="op">~</span>treatment),</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>         <span class="dt">sigma =</span> <span class="kw">sigma</span>(models_q2<span class="op">$</span>gs),</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>         <span class="dt">edf =</span> <span class="kw">df.residual</span>(models_q2<span class="op">$</span>gs))</span></code></pre></div>
 <pre><code>##  contrast                              effect.size    SE   df lower.CL upper.CL
 ##  no_additions - plus_nutrients               0.318 0.279 18.2   -0.268    0.904
 ##  no_additions - plus_water                  -1.404 0.287 18.2   -2.007   -0.802
@@ -1920,6 +2088,9 @@ module.exports = window.Shiny;
 ## sigma used for effect sizes: 0.08866 
 ## Degrees-of-freedom method: inherited from kenward-roger when re-gridding 
 ## Confidence level used: 0.95</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">eff_size</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>gs, <span class="op">~</span>nfixer),</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>         <span class="dt">sigma =</span> <span class="kw">sigma</span>(models_q2<span class="op">$</span>gs),</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>         <span class="dt">edf =</span> <span class="kw">df.residual</span>(models_q2<span class="op">$</span>gs))</span></code></pre></div>
 <pre><code>##  contrast         effect.size   SE df lower.CL upper.CL
 ##  nonfixer - fixer      -0.464 0.34  5    -1.34    0.409
 ## 
@@ -1930,27 +2101,36 @@ module.exports = window.Shiny;
 </div>
 <div id="percentage-of-change-1" class="section level2">
 <h2>Percentage of Change</h2>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="kw">emmeans_table_tidy</span>(models_q2<span class="op">$</span>gs, <span class="dt">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment
-## &lt;environment: 0x55e2774e8b80&gt;</code></pre>
-<div id="htmlwidget-f67f5037302625dda9d2" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f67f5037302625dda9d2">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["gs","gs","gs","gs"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"emmean":[0.18,0.152,0.304,0.284],"difference":[0,-0.028,0.125,0.104],"perc_difference":[0,-15.672,69.267,57.941]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"red"},{"color":"#008000"},{"color":"#008000"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"83cfa9f4b7a4d8b872d43bd4005e1876"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6eca4afd0&gt;</code></pre>
+<div id="htmlwidget-5a6fa9529153f1aee700" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5a6fa9529153f1aee700">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["gs","gs","gs","gs"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"emmean":[0.18,0.152,0.304,0.284],"difference":[0,-0.028,0.125,0.104],"perc_difference":[0,-15.672,69.267,57.941]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"red"},{"color":"#008000"},{"color":"#008000"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"83cfa9f4b7a4d8b872d43bd4005e1876"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="co">#emmeans_table_tidy(models_q2$gs, formula = &quot;nfixer&quot;)</span></span></code></pre></div>
 </div>
 </div>
 <div id="pnue" class="section level1">
 <h1>PNUE</h1>
 <div id="tukey-2" class="section level2">
 <h2>Tukey</h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a><span class="kw">tukey_table_tidy</span>(models_q2<span class="op">$</span>pnue_log, <span class="dt">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment
-## &lt;environment: 0x55e2744a9ae8&gt;</code></pre>
-<div id="htmlwidget-b8d0e2d21cd4d1ac2a8a" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-b8d0e2d21cd4d1ac2a8a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(pnue)"],"contrast":["no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients"],"ratio":[1.2336,0.8915,1.008,0.7227,0.8171,1.1307],"se":[0.0919,0.0644,0.0721,0.0549,0.0619,0.0817],"null":[1,1,1,1,1,1],"t_ratio":[2.817,-1.5894,0.111,-4.2786,-2.666,1.6987],"p_value":[0.0292,0.3892,0.9995,0.0002,0.0434,0.3296]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"93bb51ec6973b2eb413a2d6443176099"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
-<div id="htmlwidget-de9eec91c009bf09723b" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-de9eec91c009bf09723b">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"contrast":["no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients"],"ratio":[1.23362074249283,0.891498567456595,1.00797298909859,0.722668269710761,0.817084987612755,1.13065015008862],"SE":[0.0919419418158585,0.0644212570936343,0.072126535679785,0.0548607994296968,0.0619128151044545,0.0817293089490853],"df":[102.849904301735,102.344191367825,103.289513313616,103.291588776672,105.012071507842,102.731301317667],"null":[1,1,1,1,1,1],"t.ratio":[2.81702816664272,-1.58938068722917,0.110981196642449,-4.27857888121768,-2.66602491726979,1.69872624220579],"p.value":[0.0292188094921689,0.38920003029413,0.999507820358975,0.000243623762606004,0.0434178129680883,0.329643885295745]},"columns":[{"accessor":"contrast","name":"contrast","type":"factor"},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"SE","name":"SE","type":"numeric"},{"accessor":"df","name":"df","type":"numeric"},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t.ratio","name":"t.ratio","type":"numeric"},{"accessor":"p.value","name":"p.value","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"b7fd200d0202476bfc55ac5e3cbd3c62"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6f100d000&gt;</code></pre>
+<div id="htmlwidget-d28b6dd6586919b7421f" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d28b6dd6586919b7421f">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(pnue)","log(pnue)"],"contrast":["no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients"],"ratio":[1.2336,0.8915,1.008,0.7227,0.8171,1.1307],"se":[0.0919,0.0644,0.0721,0.0549,0.0619,0.0817],"null":[1,1,1,1,1,1],"t_ratio":[2.817,-1.5894,0.111,-4.2786,-2.666,1.6987],"p_value":[0.0292,0.3892,0.9995,0.0002,0.0434,0.3296]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"#008000"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"93bb51ec6973b2eb413a2d6443176099"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true"></a><span class="kw">data.frame</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>pnue_log, <span class="op">~</span>treatment, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true"></a><span class="st">        </span><span class="kw">pairs</span>(<span class="dt">adjust =</span> <span class="st">&quot;Tukey&quot;</span>))  <span class="op">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true"></a><span class="st">        </span>reactable<span class="op">::</span><span class="kw">reactable</span>(.)</span></code></pre></div>
+<div id="htmlwidget-907100bb07d899a2f1b8" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-907100bb07d899a2f1b8">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"contrast":["no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients"],"ratio":[1.23362074249283,0.891498567456595,1.00797298909859,0.722668269710761,0.817084987612755,1.13065015008862],"SE":[0.0919419418158585,0.0644212570936343,0.072126535679785,0.0548607994296968,0.0619128151044545,0.0817293089490853],"df":[102.849904301735,102.344191367825,103.289513313616,103.291588776672,105.012071507842,102.731301317667],"null":[1,1,1,1,1,1],"t.ratio":[2.81702816664272,-1.58938068722917,0.110981196642449,-4.27857888121768,-2.66602491726979,1.69872624220579],"p.value":[0.0292188094921689,0.38920003029413,0.999507820358975,0.000243623762606004,0.0434178129680883,0.329643885295745]},"columns":[{"accessor":"contrast","name":"contrast","type":"factor"},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"SE","name":"SE","type":"numeric"},{"accessor":"df","name":"df","type":"numeric"},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t.ratio","name":"t.ratio","type":"numeric"},{"accessor":"p.value","name":"p.value","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"b7fd200d0202476bfc55ac5e3cbd3c62"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="effect-sizes-2" class="section level2">
 <h2>Effect sizes</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true"></a><span class="kw">eff_size</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>pnue_log, <span class="op">~</span>treatment),</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true"></a>         <span class="dt">sigma =</span> <span class="kw">sigma</span>(models_q2<span class="op">$</span>pnue_log),</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true"></a>         <span class="dt">edf =</span> <span class="kw">df.residual</span>(models_q2<span class="op">$</span>pnue_log))</span></code></pre></div>
 <pre><code>##  contrast                              effect.size    SE   df lower.CL upper.CL
 ##  no_additions - plus_nutrients              0.7857 0.284 8.97    0.143    1.429
 ##  no_additions - plus_water                 -0.4298 0.272 8.97   -1.045    0.186
@@ -1966,20 +2146,25 @@ module.exports = window.Shiny;
 </div>
 <div id="percentage-of-change-2" class="section level2">
 <h2>Percentage of Change</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a><span class="kw">emmeans_table_tidy</span>(models_q2<span class="op">$</span>pnue_log, <span class="dt">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment
-## &lt;environment: 0x55e27b0c1258&gt;</code></pre>
-<div id="htmlwidget-66541f10010a73a6fd81" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-66541f10010a73a6fd81">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["log(pnue)","log(pnue)","log(pnue)","log(pnue)"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"emmean":[84.681,68.645,94.988,84.011],"difference":[0,-16.037,10.306,-0.67],"perc_difference":[0,-18.938,12.171,-0.791]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"red"},{"color":"#008000"},{"color":"red"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"8a6dd2773c995d3593387372a3b7d6bc"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6ef6d8f18&gt;</code></pre>
+<div id="htmlwidget-27681fb536652f237eb2" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-27681fb536652f237eb2">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["log(pnue)","log(pnue)","log(pnue)","log(pnue)"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"emmean":[84.681,68.645,94.988,84.011],"difference":[0,-16.037,10.306,-0.67],"perc_difference":[0,-18.938,12.171,-0.791]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"red"},{"color":"#008000"},{"color":"red"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"8a6dd2773c995d3593387372a3b7d6bc"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="d13c" class="section level1">
 <h1>d13c</h1>
+<p><strong>Did not respond to any treatment</strong></p>
 <div id="tukey-3" class="section level2">
 <h2>Tukey</h2>
 </div>
 <div id="effect-sizes-3" class="section level2">
 <h2>Effect sizes</h2>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a><span class="kw">eff_size</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>d13c, <span class="op">~</span>treatment),</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true"></a>         <span class="dt">sigma =</span> <span class="kw">sigma</span>(models_q2<span class="op">$</span>d13c),</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true"></a>         <span class="dt">edf =</span> <span class="kw">df.residual</span>(models_q2<span class="op">$</span>d13c))</span></code></pre></div>
 <pre><code>##  contrast                              effect.size    SE   df lower.CL upper.CL
 ##  no_additions - plus_nutrients              -0.697 0.283 7.80   -1.353  -0.0411
 ##  no_additions - plus_water                   0.157 0.271 7.80   -0.470   0.7840
@@ -1997,23 +2182,28 @@ module.exports = window.Shiny;
 <h2>Percentage of Change</h2>
 </div>
 </div>
-<div id="nitrogen" class="section level1">
-<h1>Nitrogen</h1>
+<div id="nitrogen-area" class="section level1">
+<h1>Nitrogen area</h1>
 <div id="tukey-4" class="section level2">
 <h2>Tukey</h2>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true"></a><span class="kw">tukey_table_tidy</span>(models_q2<span class="op">$</span>nitrogen_log, <span class="dt">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment
-## &lt;environment: 0x55e277002998&gt;</code></pre>
-<div id="htmlwidget-d49a867e3830fbac859f" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-d49a867e3830fbac859f">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)"],"contrast":["no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients"],"ratio":[0.8543,0.9767,0.951,1.1433,1.1132,0.9737],"se":[0.041,0.0454,0.0439,0.056,0.0546,0.0453],"null":[1,1,1,1,1,1],"t_ratio":[-3.2804,-0.5073,-1.0884,2.7356,2.1866,-0.5719],"p_value":[0.0076,0.9572,0.6974,0.0363,0.1338,0.9402]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"744471a7cbd9aba6f275dd7e350a387d"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6e6fc69a8&gt;</code></pre>
+<div id="htmlwidget-df4a9703934d21444e7e" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-df4a9703934d21444e7e">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)"],"contrast":["no_additions / plus_nutrients","no_additions / plus_water","no_additions / plus_water_nutrients","plus_nutrients / plus_water","plus_nutrients / plus_water_nutrients","plus_water / plus_water_nutrients"],"ratio":[0.8543,0.9767,0.951,1.1433,1.1132,0.9737],"se":[0.041,0.0454,0.0439,0.056,0.0546,0.0453],"null":[1,1,1,1,1,1],"t_ratio":[-3.2804,-0.5073,-1.0884,2.7356,2.1866,-0.5719],"p_value":[0.0076,0.9572,0.6974,0.0363,0.1338,0.9402]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"#008000"},{"color":"black"},{"color":"black"},{"color":"#008000"},{"color":"black"},{"color":"black"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"744471a7cbd9aba6f275dd7e350a387d"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true"></a><span class="kw">tukey_table_tidy</span>(models_q2<span class="op">$</span>nitrogen_log, <span class="dt">formula =</span> <span class="st">&quot;nfixer&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ nfixer
-## &lt;environment: 0x55e27b4dce58&gt;</code></pre>
-<div id="htmlwidget-2674cfb82cd2cfe00827" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-2674cfb82cd2cfe00827">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(Narea_g_m2)"],"contrast":["nonfixer / fixer"],"ratio":[0.4861],"se":[0.0907],"null":[1],"t_ratio":[-3.8648],"p_value":[0.0091]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"#008000"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"eecdc0020c71b43bcb1407307b092198"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6efdfa0b0&gt;</code></pre>
+<div id="htmlwidget-5ec247ee3901e6153b9a" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5ec247ee3901e6153b9a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"response_variable":["log(Narea_g_m2)"],"contrast":["nonfixer / fixer"],"ratio":[0.4861],"se":[0.0907],"null":[1],"t_ratio":[-3.8648],"p_value":[0.0091]},"columns":[{"accessor":"response_variable","name":"response_variable","type":"factor","minWidth":165},{"accessor":"contrast","name":"contrast","type":"factor","minWidth":185},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric","minWidth":55},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric","minWidth":60,"style":[{"color":"#008000"}]}],"pivotBy":["response_variable"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"eecdc0020c71b43bcb1407307b092198"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
 <div id="effect-sizes-4" class="section level2">
 <h2>Effect sizes</h2>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true"></a><span class="kw">eff_size</span>(<span class="kw">emmeans</span>(models_q2<span class="op">$</span>nitrogen_log, <span class="op">~</span>treatment, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>),</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true"></a>         <span class="dt">sigma =</span> <span class="kw">sigma</span>(models_q2<span class="op">$</span>nitrogen_log),</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true"></a>         <span class="dt">edf =</span> <span class="kw">df.residual</span>(models_q2<span class="op">$</span>nitrogen_log))</span></code></pre></div>
 <pre><code>##  contrast                              estimate    SE   df lower.CL upper.CL
 ##  no_additions - plus_nutrients           -0.916 0.286 6.74  -1.5983   -0.234
 ##  no_additions - plus_water               -0.137 0.271 6.74  -0.7821    0.508
@@ -2029,47 +2219,97 @@ module.exports = window.Shiny;
 </div>
 <div id="percentage-of-change-4" class="section level2">
 <h2>Percentage of Change</h2>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true"></a><span class="kw">emmeans_table_tidy</span>(models_q2<span class="op">$</span>nitrogen_log, <span class="dt">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment
-## &lt;environment: 0x55e276477408&gt;</code></pre>
-<div id="htmlwidget-4e52ae26f0a4ceeda993" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-4e52ae26f0a4ceeda993">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"emmean":[1.403,1.643,1.437,1.476],"difference":[0,0.239,0.034,0.072],"perc_difference":[0,17.058,2.387,5.15]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"9a95452df3c2039d8887fc3bd5202884"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6e8f4e118&gt;</code></pre>
+<div id="htmlwidget-62db41b42a063c12ed0c" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-62db41b42a063c12ed0c">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)","log(Narea_g_m2)"],"treatment":["no_additions","plus_nutrients","plus_water","plus_water_nutrients"],"emmean":[1.403,1.643,1.437,1.476],"difference":[0,0.239,0.034,0.072],"perc_difference":[0,17.058,2.387,5.15]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"#008000"},{"color":"#008000"},{"color":"#008000"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"9a95452df3c2039d8887fc3bd5202884"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="r2" class="section level1">
 <h1>R2</h1>
-<pre><code>##      wue_log.R2_conditional.Conditional R2 
-##                                  0.7199819 
-##            wue_log.R2_marginal.Marginal R2 
-##                                  0.5582693 
-##     pnue_log.R2_conditional.Conditional R2 
-##                                  0.4940390 
-##           pnue_log.R2_marginal.Marginal R2 
-##                                  0.1955164 
-## nitrogen_log.R2_conditional.Conditional R2 
-##                                  0.8665550 
-##       nitrogen_log.R2_marginal.Marginal R2 
-##                                  0.5816786 
-##         amax.R2_conditional.Conditional R2 
-##                                  0.9411021 
-##               amax.R2_marginal.Marginal R2 
-##                                  0.4963493 
-##           gs.R2_conditional.Conditional R2 
-##                                  0.4686889 
-##                 gs.R2_marginal.Marginal R2 
-##                                  0.3931327 
-##         d13c.R2_conditional.Conditional R2 
-##                                  0.5762374 
-##               d13c.R2_marginal.Marginal R2 
-##                                  0.1782380</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true"></a>models_q2 <span class="op">%&gt;%</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true"></a><span class="st">    </span><span class="kw">map</span>(., r2) <span class="op">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">unlist</span>()</span></code></pre></div>
+<pre><code>##         wue_log.R2_conditional.Conditional R2 
+##                                     0.7199819 
+##               wue_log.R2_marginal.Marginal R2 
+##                                     0.5582693 
+##        pnue_log.R2_conditional.Conditional R2 
+##                                     0.4940390 
+##              pnue_log.R2_marginal.Marginal R2 
+##                                     0.1955164 
+##    nitrogen_log.R2_conditional.Conditional R2 
+##                                     0.8665550 
+##          nitrogen_log.R2_marginal.Marginal R2 
+##                                     0.5816786 
+## wue_amax_gs_log.R2_conditional.Conditional R2 
+##                                     0.6372631 
+##       wue_amax_gs_log.R2_marginal.Marginal R2 
+##                                     0.5822338 
+##              gs.R2_conditional.Conditional R2 
+##                                     0.4686889 
+##                    gs.R2_marginal.Marginal R2 
+##                                     0.3931327 
+##            d13c.R2_conditional.Conditional R2 
+##                                     0.5762374 
+##                  d13c.R2_marginal.Marginal R2 
+##                                     0.1782380</code></pre>
 </div>
 <div id="plot-traits-boxplot" class="section level1">
 <h1>Plot Traits boxplot</h1>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true"></a><span class="co">#string &lt;- c(&quot;models_q2&quot;)</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true"></a><span class="co">#data_pred_traits &lt;-</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true"></a><span class="co">#        # Get models prediction</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true"></a><span class="co">#        gather_predictions(data_for_models,</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true"></a><span class="co">#                           # Return predictions</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true"></a><span class="co">#                            models_q2$amax,</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true"></a><span class="co">#                            models_q2$d13c,</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true"></a><span class="co">#                            models_q2$gs,</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true"></a><span class="co">#                            models_q2$pnue_log) %&gt;%</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true"></a><span class="co">#        pivot_wider(names_from = model, values_from = pred) %&gt;%</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true"></a><span class="co">#            rename_all(funs(</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true"></a><span class="co">#                # rename columns</span></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true"></a><span class="co">#                stringr::str_to_lower(.) %&gt;%</span></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true"></a><span class="co">#                stringr::str_replace(., c(string),&quot;pred_&quot;) %&gt;%</span></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true"></a><span class="co">#                # Remove dollar sing</span></span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true"></a><span class="co">#                gsub(&quot;\\$&quot;, &quot;&quot;, .)</span></span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true"></a><span class="co">#                )) %&gt;%</span></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true"></a><span class="co">#        # Back transform log variables</span></span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true"></a><span class="co">#        mutate(pred_pnue = exp(pred_pnue_log)) %&gt;%</span></span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true"></a><span class="co">#        # Remove log predictions and init height</span></span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true"></a><span class="co">#        dplyr::select(-c(init_height,  pred_pnue_log))</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true"></a><span class="co">#vars_q2 &lt;-</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true"></a><span class="co">#  crossing(</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true"></a><span class="co">#    # Get all numeric variables to plot (all y)</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true"></a><span class="co">#    as_tibble(t(combn(dplyr::select(data_pred_traits, where(is.numeric)) %&gt;% names, 1))),</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true"></a><span class="co">#    # Select factor variables to plot</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true"></a><span class="co">#    x_axis_var = dplyr::select(data_pred_traits, nfixer) %&gt;%  names,</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true"></a><span class="co">#    group_var = dplyr::select(data_pred_traits, treatment) %&gt;%  names)</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true"></a><span class="co">#vars_q2 %&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true"></a><span class="co">#      # Gererate plots</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true"></a><span class="co">#      pmap( ~ boxplot_plot_pmap(data = data_pred_traits,</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true"></a><span class="co">#                                y = !!sym(..1), x = !!sym(..2),</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true"></a><span class="co">#                                fill = !!sym(..3)))</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true"></a><span class="co">#      cowplot::plot_grid(plotlist = ., ncol = 2)</span></span></code></pre></div>
 </div>
 <div id="nodule-count" class="section level1">
 <h1>Nodule Count</h1>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true"></a><span class="co"># Interpretation: https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/</span></span></code></pre></div>
 <div id="anovas-1" class="section level2">
 <h2>ANOVAs</h2>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true"></a><span class="kw">anova.lme</span>(model_nodule_count, <span class="dt">type =</span> <span class="st">&quot;marginal&quot;</span>)</span></code></pre></div>
 <pre><code>##             numDF denDF   F-value p-value
 ## (Intercept)     1    41 27.527073  &lt;.0001
 ## treatment       3    41 11.330325  &lt;.0001
@@ -2077,16 +2317,25 @@ module.exports = window.Shiny;
 </div>
 <div id="tuckey-comparisons" class="section level2">
 <h2>Tuckey comparisons</h2>
-<div id="htmlwidget-3e094e57fd9cc4499165" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-3e094e57fd9cc4499165">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"contrast":["ambientrain / ambientrain_nutrients","ambientrain / ambientrain_water","ambientrain / ambientrain_water_nutrients","ambientrain_nutrients / ambientrain_water","ambientrain_nutrients / ambientrain_water_nutrients","ambientrain_water / ambientrain_water_nutrients"],"ratio":[1.18370330464785,1.12352051502793,0.830435911681077,0.949157200640051,0.701557483552121,0.73913729262027],"se":[0.0760496427732935,0.077388331395946,0.052297140408827,0.0614576780847133,0.0448696767582395,0.0504597751076467],"df":[41,41,41,41,41,41],"null":[1,1,1,1,1,1],"t_ratio":[2.62498402760596,1.69086402058566,-2.9504241685506,-0.805885068514977,-5.542022566932,-4.42768932086902],"p_value":[0.056480327045054,0.34146574612188,0.0258306898933073,0.85128408770935,1.12549301586329e-05,0.000389389143028884]},"columns":[{"accessor":"contrast","name":"contrast","type":"factor"},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric"},{"accessor":"df","name":"df","type":"numeric"},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"2fb2a40bff930259ead813b8e4920c38"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true"></a><span class="kw">as.data.frame</span>(<span class="kw">emmeans</span>(model_nodule_count,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true"></a>                           <span class="dt">specs =</span> pairwise <span class="op">~</span><span class="st"> &quot;treatment&quot;</span>,</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true"></a>                           <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>,</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true"></a>                           <span class="dt">adjust =</span>  <span class="st">&quot;tukey&quot;</span>)<span class="op">$</span>contrast) <span class="op">%&gt;%</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true"></a><span class="st">         </span><span class="kw">clean_names</span>() <span class="op">%&gt;%</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true"></a><span class="st">         </span><span class="kw">reactable</span>()</span></code></pre></div>
+<div id="htmlwidget-8108fc222a3139204c17" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8108fc222a3139204c17">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"contrast":["ambientrain / ambientrain_nutrients","ambientrain / ambientrain_water","ambientrain / ambientrain_water_nutrients","ambientrain_nutrients / ambientrain_water","ambientrain_nutrients / ambientrain_water_nutrients","ambientrain_water / ambientrain_water_nutrients"],"ratio":[1.18370330464785,1.12352051502793,0.830435911681077,0.949157200640051,0.701557483552121,0.73913729262027],"se":[0.0760496427732935,0.077388331395946,0.052297140408827,0.0614576780847133,0.0448696767582395,0.0504597751076467],"df":[41,41,41,41,41,41],"null":[1,1,1,1,1,1],"t_ratio":[2.62498402760596,1.69086402058566,-2.9504241685506,-0.805885068514977,-5.542022566932,-4.42768932086902],"p_value":[0.056480327045054,0.34146574612188,0.0258306898933073,0.85128408770935,1.12549301586329e-05,0.000389389143028884]},"columns":[{"accessor":"contrast","name":"contrast","type":"factor"},{"accessor":"ratio","name":"ratio","type":"numeric"},{"accessor":"se","name":"se","type":"numeric"},{"accessor":"df","name":"df","type":"numeric"},{"accessor":"null","name":"null","type":"numeric"},{"accessor":"t_ratio","name":"t_ratio","type":"numeric"},{"accessor":"p_value","name":"p_value","type":"numeric"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"dataKey":"2fb2a40bff930259ead813b8e4920c38"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="percentage-of-change-5" class="section level2">
 <h2>Percentage of change</h2>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true"></a><span class="co"># Percentage difference</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true"></a><span class="kw">emmeans_table_tidy</span>(model_nodule_count,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true"></a>                        <span class="dt">formula =</span> <span class="st">&quot;treatment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Formula for pairwise comparisons: &quot;
 ## pairwise ~ treatment
-## &lt;environment: 0x55e27a74a4c0&gt;</code></pre>
-<div id="htmlwidget-f103009861cec3000500" class="reactable html-widget" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f103009861cec3000500">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["log(number_of_root_nodulation)","log(number_of_root_nodulation)","log(number_of_root_nodulation)","log(number_of_root_nodulation)"],"treatment":["ambientrain","ambientrain_nutrients","ambientrain_water","ambientrain_water_nutrients"],"emmean":[50.645,42.785,45.077,60.985],"difference":[0,-7.86,-5.568,10.341],"perc_difference":[0,-15.519,-10.994,20.419]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"red"},{"color":"red"},{"color":"#008000"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"9d36780c7dbc36b9ae8c2a19e02a4d91"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
+## &lt;environment: 0x55f6eee5f5b8&gt;</code></pre>
+<div id="htmlwidget-a357bc879ab0b4c53a37" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a357bc879ab0b4c53a37">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"resp_var":["log(number_of_root_nodulation)","log(number_of_root_nodulation)","log(number_of_root_nodulation)","log(number_of_root_nodulation)"],"treatment":["ambientrain","ambientrain_nutrients","ambientrain_water","ambientrain_water_nutrients"],"emmean":[50.645,42.785,45.077,60.985],"difference":[0,-7.86,-5.568,10.341],"perc_difference":[0,-15.519,-10.994,20.419]},"columns":[{"accessor":"resp_var","name":"resp_var","type":"character","minWidth":140},{"accessor":"treatment","name":"treatment","type":"factor","minWidth":185},{"accessor":"emmean","name":"emmean","type":"numeric","minWidth":120},{"accessor":"difference","name":"difference","type":"numeric","minWidth":120},{"accessor":"perc_difference","name":"perc_difference","type":"numeric","minWidth":175,"style":[{"color":"red"},{"color":"red"},{"color":"red"},{"color":"#008000"}]}],"pivotBy":["resp_var"],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"rowStyle":"function(rowInfo) {\n                        if (rowInfo.level > 0) {\n                        return { background: '#eee',\n                        borderLeft: '2px solid #ffa62d' }}\n                        else {return { borderLeft: '2px solid transparent' }}}","dataKey":"9d36780c7dbc36b9ae8c2a19e02a4d91"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.rowStyle"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
