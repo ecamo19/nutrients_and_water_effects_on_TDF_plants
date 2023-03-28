@@ -147,7 +147,7 @@ names(models_q2)
 
 ```{r}
 models_q2 %>%
-
+    purrr::list_modify("wue_amax_gs_log" = NULL) %>%
     anova_table_tidy(., model_list = TRUE)
 ```
 
