@@ -2,7 +2,7 @@
 # Model inference: Percentage difference ----------------------------------------
 
 ## First; Get emmeans data frame ------------------------------------------------
-emmeans_df <- function(model,formula, grouping_var = NULL){
+emmeans_df <- function(model, formula, grouping_var = NULL){
 
     if (is_empty(grouping_var) == TRUE) {
         var = NULL
