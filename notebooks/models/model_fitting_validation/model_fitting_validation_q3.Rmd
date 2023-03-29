@@ -90,131 +90,99 @@ source("./R/functions_models.R")
 source("./R/function_nlme_validation_plots.R")
 ```
 
-# Model Fitting
+
 
 __Q3: How do seedling-level functional traits, treatment, and N-fixing status
 interact to influence seedling-level growth rates and biomass accumulation?__
 
 ```{r}
 data_for_models <-
-    data_for_models %>%
-
-    # Select variables for analysis
-    dplyr::select(!c(
-        rgr_slope, d15n, above_biomass, below_biomass,
-        rmf, smf, lmf))
+  data_for_models %>%
+  # Select variables for analysis
+  dplyr::select(!c(rgr_slope, d15n, above_biomass, below_biomass, amax,
+                  rmf, smf, lmf,agr))
 ```
 
 
-### Scale preditors aka traits
+### Scale preditors (traits)
 
 ```{r}
 data_for_models_scaled <-
-    data_for_models %>%
-
-    #  Narea_g_m2 not included since it has a high correlation with amax
-    mutate(across(c(4, 9:13), scale))
+  data_for_models %>%
+  mutate(across(
+    c("init_height", "gs", "wue", "d13c", "pnue", "Narea_g_m2"),
+    scale
+  ))
 ```
 
 
-## Model formula
+# Model formula
 
 $$performance\sim treatment:fixer:scaled(trait)\ + initial\ height + random( 1|\ specie)$$
 
 
-## Fit models
-
-### Model RGR
+# Model RGR
 
 ```{r}
-lme_rgr_3way <- lme(rgr ~   treatment:nfixer:amax +
-                            treatment:nfixer:gs  +
-                            treatment:nfixer:wue +
-                            treatment:nfixer:pnue +
-                            treatment:nfixer:d13c +
+lme_rgr_3way <- lme(rgr ~ treatment:nfixer:Narea_g_m2 +
+                          treatment:nfixer:gs +
+                          treatment:nfixer:wue +
+                          treatment:nfixer:pnue +
+                          treatment:nfixer:d13c +
 
-                            # Added
-                            #treatment:nfixer:Narea_g_m2 +
-                            init_height ,
-                  random = ~1 | spcode,
-                  data = data_for_models_scaled)
+                        init_height,
+                        random = ~ 1 | spcode,
+                        data = data_for_models_scaled)
+```
+
+## Model Validation
+
+```{r validation_rgr_3way, fig.height = 12, fig.width = 15}
+nlme_validation_plots(lme_rgr_3way, data = data_for_models_scaled, group = "spcode")
 ```
 
 
-### Model AGR
+# Model shoot root ratios
 
 ```{r}
-lme_agr_3way <- lme(agr ~   treatment:nfixer:amax +
-                            treatment:nfixer:gs  +
-                            treatment:nfixer:wue +
-                            treatment:nfixer:pnue +
-                            treatment:nfixer:d13c +
+lme_root_shoot_3way <- lme(root_shoot_ratio ~ treatment:nfixer:Narea_g_m2 +
+                                              treatment:nfixer:gs +
+                                              treatment:nfixer:wue +
+                                              treatment:nfixer:pnue +
+                                              treatment:nfixer:d13c +
 
-                            # Added
-                            #treatment:nfixer:Narea_g_m2 +
-                            init_height ,
-                  random = ~1 | spcode,
-                  data = data_for_models_scaled)
+                                              init_height,
+                                              random = ~ 1 | spcode,
+                                          data = data_for_models_scaled)
 ```
 
 
-### Model Total Biomass
+
+## Model Validation
+
+```{r validation_root_shoot_3way, fig.height = 12, fig.width = 15}
+nlme_validation_plots(lme_root_shoot_3way, data = data_for_models_scaled,
+                      group = "spcode")
+```
+
+# Model Total Biomass
 
 ```{r}
-lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:amax +
-                                            treatment:nfixer:gs  +
+lme_total_biom_3way <- lme(total_biomass ~ treatment:nfixer:Narea_g_m2 +
+                                            treatment:nfixer:gs +
                                             treatment:nfixer:wue +
                                             treatment:nfixer:pnue +
                                             treatment:nfixer:d13c +
 
                                             init_height,
-                            random = ~1 | spcode,
-                            data = data_for_models_scaled)
+                                            random = ~ 1 | spcode,
+                                            data = data_for_models_scaled)
 ```
 
-## Model shoot root ratios
+## Model Validation
 
-```{r}
-lme_3way_root_shoot_ratio <- lme(root_shoot_ratio ~  treatment:nfixer:amax +
-                                                        treatment:nfixer:gs  +
-                                                        treatment:nfixer:wue +
-                                                        treatment:nfixer:pnue +
-                                                        treatment:nfixer:d13c +
-
-                                                        # Added
-                                                        #treatment:nfixer:Narea_g_m2 +
-                                                        init_height,
-                            random = ~1 | spcode,
-                            data = data_for_models_scaled)
-```
-
-
-
-# Model Validation
-
-### RGR
-
-```{r validation_rgr_3way, fig.height = 9, fig.width = 14}
-nlme_validation_plots(lme_rgr_3way, data = data_for_models_scaled, group = "spcode")
-```
-
-### AGR
-```{r validation_agr_3way, fig.height = 9, fig.width = 14}
-nlme_validation_plots(lme_agr_3way, data = data_for_models_scaled, group = "spcode")
-```
-
-
-### Total biomass
-
-```{r validation_lme_total_biom_3way, fig.height = 9, fig.width = 14}
+```{r validation_lme_total_biom_3way, fig.height = 12, fig.width = 15}
 nlme_validation_plots(lme_total_biom_3way, data = data_for_models_scaled,
-                      group = "spcode")
-```
-
-### Root-shoot ratio
-
-```{r}
-nlme_validation_plots(lme_3way_root_shoot_ratio, data = data_for_models_scaled,
                       group = "spcode")
 ```
 
@@ -224,14 +192,63 @@ nlme_validation_plots(lme_3way_root_shoot_ratio, data = data_for_models_scaled,
 ## 3-way models
 
 ```{r}
-models_3way_q3 <- list(lme_rgr_3way, lme_total_biom_3way,
-                            lme_3way_root_shoot_ratio, lme_agr_3way)
+models_3way_q3 <- list(lme_rgr_3way, lme_total_biom_3way, lme_root_shoot_3way)
 
 names(models_3way_q3) <- c("lme_rgr_3way", "lme_total_biom_3way",
-                                "lme_3way_root_shoot_ratio", "lme_agr_3way")
+                            "lme_3way_root_shoot_ratio")
 ```
 
 
+# lme4 models for double check
+
+## rgr
 ```{r}
-saveRDS(models_3way_q3, file = "./processed_data/models_3way_q3.RData")
+lmer_rgr_3way <- lmer(rgr ~   treatment:nfixer:Narea_g_m2 +
+                              treatment:nfixer:gs  +
+                              treatment:nfixer:wue +
+                              treatment:nfixer:pnue +
+                              treatment:nfixer:d13c +
+
+                              (1 | spcode) +
+                              init_height,
+                  data = data_for_models_scaled)
+```
+
+```{r, fig.height = 15, fig.width = 12}
+performance::check_model(lmer_rgr_3way)
+```
+
+## Root shoot ratio
+```{r}
+lmer_root_shoot_3way <- lmer(root_shoot_ratio ~   treatment:nfixer:Narea_g_m2 +
+                                                  treatment:nfixer:gs  +
+                                                  treatment:nfixer:wue +
+                                                  treatment:nfixer:pnue +
+                                                  treatment:nfixer:d13c +
+
+                              (1 | spcode) +
+                              init_height,
+                  data = data_for_models_scaled)
+```
+
+```{r, fig.height = 15, fig.width = 12}
+performance::check_model(lmer_root_shoot_3way)
+```
+
+
+## Total biomass
+
+```{r}
+lmer_total_biom_3way <- lmer(total_biomass ~ treatment:nfixer:Narea_g_m2 +
+                                              treatment:nfixer:gs +
+                                              treatment:nfixer:wue +
+                                              treatment:nfixer:pnue +
+                                              treatment:nfixer:d13c +
+
+                                              init_height + (1 | spcode),
+                              data = data_for_models_scaled)
+```
+
+```{r, fig.height = 15, fig.width = 12}
+performance::check_model(lmer_total_biom_3way)
 ```

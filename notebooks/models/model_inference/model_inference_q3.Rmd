@@ -119,7 +119,6 @@ data_for_models <-
 data_for_models_scaled <-
     data_for_models  %>%
 
-    #  Narea_g_m2 not included since it has a high correlation with amax
     mutate(across(c("init_height", "gs", "wue", "d13c", "pnue", "Narea_g_m2"),
                 scale))
 
