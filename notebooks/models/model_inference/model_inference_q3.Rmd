@@ -108,7 +108,7 @@ data_for_models <-
 
     # Select variables for analysis
     dplyr::select(!c(
-        rgr_slope, d15n, above_biomass, below_biomass, amax, agr,
+        rgr_slope, d15n, above_biomass, below_biomass, amax, agr, d13c,
         rmf, smf, lmf))
 ```
 
@@ -119,7 +119,8 @@ data_for_models <-
 data_for_models_scaled <-
     data_for_models  %>%
 
-    mutate(across(c("init_height", "gs", "wue", "d13c", "pnue", "Narea_g_m2"),
+    mutate(across(c("init_height", "gs", "wue", "pnue", "Narea_g_m2",
+                    "rgr", "root_shoot_ratio", "total_biomass"),
                 scale))
 
 ```
@@ -134,14 +135,12 @@ names(data_for_models_scaled)
 lme_rgr_3way <- lme(rgr ~   treatment:nfixer:gs  +
                             treatment:nfixer:wue +
                             treatment:nfixer:pnue +
-                            treatment:nfixer:d13c +
                             treatment:nfixer:Narea_g_m2 +
 
                             init_height,
                   random = ~1 | spcode,
                   data = data_for_models_scaled)
 ```
-
 
 
 ## Report
@@ -198,21 +197,17 @@ data_rgr_plot <-
             mutate(treat_trait = factor(treat_trait,
                     levels = c("plus_water_nutrients-gs",
                                 "plus_water_nutrients-Narea_g_m2",
-                                "plus_water_nutrients-d13c",
                                 "plus_water_nutrients-wue",
                                 "plus_water_nutrients-pnue",
                                 "plus_water-Narea_g_m2",
-                                "plus_water-d13c",
                                 "plus_water-gs",
                                 "plus_water-wue",
                                 "plus_water-pnue",
                                 "plus_nutrients-Narea_g_m2",
-                                "plus_nutrients-d13c",
                                 "plus_nutrients-gs",
                                 "plus_nutrients-wue",
                                 "plus_nutrients-pnue",
                                 "no_additions-Narea_g_m2",
-                                "no_additions-d13c",
                                 "no_additions-gs",
                                 "no_additions-wue",
                                 "no_additions-pnue")))
@@ -228,9 +223,6 @@ cleveland_plot(x = treat_trait, y = estimate,
         facet_wrap(. ~ col_2)
 ```
 
-```{r}
-plot_model(lme_rgr_3way)
-```
 
 # Root to shoot ratio
 
@@ -239,7 +231,6 @@ lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~ treatment:nfixer:Narea_g_m2 
                                                     treatment:nfixer:gs  +
                                                     treatment:nfixer:pnue +
                                                     treatment:nfixer:wue +
-                                                    treatment:nfixer:d13c +
 
                                                         init_height,
                             random = ~1 | spcode,
@@ -303,21 +294,17 @@ data_root_shoot_plot <-
             mutate(treat_trait = factor(treat_trait,
                     levels = c("plus_water_nutrients-gs",
                                 "plus_water_nutrients-Narea_g_m2",
-                                "plus_water_nutrients-d13c",
                                 "plus_water_nutrients-wue",
                                 "plus_water_nutrients-pnue",
                                 "plus_water-Narea_g_m2",
-                                "plus_water-d13c",
                                 "plus_water-gs",
                                 "plus_water-wue",
                                 "plus_water-pnue",
                                 "plus_nutrients-Narea_g_m2",
-                                "plus_nutrients-d13c",
                                 "plus_nutrients-gs",
                                 "plus_nutrients-wue",
                                 "plus_nutrients-pnue",
                                 "no_additions-Narea_g_m2",
-                                "no_additions-d13c",
                                 "no_additions-gs",
                                 "no_additions-wue",
                                 "no_additions-pnue")))
@@ -336,11 +323,11 @@ cleveland_plot(x = treat_trait, y = estimate,
 
 
 ```{r}
-min(data_for_models_scaled$pnue)
-max(data_for_models_scaled$pnue)
+min(data_for_models_scaled$wue)
+max(data_for_models_scaled$wue)
 plot_model(lme_root_shoot_ratio_3way,
             type = "pred",
-            terms = c("pnue[-1.8,3.6]", "nfixer", "treatment"))
+            terms = c("wue[-1.2, 5.2]", "nfixer", "treatment"))
 ```
 
 
@@ -351,7 +338,6 @@ lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:Narea_g_m2 +
                                             treatment:nfixer:pnue +
                                             treatment:nfixer:gs  +
                                             treatment:nfixer:wue +
-                                            treatment:nfixer:d13c +
 
                                             init_height,
                             random = ~1 | spcode,
@@ -369,6 +355,7 @@ lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:Narea_g_m2 +
 
 ```{r}
 r.squaredGLMM(lme_total_biom_3way)
+#AIC(lme_total_biom_3way)
 ```
 
 ## Bootstrap Total Biomass
@@ -414,21 +401,17 @@ data_total_biomass_plot <-
             mutate(treat_trait = factor(treat_trait,
                     levels = c("plus_water_nutrients-gs",
                                 "plus_water_nutrients-Narea_g_m2",
-                                "plus_water_nutrients-d13c",
                                 "plus_water_nutrients-wue",
                                 "plus_water_nutrients-pnue",
                                 "plus_water-Narea_g_m2",
-                                "plus_water-d13c",
                                 "plus_water-gs",
                                 "plus_water-wue",
                                 "plus_water-pnue",
                                 "plus_nutrients-Narea_g_m2",
-                                "plus_nutrients-d13c",
                                 "plus_nutrients-gs",
                                 "plus_nutrients-wue",
                                 "plus_nutrients-pnue",
                                 "no_additions-Narea_g_m2",
-                                "no_additions-d13c",
                                 "no_additions-gs",
                                 "no_additions-wue",
                                 "no_additions-pnue")))
@@ -468,3 +451,8 @@ plot_model(lme_total_biom_3way,
 ```{r}
 plot(data_for_models$d13c, data_for_models_scaled$d13c)
 ```
+
+
+
+
+

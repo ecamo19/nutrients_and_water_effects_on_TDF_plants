@@ -100,7 +100,7 @@ data_for_models <-
   data_for_models %>%
   # Select variables for analysis
   dplyr::select(!c(rgr_slope, d15n, above_biomass, below_biomass, amax,
-                  rmf, smf, lmf,agr))
+                  rmf, smf, lmf, agr))
 ```
 
 
@@ -108,11 +108,10 @@ data_for_models <-
 
 ```{r}
 data_for_models_scaled <-
-  data_for_models %>%
-  mutate(across(
-    c("init_height", "gs", "wue", "d13c", "pnue", "Narea_g_m2"),
-    scale
-  ))
+    data_for_models %>%
+    mutate(across(
+    c("init_height", "gs", "wue", "pnue", "Narea_g_m2",
+      "rgr", "root_shoot_ratio", "total_biomass"), scale))
 ```
 
 
@@ -128,7 +127,6 @@ lme_rgr_3way <- lme(rgr ~ treatment:nfixer:Narea_g_m2 +
                           treatment:nfixer:gs +
                           treatment:nfixer:wue +
                           treatment:nfixer:pnue +
-                          treatment:nfixer:d13c +
 
                         init_height,
                         random = ~ 1 | spcode,
@@ -149,13 +147,11 @@ lme_root_shoot_3way <- lme(root_shoot_ratio ~ treatment:nfixer:Narea_g_m2 +
                                               treatment:nfixer:gs +
                                               treatment:nfixer:wue +
                                               treatment:nfixer:pnue +
-                                              treatment:nfixer:d13c +
 
                                               init_height,
                                               random = ~ 1 | spcode,
                                           data = data_for_models_scaled)
 ```
-
 
 
 ## Model Validation
@@ -172,7 +168,6 @@ lme_total_biom_3way <- lme(total_biomass ~ treatment:nfixer:Narea_g_m2 +
                                             treatment:nfixer:gs +
                                             treatment:nfixer:wue +
                                             treatment:nfixer:pnue +
-                                            treatment:nfixer:d13c +
 
                                             init_height,
                                             random = ~ 1 | spcode,
@@ -207,7 +202,6 @@ lmer_rgr_3way <- lmer(rgr ~   treatment:nfixer:Narea_g_m2 +
                               treatment:nfixer:gs  +
                               treatment:nfixer:wue +
                               treatment:nfixer:pnue +
-                              treatment:nfixer:d13c +
 
                               (1 | spcode) +
                               init_height,
@@ -224,7 +218,6 @@ lmer_root_shoot_3way <- lmer(root_shoot_ratio ~   treatment:nfixer:Narea_g_m2 +
                                                   treatment:nfixer:gs  +
                                                   treatment:nfixer:wue +
                                                   treatment:nfixer:pnue +
-                                                  treatment:nfixer:d13c +
 
                               (1 | spcode) +
                               init_height,
@@ -243,7 +236,6 @@ lmer_total_biom_3way <- lmer(total_biomass ~ treatment:nfixer:Narea_g_m2 +
                                               treatment:nfixer:gs +
                                               treatment:nfixer:wue +
                                               treatment:nfixer:pnue +
-                                              treatment:nfixer:d13c +
 
                                               init_height + (1 | spcode),
                               data = data_for_models_scaled)
