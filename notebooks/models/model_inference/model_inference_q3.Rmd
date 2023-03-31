@@ -238,12 +238,6 @@ lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~ treatment:nfixer:Narea_g_m2 
 ```
 
 
-## Report
-
-```{r}
-#report(lme_root_shoot_ratio_3way)
-```
-
 ## R2
 
 ```{r}
@@ -321,15 +315,9 @@ cleveland_plot(x = treat_trait, y = estimate,
 
 ```
 
-
 ```{r}
-min(data_for_models_scaled$wue)
-max(data_for_models_scaled$wue)
-plot_model(lme_root_shoot_ratio_3way,
-            type = "pred",
-            terms = c("wue[-1.2, 5.2]", "nfixer", "treatment"))
+report(lme_root_shoot_ratio_3way)
 ```
-
 
 # Total Biomass
 
@@ -342,13 +330,6 @@ lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:Narea_g_m2 +
                                             init_height,
                             random = ~1 | spcode,
                             data = data_for_models_scaled)
-```
-
-
-## Report
-
-```{r}
-#report(lme_total_biom_3way)
 ```
 
 ## R2
@@ -430,29 +411,8 @@ cleveland_plot(x = treat_trait, y = estimate,
 ```
 
 
-
 ```{r}
-min(data_for_models_scaled$pnue)
-max(data_for_models_scaled$pnue)
-plot_model(lme_total_biom_3way,
-            type = "pred",
-            terms = c("pnue[-1.8,3.6]", "treatment", "nfixer"))
+report(lme_total_biom_3way)
 ```
-
-```{r}
-min(data_for_models_scaled$d13c)
-max(data_for_models_scaled$d13c)
-plot_model(lme_total_biom_3way,
-            type = "pred",
-            terms = c("d13c[-2.3, 2.8]","treatment", "nfixer"))
-```
-
-# Buscar relacion entre scaled and unscaled d13c
-```{r}
-plot(data_for_models$d13c, data_for_models_scaled$d13c)
-```
-
-
-
 
 
