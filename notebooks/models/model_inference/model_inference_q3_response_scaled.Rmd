@@ -120,8 +120,8 @@ data_for_models_scaled <-
     data_for_models  %>%
 
     mutate(across(c("init_height", "gs", "wue", "pnue", "Narea_g_m2",
-                    "rgr", "root_shoot_ratio", "total_biomass"),
-                scale))
+                    "rgr", "root_shoot_ratio", "total_biomass"
+                    ), scale))
 
 ```
 
