@@ -28,7 +28,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       comment = "",
 
                       # Save figures as pdf ?
-                      # dev = c( "png", "pdf"),
+                      dev = c( "png", "pdf"),
 
                       # Include code?
                       echo           = TRUE,
@@ -119,9 +119,7 @@ data_for_models <-
 data_for_models_scaled <-
     data_for_models  %>%
 
-    mutate(across(c("init_height", "gs", "wue", "pnue", "Narea_g_m2",
-                    "rgr", "root_shoot_ratio", "total_biomass"
-                    ), scale))
+    mutate(across(c("init_height", "gs", "wue", "pnue", "Narea_g_m2"), scale))
 
 ```
 
@@ -153,7 +151,6 @@ lme_rgr_3way <- lme(rgr ~   treatment:nfixer:gs  +
 ```{r}
 r.squaredGLMM(lme_rgr_3way)
 ```
-
 
 ## Bootstrap RGRh
 
@@ -199,16 +196,16 @@ data_rgr_plot <-
                                 "plus_water_nutrients-Narea_g_m2",
                                 "plus_water_nutrients-wue",
                                 "plus_water_nutrients-pnue",
-                                "plus_water-Narea_g_m2",
                                 "plus_water-gs",
+                                "plus_water-Narea_g_m2",
                                 "plus_water-wue",
                                 "plus_water-pnue",
-                                "plus_nutrients-Narea_g_m2",
                                 "plus_nutrients-gs",
+                                "plus_nutrients-Narea_g_m2",
                                 "plus_nutrients-wue",
                                 "plus_nutrients-pnue",
-                                "no_additions-Narea_g_m2",
                                 "no_additions-gs",
+                                "no_additions-Narea_g_m2",
                                 "no_additions-wue",
                                 "no_additions-pnue")))
 ```
@@ -290,16 +287,16 @@ data_root_shoot_plot <-
                                 "plus_water_nutrients-Narea_g_m2",
                                 "plus_water_nutrients-wue",
                                 "plus_water_nutrients-pnue",
-                                "plus_water-Narea_g_m2",
                                 "plus_water-gs",
+                                "plus_water-Narea_g_m2",
                                 "plus_water-wue",
                                 "plus_water-pnue",
-                                "plus_nutrients-Narea_g_m2",
                                 "plus_nutrients-gs",
+                                "plus_nutrients-Narea_g_m2",
                                 "plus_nutrients-wue",
                                 "plus_nutrients-pnue",
-                                "no_additions-Narea_g_m2",
                                 "no_additions-gs",
+                                "no_additions-Narea_g_m2",
                                 "no_additions-wue",
                                 "no_additions-pnue")))
 ```
@@ -384,16 +381,16 @@ data_total_biomass_plot <-
                                 "plus_water_nutrients-Narea_g_m2",
                                 "plus_water_nutrients-wue",
                                 "plus_water_nutrients-pnue",
-                                "plus_water-Narea_g_m2",
                                 "plus_water-gs",
+                                "plus_water-Narea_g_m2",
                                 "plus_water-wue",
                                 "plus_water-pnue",
-                                "plus_nutrients-Narea_g_m2",
                                 "plus_nutrients-gs",
+                                "plus_nutrients-Narea_g_m2",
                                 "plus_nutrients-wue",
                                 "plus_nutrients-pnue",
-                                "no_additions-Narea_g_m2",
                                 "no_additions-gs",
+                                "no_additions-Narea_g_m2",
                                 "no_additions-wue",
                                 "no_additions-pnue")))
 ```
@@ -410,6 +407,12 @@ cleveland_plot(x = treat_trait, y = estimate,
 
 ```
 
+```{r}
+data_total_biomass_plot %>%
+    dplyr::select(-c(type, col_1, col_3, level)) %>%
+    filter(significance == TRUE) %>%
+    reactable()
+```
 
 ```{r}
 report(lme_total_biom_3way)
