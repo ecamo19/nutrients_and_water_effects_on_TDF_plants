@@ -78,6 +78,7 @@ library(emmeans)
 library(ggplot2)
 # For effect sizes
 library(effectsize)
+library(corrplot)
 ```
 
 # Load functions and data
@@ -115,16 +116,7 @@ model_nodule_count <- readRDS("./processed_data/model_nodule_log.RData")
 names(models_q2)
 ```
 
-```{r echo=FALSE}
-# Step done for getting predictions from models for Q2
-data_for_models <-
-    data_for_models %>%
 
-        rownames_to_column("id") %>%
-
-        # Remove unused variables
-        dplyr::select(id, spcode, treatment, nfixer, init_height)
-```
 
 ```{r}
 # Step done for getting predictions from nodule models
@@ -150,6 +142,7 @@ models_q2 %>%
     purrr::list_modify("wue_amax_gs_log" = NULL) %>%
     anova_table_tidy(., model_list = TRUE)
 ```
+
 
 # gs
 
@@ -303,21 +296,34 @@ emmeans_table_tidy(models_q2$wue_log,
 ```
 
 
-# d13c
+# Amax
 
 ## Tukey
+```{r}
+tukey_table_tidy(models_q2$amax, formula = "treatment|nfixer")
+```
 
-__Did not respond to any treatment__
+
+```{r}
+data.frame(emmeans(models_q2$amax, ~treatment|nfixer) %>%
+        pairs(adjust = "Tukey"))  %>%
+        reactable::reactable(.)
+```
 
 ## Effect sizes
 
 ```{r}
-eff_size(emmeans(models_q2$d13c, ~treatment),
-         sigma = sigma(models_q2$d13c),
-         edf = df.residual(models_q2$d13c))
+eff_size(emmeans(models_q2$amax, ~treatment|nfixer),
+         sigma = sigma(models_q2$amax),
+         edf = df.residual(models_q2$amax))
 ```
 
 ## Percentage of Change
+```{r}
+emmeans_table_tidy(models_q2$amax,
+                        formula = "treatment|nfixer",
+                        grouping_var = "nfixer")
+```
 
 
 # R2
