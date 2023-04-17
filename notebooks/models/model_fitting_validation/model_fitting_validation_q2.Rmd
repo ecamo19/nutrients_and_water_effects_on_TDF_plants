@@ -1,0 +1,288 @@
+---
+title: 'Model fitting and validation for Q2'
+author: "Erick Calderon-Morales"
+date: ''
+due_date: ""
+output:
+  prettydoc::html_pretty:
+    highlight: pygments
+    theme: tactile
+    toc: yes
+    number_sections: no
+    toc_depth: 1
+---
+
+```{r, setup, include=FALSE}
+# Set knit directory
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(
+  autodep = TRUE,
+  cache = FALSE,
+  cache.comments = TRUE,
+
+  # Save figures as pdf ?
+  # dev = c( "png", "pdf"),
+
+  # Include code?
+  echo = TRUE,
+  error = FALSE,
+  fig.align = "center",
+
+  # Path where figures are going to be store pdf single
+  # figures
+  fig.path = paste0("figures/"),
+  fig.width = 11,
+  fig.height = 7,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r cleanup-docs, cache = FALSE,echo = FALSE}
+# save a html copy file in a specific place
+# doc.files <- c(list.files(pattern = "pdf"),
+#                list.files(pattern = "html"),
+#                list.files(pattern = "docx"))
+#
+# for (file in doc.files) {
+#     file.rename(file, file.path("../../[insert_folder_name]/", file))
+# }
+```
+
+
+```{r libaries, message = FALSE, warning = FALSE, cache = FALSE}
+library(dplyr)
+# For Model fitting
+library(lme4)
+library(nlme)
+library(purrr)
+# For diagnostics
+library(performance)
+# library(see)
+# For adding new columns
+library(tibble)
+library(MuMIn)
+```
+
+```{r}
+# setwd for Rmarkdowm
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Load data
+source("./scripts/code_join_data_full_dataset.R")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Load functions
+## Models
+source("./R/functions_models.R")
+source("./R/function_nlme_validation_plots.R")
+```
+
+# Model Fitting
+
+__Q2: How does increased nutrient and/or water availability influence seedling
+water and nutrient-use traits and the relationships with N-fixing bacteria?__
+
+```{r}
+data_for_models <-
+    data_for_models %>%
+
+    # Select variables for analysis
+    dplyr::select(!c(rgr_slope, d15n, above_biomass, below_biomass, rmf, smf,
+                    lmf, agr, d13c ))
+```
+
+## Model formula
+
+$$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
+
+## Select response variables
+
+```{r}
+# Take response variables names
+response_vars_q2 <-
+  set_names(names(data_for_models)[c(8:12)])
+
+response_vars_q2
+```
+
+
+## Fit models
+
+###  Traits
+
+```{r}
+models_q2 <- map(response_vars_q2, ~ mixed_model_1(response = .x,
+                    data = data_for_models))
+
+names(models_q2)
+```
+
+
+### Nodule count
+
++ Chapter 9 Mixed models in ecology check glmmML package for count data
++ GOOD ref https://www.dataquest.io/blog/tutorial-poisson-regression-in-r/
++ #https://www.flutterbys.com.au/stats/tut/tut11.2a.html
+
+```{r}
+# Load data
+# This step was done like this because I am working with a subset of the data
+# source cleaned data
+source("./scripts/code_clean_data_nodules.R")
+
+# Delete unused variables
+data_nodules_cleaned <-
+    data_nodules_cleaned %>%
+
+        # add id to rownames for keep track of the rows
+        column_to_rownames("id") %>%
+        dplyr::select(spcode, treatment, everything())
+
+```
+
+
+__Previuosly I fitted non-log models and found out the log one is the best__
+
+### log models
+
+```{r}
+## After seeing the validation plots for the lmer_gaussian_log I decided to try
+## to improve the log model using the nlme package
+
+nlme_gaussian_log <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
+                                    random = ~1|spcode,
+                                    data = data_nodules_cleaned)
+
+
+nlme_nodule_log_weights <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
+                                    random = ~1|spcode,
+                                    weights = varIdent(form = ~1|spcode),
+                                    data = data_nodules_cleaned)
+```
+
+#### Compare models
+```{r}
+# Check if the nlme_gaussian_log_weights is a better model
+
+# Compare between nlme objects
+anova(nlme_gaussian_log, nlme_nodule_log_weights)
+
+model.sel(nlme_gaussian_log, nlme_nodule_log_weights)
+
+AIC(nlme_gaussian_log, nlme_nodule_log_weights)
+# Model improved, check assumptions for nlme_gaussian_log_weights
+```
+
+
+# Model Validation
+
+## Collinearity
+
+```{r collinearity_q2}
+map(models_q2, check_collinearity)
+```
+
+
+```{r validation_plots_q2, fig.height = 15, fig.width = 10}
+# No problems found here
+map(models_q2, check_model)
+```
+
+
+## Checking log nodule count model's assumptions
+
+Zuur et al pp 84:
+
+"Note that these residuals still show heterogeneity, but this is now allowed
+(because the residual variation differs depending on the chosen variance
+structure and values of the variance covariate). Hence, these residuals are
+less useful for the model validation process."
+
+```{r, validation_plots_nodule_log_weights,  fig.height = 9, fig.width = 14}
+nlme_validation_plots(nlme_nodule_log_weights, data = data_nodules_cleaned,
+                      group = "spcode", variables = c("treatment"))
+```
+
+
+# Refit models that showed violation of any assumptions
+
+```{r}
+# Log models
+
+## WUE log
+model_q2_wue_log <- lmer(log(wue) ~ nfixer*treatment + init_height + (1|spcode),
+                         data = data_for_models)
+
+## PNUE log
+model_q2_pnue_log <- lmer(log(pnue) ~ nfixer*treatment + init_height + (1|spcode),
+                         data = data_for_models)
+
+## Nitrogen log
+model_q2_nitrogen_log <- lmer(log(Narea_g_m2) ~ nfixer*treatment + init_height + (1|spcode),
+                         data = data_for_models)
+
+```
+
+
+```{r}
+# Append log models to model list Q2
+log_models_q2 <- list(model_q2_wue_log, model_q2_pnue_log,
+                      model_q2_nitrogen_log)
+
+names(log_models_q2) <- c("wue_log", "pnue_log", "nitrogen_log")
+```
+
+
+# Check assumptions again
+
+```{r collinearity_q2_log}
+map(log_models_q2, check_collinearity)
+```
+
+
+```{r validation_plots_q2_log, fig.height = 15, fig.width = 10}
+# No problems found here
+map(log_models_q2, check_model)
+```
+
+
+```{r}
+# Remove models that showed bad performance
+models_q2 <-
+
+    models_q2 %>%
+
+    # Remove models that showed violation of the assumptions
+    purrr::list_modify("pnue" = NULL, "wue" = NULL, "Narea_g_m2" = NULL)
+```
+
+```{r}
+# Append log models
+models_q2 <- append(log_models_q2, models_q2)
+
+length(models_q2)
+names(models_q2)
+```
+
+
+# Save model lists as .RData
+
+```{r}
+saveRDS(models_q2, file = "./processed_data/models_q2.RData")
+
+# Save nodule count model
+saveRDS(nlme_nodule_log_weights, file = "./processed_data/model_nodule_log.RData")
+```

@@ -1,0 +1,497 @@
+---
+title: 'Model inference Q3'
+author: "Erick Calderon-Morales"
+date: ''
+due_date: ""
+output:
+  prettydoc::html_pretty:
+    highlight: pygments
+    theme: tactile
+    toc: yes
+    number_sections: no
+    toc_depth: 1
+---
+
+```{r, setup, include=FALSE}
+# Set knit directory
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      cache.comments = TRUE,
+                      comment = "",
+
+                      # Save figures as pdf ?
+                      dev = c( "png", "pdf"),
+
+                      # Include code?
+                      echo           = TRUE,
+
+                      error          = FALSE,
+                      fig.align      = "center",
+
+                      # Path where figures are going to be store pdf single
+                      # figures
+                      fig.path       = paste0("./figures_inference", "/"),
+                      #fig.width      = 11,
+                      #fig.height     = 7,
+                      message        = FALSE,
+                      warning        = FALSE)
+```
+
+```{r cleanup-docs, cache = FALSE,echo = FALSE}
+# save a html copy file in a specific place
+# doc.files <- c(list.files(pattern = "pdf"),
+#                list.files(pattern = "html"),
+#                list.files(pattern = "docx"))
+#
+# for (file in doc.files) {
+#     file.rename(file, file.path("../../[insert_folder_name]/", file))
+# }
+```
+
+
+```{r libaries, message = FALSE, warning = FALSE, cache = FALSE}
+library(dplyr)
+# For tables appearance
+library(reactable)
+# For cleaning colnames
+library(janitor)
+# For add column function
+library(tibble)
+#library(purrr)
+#library(performance)
+# For bootstrap confidence intervals
+library(lmeresampler)
+library(nlme)
+library(MuMIn)
+# For reporting results
+library(report)
+library(ggplot2)
+library(sjPlot)
+library(corrplot)
+```
+
+# Load functions and data
+
+```{r message=FALSE, warning=FALSE}
+# Load dataset for adding predictions
+source("./scripts/code_join_data_full_dataset.R")
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load functions for Inference
+
+## Bootstrap
+source("./R/function_for_inference_bootstrap.R")
+
+
+## Plots
+source("./R/function_masomenos_plots.R")
+```
+
+
+__Q3: How do seedling-level functional traits, treatment, and N-fixing status
+interact to influence seedling-level growth rates and biomass accumulation?__
+
+
+
+
+# Trait correlations
+
+```{r trait_corr_plot}
+# Step done for getting predictions from models for Q2
+traits_correlations <-
+    data_for_models %>%
+
+        rownames_to_column("id") %>%
+
+        # Remove unused variables
+        dplyr::select(amax, gs, wue, pnue,  Narea_g_m2) %>%
+        cor(.)
+```
+
+```{r}
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD",
+                            "#4477AA"))
+
+corrplot(traits_correlations, method = "color", col = col(200),
+
+         type = "upper", order = "hclust",
+
+         # Add coefficient of correlation
+         addCoef.col = "black",
+
+         # Text label color and rotation
+         tl.col = "black", tl.srt = 45,
+
+         # hide correlation coefficient on the principal diagonal
+         diag = FALSE)
+```
+
+# Trait correlation N-fixers
+
+```{r}
+#traits_correlations_by_treatment <-
+    data_for_models %>%
+        group_by(treatment) %>%
+
+        rownames_to_column("id") %>%
+
+        # Remove unused variables
+        dplyr::select(amax, Narea_g_m2, gs)  %>%
+        #summarize(across(where(is.is.numeric), cor))
+        summarize(across(.cols = where(is.numeric),.fns = cor))
+
+```
+
+
+
+```{r}
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD",
+                            "#4477AA"))
+
+corrplot(traits_correlations_fixer, method = "color", col = col(200),
+
+         type = "upper", order = "hclust",
+
+         # Add coefficient of correlation
+         addCoef.col = "black",
+
+         # Text label color and rotation
+         tl.col = "black", tl.srt = 45,
+
+         # hide correlation coefficient on the principal diagonal
+         diag = FALSE)
+```
+
+```{r}
+data_for_models %>%
+    gro
+```
+
+# Load data
+
+```{r}
+data_for_models <-
+    data_for_models %>%
+
+    # Select variables for analysis
+    dplyr::select(!c(
+        rgr_slope, d15n, above_biomass, below_biomass, amax, agr, d13c,
+        rmf, smf, lmf))
+```
+
+
+## Scale preditors aka traits
+
+```{r}
+data_for_models_scaled <-
+    data_for_models  %>%
+
+    mutate(across(c("init_height", "gs", "wue", "pnue", "Narea_g_m2"), scale))
+
+```
+
+```{r}
+names(data_for_models_scaled)
+```
+
+# RGR
+
+```{r}
+lme_rgr_3way <- lme(rgr ~   treatment:nfixer:gs  +
+                            treatment:nfixer:wue +
+                            treatment:nfixer:pnue +
+                            treatment:nfixer:Narea_g_m2 +
+
+                            init_height,
+                  random = ~1 | spcode,
+                  data = data_for_models_scaled)
+```
+
+
+## Report
+
+```{r}
+#report(lme_rgr_3way)
+```
+
+## R2
+```{r}
+r.squaredGLMM(lme_rgr_3way)
+```
+
+## Bootstrap RGRh
+
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_rgr.RData")) {
+
+    print("The bootstrap exists")
+
+    bootstrap_ci_rgr <- readRDS("./processed_data/bootstrap_ci_rgr.RData")
+
+    print("File read")
+
+} else {
+
+    print("The bootstrap does not exist, Creating bootstrap")
+
+    bootstrap_ci_rgr <-
+        bootstrap_model_ci_df(model = lme_rgr_3way,
+                              category = "all",
+
+                              iter = 9999)
+
+    saveRDS(bootstrap_ci_rgr,
+            file = "./processed_data/bootstrap_ci_rgr.RData")
+
+}
+```
+
+## Plot RGRh
+```{r}
+
+colmn <- paste0("col_", 1:3)
+
+data_rgr_plot <-
+
+        bootstrap_ci_rgr %>%
+
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>%
+            mutate(across(where(is.character), as.factor)) %>%
+            filter(type == "norm") %>%
+            mutate(treat_trait = factor(treat_trait,
+                    levels = c("plus_water_nutrients-gs",
+                                "plus_water_nutrients-Narea_g_m2",
+                                "plus_water_nutrients-wue",
+                                "plus_water_nutrients-pnue",
+                                "plus_water-gs",
+                                "plus_water-Narea_g_m2",
+                                "plus_water-wue",
+                                "plus_water-pnue",
+                                "plus_nutrients-gs",
+                                "plus_nutrients-Narea_g_m2",
+                                "plus_nutrients-wue",
+                                "plus_nutrients-pnue",
+                                "no_additions-gs",
+                                "no_additions-Narea_g_m2",
+                                "no_additions-wue",
+                                "no_additions-pnue")))
+```
+
+
+```{r rgr_biomass_plot, fig.width = 16, fig.height = 13, fig.align = 'center'}
+cleveland_plot(x = treat_trait, y = estimate,
+                                     color = col_1,
+                                     shape = significance,
+                                     ci_lower = lower, ci_upper = upper,
+                                     data = data_rgr_plot) +
+        facet_wrap(. ~ col_2)
+```
+
+
+# Root to shoot ratio
+
+```{r}
+lme_root_shoot_ratio_3way <- lme(root_shoot_ratio ~ treatment:nfixer:Narea_g_m2 +
+                                                    treatment:nfixer:gs  +
+                                                    treatment:nfixer:pnue +
+                                                    treatment:nfixer:wue +
+
+                                                        init_height,
+                            random = ~1 | spcode,
+                            data = data_for_models_scaled)
+```
+
+
+## R2
+
+```{r}
+r.squaredGLMM(lme_root_shoot_ratio_3way)
+```
+
+
+## Bootstrap Root to shoot ratio
+
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_root_shoot_ratio.RData")) {
+
+    print("The bootstrap exists")
+
+    bootstrap_ci_root_shoot_ratio <- readRDS("./processed_data/bootstrap_ci_root_shoot_ratio.RData")
+
+    print("File read")
+
+} else {
+
+    print("The bootstrap does not exist, Creating bootstrap")
+
+    bootstrap_ci_root_shoot_ratio <-
+        bootstrap_model_ci_df(model = lme_root_shoot_ratio_3way,
+                              category = "all",
+
+                              iter = 9999)
+
+    saveRDS(bootstrap_ci_root_shoot_ratio,
+            file = "./processed_data/bootstrap_ci_root_shoot_ratio.RData")
+
+}
+```
+
+
+## Plot Root shoot ratio
+```{r}
+
+colmn <- paste0("col_", 1:3)
+
+data_root_shoot_plot <-
+
+        bootstrap_ci_root_shoot_ratio %>%
+
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>%
+            mutate(across(where(is.character), as.factor)) %>%
+            filter(type == "norm") %>%
+            mutate(treat_trait = factor(treat_trait,
+                    levels = c("plus_water_nutrients-gs",
+                                "plus_water_nutrients-Narea_g_m2",
+                                "plus_water_nutrients-wue",
+                                "plus_water_nutrients-pnue",
+                                "plus_water-gs",
+                                "plus_water-Narea_g_m2",
+                                "plus_water-wue",
+                                "plus_water-pnue",
+                                "plus_nutrients-gs",
+                                "plus_nutrients-Narea_g_m2",
+                                "plus_nutrients-wue",
+                                "plus_nutrients-pnue",
+                                "no_additions-gs",
+                                "no_additions-Narea_g_m2",
+                                "no_additions-wue",
+                                "no_additions-pnue")))
+```
+
+```{r root_shoot_plot, fig.width = 16, fig.height = 13, fig.align = 'center'}
+
+cleveland_plot(x = treat_trait, y = estimate,
+                                     color = col_1,
+                                     shape = significance,
+                                     ci_lower = lower, ci_upper = upper,
+                                     data = data_root_shoot_plot) +
+        facet_wrap(. ~ col_2)
+
+```
+
+```{r}
+report(lme_root_shoot_ratio_3way)
+```
+
+# Total Biomass
+
+```{r}
+lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:Narea_g_m2 +
+                                            treatment:nfixer:pnue +
+                                            treatment:nfixer:gs  +
+                                            treatment:nfixer:wue +
+
+                                            init_height,
+                            random = ~1 | spcode,
+                            data = data_for_models_scaled)
+```
+
+## R2
+
+```{r}
+r.squaredGLMM(lme_total_biom_3way)
+#AIC(lme_total_biom_3way)
+```
+
+## Bootstrap Total Biomass
+
+```{r}
+if (file.exists("./processed_data/bootstrap_ci_total_biomass.RData")) {
+
+    print("The bootstrap exists")
+
+    bootstrap_ci_total_biomass <- readRDS("./processed_data/bootstrap_ci_total_biomass.RData")
+
+    print("File read")
+
+} else {
+
+    print("The bootstrap does not exist, Creating bootstrap")
+
+    bootstrap_ci_total_biomass <-
+        bootstrap_model_ci_df(model = lme_total_biom_3way,
+                              category = "all",
+
+                              iter = 9999)
+
+    saveRDS(bootstrap_ci_total_biomass,
+            file = "./processed_data/bootstrap_ci_total_biomass.RData")
+
+}
+```
+
+## Plot Total Biomass
+
+```{r}
+
+colmn <- paste0("col_", 1:3)
+
+data_total_biomass_plot <-
+
+        bootstrap_ci_total_biomass %>%
+
+            unite("treat_trait", col_1, col_3, sep = "-", remove = F) %>%
+            mutate(across(where(is.character), as.factor)) %>%
+            filter(type == "norm") %>%
+            mutate(treat_trait = factor(treat_trait,
+                    levels = c("plus_water_nutrients-gs",
+                                "plus_water_nutrients-Narea_g_m2",
+                                "plus_water_nutrients-wue",
+                                "plus_water_nutrients-pnue",
+                                "plus_water-gs",
+                                "plus_water-Narea_g_m2",
+                                "plus_water-wue",
+                                "plus_water-pnue",
+                                "plus_nutrients-gs",
+                                "plus_nutrients-Narea_g_m2",
+                                "plus_nutrients-wue",
+                                "plus_nutrients-pnue",
+                                "no_additions-gs",
+                                "no_additions-Narea_g_m2",
+                                "no_additions-wue",
+                                "no_additions-pnue")))
+```
+
+
+```{r total_biomass_plot, fig.width = 16, fig.height = 13, fig.align = 'center'}
+
+cleveland_plot(x = treat_trait, y = estimate,
+                                     color = col_1,
+                                     shape = significance,
+                                     ci_lower = lower, ci_upper = upper,
+                                     data = data_total_biomass_plot) +
+        facet_wrap(. ~col_2)
+
+```
+
+```{r}
+data_total_biomass_plot %>%
+    dplyr::select(-c(type, col_1, col_3, level)) %>%
+    filter(significance == TRUE) %>%
+    reactable()
+```
+
+```{r}
+report(lme_total_biom_3way)
+```
+
+

@@ -1,0 +1,214 @@
+---
+title: 'Soil Moisture between treatments'
+author: "Mas o menos Lab"
+date: "2020"
+output:
+ prettydoc::html_pretty:
+    fig_width: 15
+    fig_height: 10
+    highlight: pygments
+    theme: cayman
+    number_sections: true
+
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "", fig.align = 'center',
+					  fig.width = 11, fig.height = 7)
+
+options(knitr.graphics.auto_pdf = TRUE, scipen = 9999, digits = 10)
+```
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      cache.comments = TRUE,
+
+                      options(digits = 3),
+                      # I added this option for edit the pdf in inkscape
+                      dev            = c( "png", "pdf"),
+                      # Include code?
+                      echo           = TRUE,
+
+                      error          = FALSE,
+                      fig.align      = "center",
+
+                      # Path where figures are going to be store pdf single figures
+                      fig.path       = paste0("./supplementary_figures", "/"),
+                      fig.width      = 11,
+                      fig.height     = 7,
+                      message        = FALSE,
+                      warning        = FALSE)
+```
+
+```{r}
+# setwd for Rmarkdowm
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+
+# Load packages
+```{r message=FALSE, warning=FALSE}
+library(janitor)
+library(ggpubr)
+library(tidyverse)
+library(ggsci)
+library(knitr)
+```
+
+# Mass fractions
+
+```{r message=FALSE, warning=FALSE}
+# Load data
+source("./scripts/code_join_data_full_dataset.R")
+
+data_mass_fractions <-
+    data_for_models %>%
+    tibble::rownames_to_column("id") %>%
+    select(id,spcode, treatment, nfixer, init_height)
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load functions
+source("./R/functions_models.R")
+
+## Inference
+source("./R/function_for_inference_anova_table.R")
+source("./R/function_for_inference_tukey_tables.R")
+source("./R/function_for_inference_emmeans_and_percentage_diff.R")
+
+
+## Plots
+source("./R/function_masomenos_plots.R")
+```
+
+## Models
+
+```{r}
+data_for_models <-
+  data_for_models %>%
+
+  # Select variables for analysis
+  dplyr::select(c(spcode, treatment, nfixer, init_height, rmf, smf, lmf))
+```
+
+
+```{r}
+# Take response variables names
+response_vars_q1 <-
+  set_names(names(data_for_models)[c(5:7)])
+
+response_vars_q1
+```
+
+## Fit models
+
+```{r}
+models_mass_fractions <- map(response_vars_q1, ~ mixed_model_1(response = .x,
+                  data = data_for_models))
+
+names(models_mass_fractions)
+```
+
+
+
+## Anovas
+
+## Anova
+```{r}
+models_mass_fractions %>%
+
+    anova_table_tidy(., model_list = T)
+
+```
+
+```{r}
+models_q1_q2_and_mass_fractions %>%
+
+    # Remove traits and mass fractions models
+   purrr::list_modify("total_biomass" = NULL, "above_biomass" = NULL,
+                       "below_biomass" = NULL,  "rgr" = NULL,
+                       "d13c" = NULL, "amax" = NULL, "gs" = NULL,
+                       "wue_log" = NULL, "pnue_log" = NULL) %>%
+
+    tukey_table_tidy(., model_list = T, formula = "treatment|nfixer")
+```
+
+
+```{r}
+models_q1_q2_and_mass_fractions %>%
+
+    # Remove traits and mass fractions models
+   purrr::list_modify("total_biomass" = NULL, "above_biomass" = NULL,
+                       "below_biomass" = NULL,  "rgr" = NULL,
+                       "d13c" = NULL, "amax" = NULL, "gs" = NULL,
+                       "wue_log" = NULL, "pnue_log" = NULL) %>%
+
+    # Percentage difference
+    emmeans_table_tidy(., model_list = T,
+                        formula = "treatment|nfixer",
+                        grouping_var = "nfixer")
+```
+
+
+```{r}
+# Get predictions
+string <- c("models_q1_q2_and_mass_fractions")
+
+data_pred_mass_fractions <-
+
+        # Get models prediction
+        modelr::gather_predictions(data_mass_fractions,
+
+                           # Return predictions
+                            models_q1_q2_and_mass_fractions$rmf_log,
+                            models_q1_q2_and_mass_fractions$smf_log,
+                            models_q1_q2_and_mass_fractions$lmf_log) %>%
+
+        pivot_wider(names_from = model, values_from = pred) %>%
+            rename_all(funs(
+
+                # rename columns
+                stringr::str_to_lower(.) %>%
+                stringr::str_replace(., c(string),"pred_") %>%
+
+                # Remove dollar sing
+                gsub("\\$", "", .)
+                )) %>%
+
+        # Back transform log variables
+        mutate(pred_rmf = exp(pred_rmf_log),
+                pred_smf = exp(pred_smf_log),
+               pred_lmf = exp(pred_lmf_log)) %>%
+
+        # Remove log predictions and init height
+        dplyr::select(-c(init_height, pred_smf_log ,pred_rmf_log, pred_lmf_log))
+```
+
+```{r}
+vars_q2 <-
+  crossing(
+
+    # Get all numeric variables to plot (all y)
+    as_tibble(t(combn(dplyr::select(data_pred_mass_fractions,
+                                    where(is.numeric)) %>% names, 1))),
+
+    # Select factor variables to plot
+    x_axis_var = dplyr::select(data_pred_mass_fractions, nfixer) %>%  names,
+    group_var = dplyr::select(data_pred_mass_fractions, treatment) %>%  names)
+```
+
+```{r, mass_fractions, fig.height = 8, fig.width = 25 }
+vars_q2 %>%
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_pred_mass_fractions,
+                                y = !!sym(..1), x = !!sym(..2),
+                                fill = !!sym(..3))) %>%
+      cowplot::plot_grid(plotlist = ., ncol = 3)
+
+```
+

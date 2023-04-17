@@ -71,6 +71,7 @@ library(dplyr)
 library(ggplot2)
 # For joining plots
 library(cowplot) 
+library(corrplot)
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -137,6 +138,23 @@ data_complete %>%
   select(1:9, 17,20,23,28) %>% 
   datatable(class = 'cell-border stripe') 
 ```
+
+
+# Check response variables distributions
+```{r}
+names(data_complete)
+```
+
+
+
+```{r}
+data_complete %>% 
+    select(is.numeric, -id) %>%  
+    map(hist)
+    #map(.,dlookr::plot_hist_numeric)
+hist(scale(data_complete$root_shoot_ratio))
+```
+
 
 
 ## Boxplots Plant's performace measures
@@ -299,5 +317,12 @@ normality_plot_list <-
 cowplot::plot_grid(plotlist = normality_plot_list, ncol = 2)
 ```
 
+# Correlation
+```{r}
+traits_cor <- cor(data_for_models[,15:ncol(data_for_models )])
+```
 
+```{r}
+corrplot.mixed(traits_cor, order = 'AOE')
+```
 

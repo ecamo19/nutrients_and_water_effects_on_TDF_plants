@@ -1,0 +1,207 @@
+---
+title: 'Model fitting and validation for Q1'
+author: "Erick Calderon-Morales"
+date: ''
+due_date: ""
+output:
+  prettydoc::html_pretty:
+    highlight: pygments
+    theme: tactile
+    toc: yes
+    number_sections: no
+    toc_depth: 1
+---
+
+```{r, setup, include=FALSE}
+# Set knit directory
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(
+  autodep = TRUE,
+  cache = FALSE,
+  cache.comments = TRUE,
+
+  # Save figures as pdf ?
+  # dev = c( "png", "pdf"),
+
+  # Include code?
+  echo = TRUE,
+  error = FALSE,
+  fig.align = "center",
+
+  # Path where figures are going to be store pdf single
+  # figures
+  fig.path = paste0("figures/"),
+  fig.width = 11,
+  fig.height = 7,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r cleanup-docs, cache = FALSE,echo = FALSE}
+# save a html copy file in a specific place
+# doc.files <- c(list.files(pattern = "pdf"),
+#                list.files(pattern = "html"),
+#                list.files(pattern = "docx"))
+#
+# for (file in doc.files) {
+#     file.rename(file, file.path("../../[insert_folder_name]/", file))
+# }
+```
+
+
+```{r libaries, message = FALSE, warning = FALSE, cache = FALSE}
+library(dplyr)
+# For Model fitting
+library(lme4)
+library(nlme)
+library(purrr)
+# For diagnostics
+library(performance)
+# library(see)
+# For adding new columns
+library(tibble)
+library(MuMIn)
+```
+
+```{r}
+# setwd for Rmarkdowm
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Load data
+source("./scripts/code_join_data_full_dataset.R")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Load functions
+## Models
+source("./R/functions_models.R")
+source("./R/function_nlme_validation_plots.R")
+```
+
+
+__Q1: What is the relative influence of water and/or nutrient availability on
+tropical dry forest seedling growth and biomass allocation__
+
+# Model Fitting
+
+```{r}
+data_for_models <-
+  data_for_models %>%
+
+  # Select variables for analysis
+  dplyr::select(!c(rgr_slope, d15n, above_biomass, below_biomass, rmf,
+                    agr, smf, lmf))
+```
+
+## Model formula
+
+$$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
+
+## Select response variables
+
+```{r}
+# Take response variables names
+response_vars_q1 <-
+  set_names(names(data_for_models)[c(5:7)])
+
+response_vars_q1
+```
+
+
+## Fit models
+
+```{r}
+models_q1 <- map(response_vars_q1, ~ mixed_model_1(response = .x,
+                  data = data_for_models))
+
+names(models_q1)
+```
+
+
+# Model Validation
+
+## Collinearity
+
+```{r collinearity_q1}
+map(models_q1, check_collinearity)
+```
+
+
+```{r validation_plots_q1, fig.height = 15, fig.width = 10}
+# No problems found here
+map(models_q1, check_model)
+```
+
+
+# Refit models that showed violation of any assumptions
+
+```{r}
+# Log models
+
+## Root-Shoot ratio
+model_q1_ratio_log <- lmer(log(root_shoot_ratio) ~ nfixer*treatment +
+                                                   init_height +
+                                                   (1|spcode),
+                         data = data_for_models)
+```
+
+
+```{r}
+# Append log models to model list Q2
+log_models_q1 <- list(model_q1_ratio_log)
+
+names(log_models_q1) <- c("root_shoot_ratio_log")
+```
+
+
+# Check assumptions again
+
+```{r collinearity_log_q1}
+map(log_models_q1, check_collinearity)
+```
+
+
+
+```{r validation_plots_log_q1, fig.height = 15, fig.width = 10}
+# No problems found here
+map(log_models_q1, check_model)
+```
+
+```{r}
+# Remove models that showed bad performance
+models_q1 <-
+
+    models_q1 %>%
+
+    # Remove models that showed violation of the assumptions
+    purrr::list_modify("root_shoot_ratio" = NULL)
+
+```
+
+
+```{r}
+# Append log models
+models_q1 <- append(log_models_q1, models_q1)
+
+length(models_q1)
+names(models_q1)
+```
+
+
+# Save model lists as .RData
+
+```{r}
+saveRDS(models_q1, file = "./processed_data/models_q1.RData")
+```

@@ -1,0 +1,258 @@
+---
+title: 'Soil Moisture between treatments'
+author: "Mas o menos Lab"
+date: "2020"
+output:
+ prettydoc::html_pretty:
+    fig_width: 15
+    fig_height: 10
+    highlight: pygments
+    theme: cayman
+    number_sections: true
+
+---
+
+```{r knitr, include = FALSE}
+
+# Save figures in specific place
+
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      cache.comments = TRUE,
+
+                      options(digits = 3),
+                      # I added this option for edit the pdf in inkscape
+                      dev            = c( "png", "pdf"),
+                      # Include code?
+                      echo           = TRUE,
+
+                      error          = FALSE,
+                      fig.align      = "center",
+
+                      # Path where figures are going to be store pdf single figures
+                      fig.path       = paste0("./supplementary_figures", "/"),
+                      fig.width      = 11,
+                      fig.height     = 7,
+                      message        = FALSE,
+                      warning        = FALSE)
+```
+
+
+```{r, setup, include=FALSE}
+# Set knit directory
+knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effects_2022/stats/")
+```
+
+
+# Load packages
+```{r message=FALSE, warning=FALSE}
+library(janitor)
+library(ggpubr)
+library(tidyverse)
+library(knitr)
+```
+
+
+# Soil Moisture
+
+```{r}
+#Source maso menos plots
+#Load plot function to keep same format to all plots
+source("./R/function_masomenos_plots.R")
+
+source("./scripts/code_clean_data_soil_moisture.R")
+```
+
+```{r message=FALSE, warning=FALSE}
+
+summary_soil_moisture <-
+	data_soil_moisture_cleaned %>%
+	group_by(treatment,nfixer,date_day_month,sm_measured ) %>%
+
+	summarise(mean_sm = mean(soil_moisture),
+			  sd_sm   = sd(soil_moisture)) %>%
+
+    arrange(nfixer) %>%
+	arrange(date_day_month)
+
+```
+
+### Round the numbers
+```{r}
+summary_soil_moisture[,5:ncol(summary_soil_moisture)] <-
+	round(summary_soil_moisture[,5:ncol(summary_soil_moisture)],2)
+```
+
+
+```{r}
+# Change labels names
+data_soil_moisture_cleaned$treatment <-
+	factor(data_soil_moisture_cleaned$treatment,
+		   labels = c("Ambient Rain",
+		"Ambient Rain plus Nutrients",
+		"Ambient Rain plus Water",
+		"Ambient Rain plus Nutrients and Water"))
+
+data_soil_moisture_cleaned$date_day_month <-
+	factor(data_soil_moisture_cleaned$date_day_month,
+		   labels = c("31-August",
+		   			"19-September",
+					"4-October",
+					"17-October",
+					"31-October",
+					"15-November"))
+data_soil_moisture_cleaned$sm_measured <-
+	factor(data_soil_moisture_cleaned$sm_measured,
+		   labels = c(
+					"Before applying the treatments",
+					"After applying the treatments"
+					))
+
+```
+
+## Boxplot
+
+```{r boxplot_treatment_effects, fig.width = 25, fig.height = 10}
+
+ggplot(data = data_soil_moisture_cleaned,
+	   aes(x = date_day_month, y = soil_moisture,
+	   	   fill = treatment)) +
+	#facet_wrap(~treatment,nrow = 4, scales = "free_y") +
+
+	#Adjust boxplots side by side
+	geom_boxplot(position = position_dodge(width=.8)) +
+	theme_bw() +
+
+    facet_wrap(~ sm_measured, scales = "free_y") +
+
+	#Define colors
+	#scale_colour_manual(values = c("#F0E442","#0072B2"))+
+	xlab("Date") + ylab("Mean Pot Soil Moisture %") +
+
+	#Delete lines around facet labels
+	theme(strip.background = element_rect( color="white", fill="white"),
+
+     #Font size
+     axis.text = element_text(size = 18),
+     axis.title = element_text(size = 18,face = "bold"),
+     strip.text.x = element_text(size = 18,face = "bold"),
+
+     # Legend position and size
+     legend.position = "bottom",
+     legend.title = element_text(size = 18),
+     legend.text = element_text(size = 18)) +
+	 guides(col = guide_legend(ncol = 1,
+	 						  title.position = "left",
+	 						  title.hjust = .59,
+	 						  title = "Soil Moisture Measuared:")
+	 	   ) +
+    ggplot2::scale_fill_manual(values = c("#F0E442","#009E73",
+                                              "#56B4E9","#0072B2"))
+```
+
+# Plot Mean values
+
+```{r}
+data_soil_moisture_cleaned  %>%
+        group_by(date_day_month, sm_measured, treatment) %>%
+        summarise(mean_soil_moisture = mean(soil_moisture),
+
+                se_soil_moisture = (sd(soil_moisture) / sqrt(n())))  %>%
+
+        mutate(difference = ((mean_soil_moisture - first(mean_soil_moisture)))) %>%
+        filter(sm_measured == "After applying the treatments" &
+                treatment %in% c("Ambient Rain plus Water",
+                                "Ambient Rain plus Nutrients and Water")) %>%
+        reactable::reactable()
+```
+
+
+```{r mean_treatment_effects, fig.width = 20, fig.height = 10}
+data_soil_moisture_cleaned  %>%
+        group_by(date_day_month, sm_measured, treatment) %>%
+        summarise(mean_soil_moisture = mean(soil_moisture),
+
+                se_soil_moisture = (sd(soil_moisture) / sqrt(n()))) %>%
+
+        ggplot(data = ., aes(x = date_day_month, y = mean_soil_moisture,
+                            color = treatment)) +
+            geom_point(position = position_dodge(width = .4), size = 4) +
+            facet_wrap(~sm_measured) +
+
+            scale_color_manual(values = c("#F0E442","#009E73", "#56B4E9",
+                                            "#0072B2")) +
+
+            xlab("Date") + ylab("Mean Pot Soil Moisture %") +
+            theme_bw() +
+
+            # Add Standard error bars
+            geom_errorbar(aes(ymin = mean_soil_moisture - se_soil_moisture,
+                              ymax = mean_soil_moisture + se_soil_moisture),
+                            width = .2,
+                            position = position_dodge(width = .4)) +
+
+
+            #Delete lines around facet labels
+	        theme(
+
+                    #Font size
+                    axis.text = element_text(size = 18),
+                    axis.title = element_text(size = 18, face = "bold"),
+                    strip.text.x = element_text(size = 18, face = "bold"),
+
+                    # Legend position and size
+                    legend.position = "bottom",
+                    legend.title = element_text(size = 18),
+                    legend.text = element_text(size = 18)) +
+	                guides(col = guide_legend(ncol = 1, title.position = "left",
+                            title.hjust = .59))
+
+
+```
+
+
+# Plot Mean values data scaled
+
+```{r mean_treatment_effects_scaled, fig.width = 20, fig.height = 10}
+data_soil_moisture_cleaned  %>%
+
+        # Scale data
+        mutate(soil_moisture = scale(soil_moisture)) %>%
+        group_by(date_day_month, sm_measured, treatment) %>%
+        summarise(mean_soil_moisture = mean(soil_moisture),
+
+                se_soil_moisture = (sd(soil_moisture) / sqrt(n()))) %>%
+
+        ggplot(data = ., aes(x = date_day_month, y = mean_soil_moisture,
+                            color = treatment)) +
+            geom_point(position = position_dodge(width = .4), size = 4) +
+            facet_wrap(~sm_measured) +
+
+            scale_color_manual(values = c("#F0E442","#009E73", "#56B4E9",
+                                            "#0072B2")) +
+
+            xlab("Date") + ylab("Mean Pot Soil Moisture Scaled ") +
+            theme_bw() +
+
+            # Add Standard error bars
+            geom_errorbar(aes(ymin = mean_soil_moisture - se_soil_moisture,
+                              ymax = mean_soil_moisture + se_soil_moisture),
+                            width = .2,
+                            position = position_dodge(width = .4)) +
+
+
+            #Delete lines around facet labels
+	        theme(
+
+                    #Font size
+                    axis.text = element_text(size = 18),
+                    axis.title = element_text(size = 18, face = "bold"),
+                    strip.text.x = element_text(size = 18, face = "bold"),
+
+                    # Legend position and size
+                    legend.position = "bottom",
+                    legend.title = element_text(size = 18),
+                    legend.text = element_text(size = 18)) +
+	                guides(col = guide_legend(ncol = 1, title.position = "left",
+                            title.hjust = .59))
+```
