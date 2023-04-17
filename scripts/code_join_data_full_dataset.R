@@ -211,7 +211,7 @@ data_complete <-
                                         ambientrain_water      = "plus_water"))) %>%
 
         # Order data set columns
-        dplyr::select(id, spcode, nfixer, treatment,init_height, everything())
+        dplyr::select(id, spcode, nfixer, treatment, init_height, everything())
 
 
 # Data set use for fitting the models -------------------------------------------

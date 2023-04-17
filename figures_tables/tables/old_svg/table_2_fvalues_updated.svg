@@ -4,9 +4,9 @@
 <svg
    version="1.1"
    id="svg55"
-   width="729"
-   height="233"
-   viewBox="0 0 729 233"
+   width="730"
+   height="255"
+   viewBox="0 0 730 255"
    sodipodi:docname="table_2_fvalues_updated.svg"
    inkscape:version="1.2.2 (1:1.2.2+202212051552+b0a8486541)"
    inkscape:export-filename="../final_figs_tables/table_2_fvalues.png"
@@ -81,9 +81,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="2.616295"
-     inkscape:cx="257.23399"
-     inkscape:cy="164.54566"
+     inkscape:zoom="1.8499999"
+     inkscape:cx="387.02704"
+     inkscape:cy="192.70271"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
@@ -95,8 +95,8 @@
        x="0"
        y="0"
        id="page61"
-       width="729"
-       height="233" />
+       width="730"
+       height="255" />
   </sodipodi:namedview>
   <g
      id="g63"
@@ -105,7 +105,7 @@
      transform="matrix(1.3333333,0,0,-1.3333333,0,412)">
     <g
        id="g900"
-       transform="translate(0,22.5)">
+       transform="translate(0,6)">
       <g
          id="g878">
         <g
@@ -117,7 +117,7 @@
              id="text247"><tspan
                x="0"
                y="0"
-               id="tspan2351">Nodule count </tspan></text>
+               id="tspan2265">Nodule count </tspan></text>
           <g
              id="g848">
             <g
@@ -161,9 +161,9 @@
                  id="text251"><tspan
                    x="0"
                    y="0"
-                   id="tspan2355">11.33<tspan
+                   id="tspan2269">11.33<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2353">**</tspan></tspan></text>
+   id="tspan2267">**</tspan></tspan></text>
             </g>
           </g>
           <text
@@ -209,7 +209,7 @@
        d="M -1,20 H 1412 M -1,59 H 1412 M -1,440 h 1413"
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
        id="path83"
-       transform="matrix(0.36167311,0,0,-0.35845399,18.765597,306.59504)"
+       transform="matrix(0.36167311,0,0,-0.3957829,18.765597,307.30429)"
        clip-path="url(#clipPath2576)" />
     <text
        xml:space="preserve"
@@ -218,7 +218,7 @@
        id="text87"><tspan
          x="0"
          y="0"
-         id="tspan2357">Variable</tspan></text>
+         id="tspan2271">Variable</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-261.61764,54.683239)"
@@ -228,7 +228,7 @@
        y="-233.57819"><tspan
          x="456.76367"
          y="-233.57819"
-         id="tspan2359">Treatment </tspan></text>
+         id="tspan2273">Treatment </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-227.73057,44.527433)"
@@ -238,7 +238,7 @@
        y="-243.56853"><tspan
          x="517.41962"
          y="-243.56853"
-         id="tspan2361">Group</tspan></text>
+         id="tspan2275">Group</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.43883767,0,0,-0.43883767,372.10217,288.09566)"
@@ -246,7 +246,7 @@
        id="text99"><tspan
          x="0"
          y="0"
-         id="tspan2363">Treatment x Group </tspan></text>
+         id="tspan2277">Treatment x Group </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.43883767,0,0,-0.43883767,20.864633,271.07237)"
@@ -254,7 +254,7 @@
        id="text103"><tspan
          x="0"
          y="0"
-         id="tspan2365">Total Biomass </tspan></text>
+         id="tspan2279">Total Biomass </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.43883767,0,0,-0.43883767,214.35093,269.53303)"
@@ -262,9 +262,9 @@
        id="text107"><tspan
          x="0"
          y="0"
-         id="tspan2369">5.76<tspan
+         id="tspan2283">5.76<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2367">***</tspan></tspan></text>
+   id="tspan2281">***</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1,0,0,-1,-282.33788,67.748683)"
@@ -274,9 +274,9 @@
        y="-201.77003"><tspan
          x="577.91534"
          y="-201.77003"
-         id="tspan2373">1.41<tspan
+         id="tspan2287">1.41<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2371">ns</tspan></tspan></text>
+   id="tspan2285">ns</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.99999035,0,0,-1,-191.4768,53.508233)"
@@ -286,9 +286,9 @@
        y="-216.02467"><tspan
          x="594.99756"
          y="-216.02467"
-         id="tspan2377">4.89<tspan
+         id="tspan2291">4.89<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2375">**</tspan></tspan></text>
+   id="tspan2289">**</tspan></tspan></text>
     <g
        id="g6247">
       <text
@@ -298,9 +298,9 @@
          id="text119"><tspan
            x="0"
            y="0"
-           id="tspan2381">RGR<tspan
+           id="tspan2295">RGR<tspan
    style="baseline-shift:sub"
-   id="tspan2379">h</tspan></tspan></text>
+   id="tspan2293">h</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,214.16682,253.05595)"
@@ -308,9 +308,9 @@
          id="text123"><tspan
            x="0"
            y="0"
-           id="tspan2385">4.81<tspan
+           id="tspan2299">4.81<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2383">**</tspan></tspan></text>
+   id="tspan2297">**</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-284.41779,67.961702)"
@@ -320,9 +320,9 @@
          y="-185.09421"><tspan
            x="580.1095"
            y="-185.09421"
-           id="tspan2389">3.91<tspan
+           id="tspan2303">3.91<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2387">*</tspan></tspan></text>
+   id="tspan2301">*</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-197.04804,53.707064)"
@@ -332,9 +332,9 @@
          y="-199.34885"><tspan
            x="601.1413"
            y="-199.34885"
-           id="tspan2393">3.23<tspan
+           id="tspan2307">3.23<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2391">*</tspan></tspan></text>
+   id="tspan2305">*</tspan></tspan></text>
     </g>
     <g
        id="g6233">
@@ -345,7 +345,7 @@
          id="text135"><tspan
            x="0"
            y="0"
-           id="tspan2395">log(Root to shoot ratio)</tspan></text>
+           id="tspan2309">log(Root to shoot ratio)</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,214.04141,237.93947)"
@@ -353,9 +353,9 @@
          id="text139"><tspan
            x="0"
            y="0"
-           id="tspan2399">0.70<tspan
+           id="tspan2313">0.70<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2397">ns</tspan></tspan></text>
+   id="tspan2311">ns</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-282.70385,69.521071)"
@@ -365,9 +365,9 @@
          y="-168.41837"><tspan
            x="577.91534"
            y="-168.41837"
-           id="tspan2403">0.03<tspan
+           id="tspan2317">0.03<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2401">ns</tspan></tspan></text>
+   id="tspan2315">ns</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-188.08453,55.280622)"
@@ -377,9 +377,9 @@
          y="-182.673"><tspan
            x="591.92566"
            y="-182.673"
-           id="tspan2407">4.50<tspan
+           id="tspan2321">4.50<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2405">**</tspan></tspan></text>
+   id="tspan2319">**</tspan></tspan></text>
     </g>
     <g
        id="g6220">
@@ -390,9 +390,9 @@
          id="text167"><tspan
            x="0"
            y="0"
-           id="tspan2411"><tspan
+           id="tspan2325"><tspan
              style="-inkscape-font-specification:'sans-serif Italic'"
-             id="tspan2409">log(iWUE)</tspan></tspan></text>
+             id="tspan2323">log(iWUE)</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,214.04141,221.02176)"
@@ -400,9 +400,9 @@
          id="text171"><tspan
            x="0"
            y="0"
-           id="tspan2415">26.85<tspan
+           id="tspan2329">26.85<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2413">***</tspan></tspan></text>
+   id="tspan2327">***</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-281.20385,85.969206)"
@@ -412,9 +412,9 @@
          y="-135.06671"><tspan
            x="577.03766"
            y="-135.06671"
-           id="tspan2419">4.08<tspan
+           id="tspan2333">4.08<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2417">ns</tspan></tspan></text>
+   id="tspan2331">ns</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-187.6928,71.714567)"
@@ -424,9 +424,9 @@
          y="-149.32135"><tspan
            x="591.92566"
            y="-149.32135"
-           id="tspan2423">4.66<tspan
+           id="tspan2337">4.66<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2421">**</tspan></tspan></text>
+   id="tspan2335">**</tspan></tspan></text>
     </g>
     <g
        id="g6180">
@@ -437,9 +437,9 @@
          id="text183"><tspan
            x="0"
            y="0"
-           id="tspan2427">g<tspan
+           id="tspan2341">g<tspan
    style="baseline-shift:sub"
-   id="tspan2425">s</tspan></tspan></text>
+   id="tspan2339">s</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,213.37511,171.14405)"
@@ -447,9 +447,9 @@
          id="text187"><tspan
            x="0"
            y="0"
-           id="tspan2431">18.64<tspan
+           id="tspan2345">18.64<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2429">***</tspan></tspan></text>
+   id="tspan2343">***</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-280.61598,52.753013)"
@@ -459,9 +459,9 @@
          y="-118.39086"><tspan
            x="577.03766"
            y="-118.39086"
-           id="tspan2435">6.40<tspan
+           id="tspan2349">6.40<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2433">**</tspan></tspan></text>
+   id="tspan2347">**</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-194.47573,39.984178)"
@@ -471,9 +471,9 @@
          y="-132.64551"><tspan
            x="598.94708"
            y="-132.64551"
-           id="tspan2439">1.69<tspan
+           id="tspan2353">1.69<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2437">ns</tspan></tspan></text>
+   id="tspan2351">ns</tspan></tspan></text>
     </g>
     <g
        id="g6207">
@@ -484,7 +484,7 @@
          id="text231"><tspan
            x="0"
            y="0"
-           id="tspan2441">log(PNUE)</tspan></text>
+           id="tspan2355">log(PNUE)</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,213.26389,203.7389)"
@@ -492,9 +492,9 @@
          id="text235"><tspan
            x="0"
            y="0"
-           id="tspan2445">3.62<tspan
+           id="tspan2359">3.62<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2443">**</tspan></tspan></text>
+   id="tspan2357">**</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-282.43562,135.90109)"
@@ -504,9 +504,9 @@
          y="-68.363373"><tspan
            x="577.91534"
            y="-68.363373"
-           id="tspan2449">0.52<tspan
+           id="tspan2363">0.52<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2447">ns</tspan></tspan></text>
+   id="tspan2361">ns</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-194.79537,122.60666)"
@@ -516,9 +516,9 @@
          y="-82.618019"><tspan
            x="598.94708"
            y="-82.618019"
-           id="tspan2453">1.79<tspan
+           id="tspan2367">1.79<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2451">ns</tspan></tspan></text>
+   id="tspan2365">ns</tspan></tspan></text>
     </g>
     <g
        id="g6194">
@@ -529,7 +529,7 @@
          id="text231-6"><tspan
            x="0"
            y="0"
-           id="tspan2455">log(N-area)</tspan></text>
+           id="tspan2369">log(N-area)</tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(0.43883767,0,0,-0.43883767,213.38135,186.82602)"
@@ -537,9 +537,9 @@
          id="text235-7"><tspan
            x="0"
            y="0"
-           id="tspan2459">7.36<tspan
+           id="tspan2373">7.36<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2457">***</tspan></tspan></text>
+   id="tspan2371">***</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-282.31816,118.98821)"
@@ -549,9 +549,9 @@
          y="-68.363373"><tspan
            x="577.91534"
            y="-68.363373"
-           id="tspan2463">15.96<tspan
+           id="tspan2377">15.96<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2461">**</tspan></tspan></text>
+   id="tspan2375">**</tspan></tspan></text>
       <text
          xml:space="preserve"
          transform="matrix(1,0,0,-1,-194.67791,105.69378)"
@@ -561,9 +561,9 @@
          y="-82.618019"><tspan
            x="598.94708"
            y="-82.618019"
-           id="tspan2467">2.38<tspan
+           id="tspan2381">2.38<tspan
    style="font-size:65%;baseline-shift:super"
-   id="tspan2465">ns</tspan></tspan></text>
+   id="tspan2379">ns</tspan></tspan></text>
     </g>
     <g
        id="g3569">
@@ -597,5 +597,93 @@
          style="stroke-width:0.75"
          x="47.788727"
          y="-98.722855" /></text>
+    <g
+       id="g900-3"
+       transform="translate(3.2705849e-4,20.900178)">
+      <g
+         id="g878-6">
+        <g
+           id="g576-7">
+          <text
+             xml:space="preserve"
+             transform="matrix(0.43883767,0,0,-0.43883767,21.066867,132.73109)"
+             style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.6px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:338.78;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text247-5"><tspan
+               x="0"
+               y="0"
+               id="tspan2383">Nodule count </tspan></text>
+          <g
+             id="g848-3">
+            <g
+               id="g4738-5">
+              <g
+                 id="g4730-6">
+                <g
+                   id="g1366-2"
+                   transform="translate(0.00641907,-24.272247)">
+                  <text
+                     xml:space="preserve"
+                     transform="scale(1,-1)"
+                     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.438838"
+                     id="text255-9"
+                     x="313.05911"
+                     y="-157.0033"><tspan
+                       x="313.05911"
+                       y="-157.0033"
+                       id="tspan253-1"
+                       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.438838">-</tspan></text>
+                </g>
+              </g>
+            </g>
+            <g
+               id="g857-2">
+              <text
+                 xml:space="preserve"
+                 transform="scale(1,-1)"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.438838"
+                 id="text259-7"
+                 x="421.95258"
+                 y="-132.73125"><tspan
+                   x="421.95258"
+                   y="-132.73125"
+                   id="tspan257-0"
+                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.438838">-</tspan></text>
+              <text
+                 xml:space="preserve"
+                 transform="matrix(0.43883767,0,0,-0.43883767,213.36805,131.19169)"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.6px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:465;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                 id="text251-9"><tspan
+                   x="0"
+                   y="0"
+                   id="tspan2387">11.33<tspan
+   style="font-size:65%;baseline-shift:super"
+   id="tspan2385">**</tspan></tspan></text>
+            </g>
+          </g>
+          <text
+             xml:space="preserve"
+             transform="scale(1,-1)"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.438838"
+             id="text1597-3"
+             x="308.56552"
+             y="-132.73105"><tspan
+               x="308.56552"
+               y="-132.73105"
+               id="tspan1595-6"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.438838">-</tspan></text>
+          <text
+             xml:space="preserve"
+             transform="scale(1,-1)"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.438838"
+             id="text1601-0"
+             x="417.45258"
+             y="-132.73125"><tspan
+               x="417.45258"
+               y="-132.73125"
+               id="tspan1599-6"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5508px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.438838">-</tspan></text>
+        </g>
+      </g>
+    </g>
   </g>
 </svg>
