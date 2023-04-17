@@ -101,7 +101,8 @@ data_for_models <-
   data_for_models %>%
 
   # Select variables for analysis
-  dplyr::select(!c(rgr_slope, d15n, above_biomass, below_biomass, rmf, smf, lmf))
+  dplyr::select(!c(rgr_slope, d15n, above_biomass, below_biomass, rmf,
+                    agr, smf, lmf))
 ```
 
 ## Model formula
@@ -113,7 +114,7 @@ $$response\sim treatment*fixer\ + initial\ height + random( 1|\ specie)$$
 ```{r}
 # Take response variables names
 response_vars_q1 <-
-  set_names(names(data_for_models)[c(5:8)])
+  set_names(names(data_for_models)[c(5:7)])
 
 response_vars_q1
 ```
@@ -150,20 +151,18 @@ map(models_q1, check_model)
 # Log models
 
 ## Root-Shoot ratio
-model_q1_ratio_log <- lmer(log(root_shoot_ratio) ~ nfixer*treatment + init_height + (1|spcode),
-                         data = data_for_models)
-
-## Absolute growth rate
-model_q1_agr_log <- lmer(log(agr) ~ nfixer*treatment + init_height + (1|spcode),
+model_q1_ratio_log <- lmer(log(root_shoot_ratio) ~ nfixer*treatment +
+                                                   init_height +
+                                                   (1|spcode),
                          data = data_for_models)
 ```
 
 
 ```{r}
 # Append log models to model list Q2
-log_models_q1 <- list(model_q1_ratio_log, model_q1_agr_log)
+log_models_q1 <- list(model_q1_ratio_log)
 
-names(log_models_q1) <- c("root_shoot_ratio_log", "agr_log")
+names(log_models_q1) <- c("root_shoot_ratio_log")
 ```
 
 
