@@ -117,7 +117,6 @@ names(models_q2)
 ```
 
 
-
 ```{r}
 # Step done for getting predictions from nodule models
 source("./scripts/code_clean_data_nodules.R")

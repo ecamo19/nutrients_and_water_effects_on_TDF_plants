@@ -23,9 +23,9 @@ knitr::opts_knit$set(root.dir = "~/Documents/projects/nutrients_and_water_effect
 # Save figures in specific place
 
 knitr::opts_chunk$set(
-  autodep = TRUE,
-  cache = FALSE,
-  cache.comments = TRUE,
+    autodep = TRUE,
+    cache = FALSE,
+    cache.comments = TRUE,
 
   # Save figures as pdf ?
   # dev = c( "png", "pdf"),
@@ -69,6 +69,7 @@ library(performance)
 # For adding new columns
 library(tibble)
 library(MuMIn)
+library(ggplot2)
 ```
 
 ```{r}
@@ -88,6 +89,9 @@ source("./scripts/code_join_data_full_dataset.R")
 ## Models
 source("./R/functions_models.R")
 source("./R/function_nlme_validation_plots.R")
+
+## Plots
+source("./R/function_masomenos_plots.R")
 ```
 
 # Model Fitting
@@ -137,6 +141,7 @@ names(models_q2)
 + GOOD ref https://www.dataquest.io/blog/tutorial-poisson-regression-in-r/
 + #https://www.flutterbys.com.au/stats/tut/tut11.2a.html
 
+
 ```{r}
 # Load data
 # This step was done like this because I am working with a subset of the data
@@ -151,6 +156,33 @@ data_nodules_cleaned <-
         column_to_rownames("id") %>%
         dplyr::select(spcode, treatment, everything())
 
+```
+
+
+# Run model with spcies and treatment interaction
+
+## Exploratory figure
+
+```{r figure_boxplot_nodules_spcode_by_treatment}
+boxplot_plot_pmap(data = data_nodules_cleaned,
+                                y = number_of_root_nodulation,
+                                x = spcode,
+                                fill = treatment)
+```
+
+## Model
+```{r}
+linear_mod <- lm(number_of_root_nodulation ~ treatment * spcode + init_height,
+                                    data = data_nodules_cleaned)
+```
+
+
+```{r}
+check_model(linear_mod)
+```
+
+```{r}
+car::Anova(linear_mod, type = "III")
 ```
 
 
