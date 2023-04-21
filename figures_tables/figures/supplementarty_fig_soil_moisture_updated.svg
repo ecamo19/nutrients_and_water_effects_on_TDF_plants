@@ -2632,9 +2632,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="0.47"
-     inkscape:cx="738.29787"
-     inkscape:cy="-96.808511"
+     inkscape:zoom="1.88"
+     inkscape:cx="1639.3617"
+     inkscape:cy="1115.1596"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
@@ -4249,7 +4249,7 @@
        y="-695.22998"><tspan
          x="262.59"
          y="-695.22998"
-         id="tspan38972">A</tspan></text>
+         id="tspan2518">A</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,723.78528,-258.8061)"
@@ -4261,7 +4261,7 @@
        inkscape:transform-center-y="2.7140413"><tspan
          x="262.59"
          y="-695.22998"
-         id="tspan38974">B</tspan></text>
+         id="tspan2520">B</tspan></text>
     <path
        d="m 244.55906,-77.98289 v 3.65202"
        style="fill:none;stroke:#333333;stroke-width:1.41615;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -4295,7 +4295,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38976">Week 1 </tspan></text>
+         id="tspan2522">Week 1 </tspan></text>
     <path
        d="m 1157.905,-77.98289 v 3.65202"
        style="fill:none;stroke:#333333;stroke-width:1.41615;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -4329,7 +4329,7 @@
        y="-278.82001"><tspan
          x="25.1"
          y="-278.82001"
-         id="tspan38978">20</tspan></text>
+         id="tspan2524">20</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,79.7149,-258.21175)"
@@ -4339,7 +4339,7 @@
        y="-448.85999"><tspan
          x="25.1"
          y="-448.85999"
-         id="tspan38980">30</tspan></text>
+         id="tspan2526">30</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,80.58403,-258.21175)"
@@ -4349,7 +4349,7 @@
        y="-618.90002"><tspan
          x="25.1"
          y="-618.90002"
-         id="tspan38982">40</tspan></text>
+         id="tspan2528">40</tspan></text>
     <path
        d="m 153.25995,122.02555 h 3.60097"
        style="fill:none;stroke:#333333;stroke-width:1.41615;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -4371,7 +4371,7 @@
        y="18.4"><tspan
          x="304.25"
          y="18.4"
-         id="tspan38984">Mean Pot Soil Moisture (%)</tspan></text>
+         id="tspan2530">Mean Pot Soil Moisture (%)</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,244.78951,-261.2119)"
@@ -4381,7 +4381,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38986">Week 3 </tspan></text>
+         id="tspan2532">Week 3 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,389.72557,-261.2119)"
@@ -4391,7 +4391,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38988">Week 5 </tspan></text>
+         id="tspan2534">Week 5 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,536.55498,-261.2119)"
@@ -4401,7 +4401,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38990">Week 7 </tspan></text>
+         id="tspan2536">Week 7 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,684.30912,-261.2119)"
@@ -4411,7 +4411,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38992">Week 9 </tspan></text>
+         id="tspan2538">Week 9 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142202,0,0,-1.3328565,829.8338,-261.2119)"
@@ -4421,7 +4421,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38994">Week 11 </tspan></text>
+         id="tspan2540">Week 11 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,1011.8829,-261.2119)"
@@ -4431,7 +4431,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38996">Week 1 </tspan></text>
+         id="tspan2542">Week 1 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,1158.2313,-261.2119)"
@@ -4441,7 +4441,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan38998">Week 3 </tspan></text>
+         id="tspan2544">Week 3 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,1304.3309,-261.2119)"
@@ -4451,7 +4451,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan39000">Week 5 </tspan></text>
+         id="tspan2546">Week 5 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,1450.9209,-261.2119)"
@@ -4461,7 +4461,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan39002">Week 7 </tspan></text>
+         id="tspan2548">Week 7 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,1596.7813,-261.2119)"
@@ -4471,7 +4471,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan39004">Week 9 </tspan></text>
+         id="tspan2550">Week 9 </tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(1.3142236,0,0,-1.3328565,1742.841,-261.2119)"
@@ -4481,7 +4481,7 @@
        y="-120.1"><tspan
          x="73.769997"
          y="-120.1"
-         id="tspan39006">Week 11 </tspan></text>
+         id="tspan2552">Week 11 </tspan></text>
     <text
        transform="scale(0.91658768,-1.0910031)"
        style="font-variant:normal;font-weight:normal;font-size:29.9999px;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.300119"
@@ -4500,7 +4500,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan39008">Plus Water </tspan></text>
+         id="tspan2554">Plus Water </tspan></text>
     <text
        transform="matrix(2.5982014,0,0,-3.0926073,721.52733,422.98818)"
        style="font-variant:normal;font-weight:normal;font-size:10.5833px;font-family:sans-serif;-inkscape-font-specification:sans-serif;writing-mode:lr-tb;white-space:pre;inline-size:180.508;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.105875"
@@ -4510,7 +4510,7 @@
        xml:space="preserve"><tspan
          x="102.90717"
          y="188.43591"
-         id="tspan39010">Treatments</tspan></text>
+         id="tspan2556">Treatments</tspan></text>
     <text
        transform="matrix(0.27508415,0,0,-0.32742931,876.0133,-203.68563)"
        style="font-variant:normal;font-weight:normal;font-size:99.9608px;font-family:sans-serif;-inkscape-font-specification:sans-serif;writing-mode:lr-tb;white-space:pre;inline-size:2679.88;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -4518,7 +4518,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan39012">Plus Nutrients </tspan></text>
+         id="tspan2558">Plus Nutrients </tspan></text>
     <text
        transform="matrix(0.27508415,0,0,-0.32742931,1278.4023,-203.6856)"
        style="font-variant:normal;font-weight:normal;font-size:99.9608px;font-family:sans-serif;-inkscape-font-specification:sans-serif;writing-mode:lr-tb;white-space:pre;inline-size:1825.14;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -4526,7 +4526,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan39014">Plus Water-Nutrients</tspan></text>
+         id="tspan2560">Plus Water + Nutrients</tspan></text>
     <path
        d="m 317.89,260.63 c 0,2.54 2.08,4.62 4.62,4.62 2.54,0 4.62,-2.08 4.62,-4.62 0,-2.54 -2.08,-4.62 -4.62,-4.62 -2.54,0 -4.62,2.08 -4.62,4.62"
        style="fill:#f0e442;fill-opacity:1;fill-rule:nonzero;stroke:#f0e442;stroke-width:0.71;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
