@@ -117,7 +117,6 @@ names(models_q2)
 ```
 
 
-
 ```{r}
 # Step done for getting predictions from nodule models
 source("./scripts/code_clean_data_nodules.R")
@@ -260,10 +259,6 @@ as.data.frame(emmeans::emmeans(models_q2$nitrogen_log,
                perc_difference =((emmean - first(emmean) )/first(emmean))*100) %>%
 
         dplyr::mutate_if(is.numeric, round, 3)
-
-
-
-
 ```
 
 # WUE
@@ -337,57 +332,70 @@ models_q2 %>%
 # Plot Traits boxplot
 
 ```{r}
-#string <- c("models_q2")
+data_for_plots <-
+        data_for_models %>%
+                rownames_to_column("id") %>%
+                select(c(id, spcode, treatment, nfixer, init_height))
 
-#data_pred_traits <-
-#
-#        # Get models prediction
-#        gather_predictions(data_for_models,
-#
-#                           # Return predictions
-#                            models_q2$amax,
-#                            models_q2$d13c,
-#                            models_q2$gs,
-#                            models_q2$pnue_log) %>%
-#
-#        pivot_wider(names_from = model, values_from = pred) %>%
-#            rename_all(funs(
-#
-#                # rename columns
-#                stringr::str_to_lower(.) %>%
-#                stringr::str_replace(., c(string),"pred_") %>%
-#
-#                # Remove dollar sing
-#                gsub("\\$", "", .)
-#                )) %>%
-#
-#        # Back transform log variables
-#        mutate(pred_pnue = exp(pred_pnue_log)) %>%
-#
-#        # Remove log predictions and init height
-#        dplyr::select(-c(init_height,  pred_pnue_log))
+```
+
+```{r}
+string <- c("models_q2")
+
+data_pred_traits <-
+
+        # Get models prediction
+        gather_predictions(data_for_plots,
+
+                           # Return predictions
+                                models_q2$amax,
+                                models_q2$gs,
+                                models_q2$pnue_log,
+                                models_q2$nitrogen_log,
+                                models_q2$wue_log
+                                ) %>%
+
+        pivot_wider(names_from = model, values_from = pred) %>%
+            rename_all(funs(
+
+                # rename columns
+                stringr::str_to_lower(.) %>%
+                stringr::str_replace(., c(string), "pred_") %>%
+
+                # Remove dollar sing
+                gsub("\\$", "", .)
+                )) %>%
+
+        # Back transform log variables
+        mutate(pred_pnue = exp(pred_pnue_log),
+                pred_nitrogen = exp(pred_nitrogen_log),
+                pred_wue = exp(pred_wue_log)) %>%
+
+        # Remove log predictions and init height
+        dplyr::select(-c(init_height, pred_pnue_log,
+                        pred_nitrogen_log, pred_wue_log))
 ```
 
 
 ```{r}
-#vars_q2 <-
-#  crossing(
-#
-#    # Get all numeric variables to plot (all y)
-#    as_tibble(t(combn(dplyr::select(data_pred_traits, where(is.numeric)) %>% names, 1))),
-#
-#    # Select factor variables to plot
-#    x_axis_var = dplyr::select(data_pred_traits, nfixer) %>%  names,
-#    group_var = dplyr::select(data_pred_traits, treatment) %>%  names)
+vars_q2 <-
+  crossing(
+
+    # Get all numeric variables to plot (all y)
+    as_tibble(t(combn(dplyr::select(data_pred_traits, where(is.numeric)) %>% names, 1))),
+
+    # Select factor variables to plot
+    x_axis_var = dplyr::select(data_pred_traits, nfixer) %>%  names,
+    group_var = dplyr::select(data_pred_traits, treatment) %>%  names)
 ```
 
 ```{r fig_2_traits_q2_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
-#vars_q2 %>%
-#      # Gererate plots
-#      pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
-#                                y = !!sym(..1), x = !!sym(..2),
-#                                fill = !!sym(..3)))
-#      cowplot::plot_grid(plotlist = ., ncol = 2)
+vars_q2 %>%
+      # Gererate plots
+      pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
+                                y = !!sym(..1), x = !!sym(..2),
+                                fill = !!sym(..3))) %>%
+      cowplot::plot_grid(plotlist = ., ncol = 2)
 
 ```
 
