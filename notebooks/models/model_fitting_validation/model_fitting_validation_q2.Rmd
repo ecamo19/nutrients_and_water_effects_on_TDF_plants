@@ -159,50 +159,29 @@ data_nodules_cleaned <-
 ```
 
 
-# Run model with spcies and treatment interaction
-
-## Exploratory figure
-
-```{r figure_boxplot_nodules_spcode_by_treatment}
-boxplot_plot_pmap(data = data_nodules_cleaned,
-                                y = number_of_root_nodulation,
-                                x = spcode,
-                                fill = treatment)
-```
-
-## Model
 ```{r}
-linear_mod <- lm(number_of_root_nodulation ~ treatment * spcode + init_height,
+lm_nodule_treatment_spcode <- lm(number_of_root_nodulation ~ treatment * spcode +
+                                                              init_height,
                                     data = data_nodules_cleaned)
 ```
 
 
-```{r}
-check_model(linear_mod)
-```
 
 ```{r}
-car::Anova(linear_mod, type = "III")
-```
+#__Previuosly I fitted non-log models and found out the log one is the best__
 
-
-__Previuosly I fitted non-log models and found out the log one is the best__
-
-### log models
-
-```{r}
 ## After seeing the validation plots for the lmer_gaussian_log I decided to try
 ## to improve the log model using the nlme package
 
-nlme_gaussian_log <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
-                                    random = ~1|spcode,
-                                    data = data_nodules_cleaned)
+#nlme_gaussian_log <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
+#                                    random = ~1|spcode,
+#                                    data = data_nodules_cleaned)
 
 
-nlme_nodule_log_weights <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
-                                    random = ~1|spcode,
-                                    weights = varIdent(form = ~1|spcode),
-                                    data = data_nodules_cleaned)
+#nlme_nodule_log_weights <- lme(log(number_of_root_nodulation) ~ treatment + init_height,
+#                                    random = ~1|spcode,
+#                                    weights = varIdent(form = ~1|spcode),
+#                                    data = data_nodules_cleaned)
 ```
 
 #### Compare models
@@ -210,11 +189,11 @@ nlme_nodule_log_weights <- lme(log(number_of_root_nodulation) ~ treatment + init
 # Check if the nlme_gaussian_log_weights is a better model
 
 # Compare between nlme objects
-anova(nlme_gaussian_log, nlme_nodule_log_weights)
+#anova(nlme_gaussian_log, nlme_nodule_log_weights)
 
-model.sel(nlme_gaussian_log, nlme_nodule_log_weights)
+#model.sel(nlme_gaussian_log, nlme_nodule_log_weights)
 
-AIC(nlme_gaussian_log, nlme_nodule_log_weights)
+#AIC(nlme_gaussian_log, nlme_nodule_log_weights)
 # Model improved, check assumptions for nlme_gaussian_log_weights
 ```
 
@@ -227,6 +206,11 @@ AIC(nlme_gaussian_log, nlme_nodule_log_weights)
 map(models_q2, check_collinearity)
 ```
 
+```{r}
+check_collinearity(lm_nodule_treatment_spcode )
+```
+
+## Assumptions
 
 ```{r validation_plots_q2, fig.height = 15, fig.width = 10}
 # No problems found here
@@ -234,7 +218,7 @@ map(models_q2, check_model)
 ```
 
 
-## Checking log nodule count model's assumptions
+### Checking log nodule count model's assumptions
 
 Zuur et al pp 84:
 
@@ -244,10 +228,15 @@ structure and values of the variance covariate). Hence, these residuals are
 less useful for the model validation process."
 
 ```{r, validation_plots_nodule_log_weights,  fig.height = 9, fig.width = 14}
-nlme_validation_plots(nlme_nodule_log_weights, data = data_nodules_cleaned,
-                      group = "spcode", variables = c("treatment"))
+#nlme_validation_plots(nlme_nodule_log_weights, data = data_nodules_cleaned,
+#                      group = "spcode", variables = c("treatment"))
 ```
 
+
+
+```{r nudule_model_assumptions}
+check_model(lm_nodule_treatment_spcode)
+```
 
 # Refit models that showed violation of any assumptions
 
@@ -316,5 +305,5 @@ names(models_q2)
 saveRDS(models_q2, file = "./processed_data/models_q2.RData")
 
 # Save nodule count model
-saveRDS(nlme_nodule_log_weights, file = "./processed_data/model_nodule_log.RData")
+saveRDS(lm_nodule_treatment_spcode, file = "./processed_data/model_nodule_interaction.RData")
 ```

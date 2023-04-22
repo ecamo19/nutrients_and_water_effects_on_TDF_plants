@@ -396,6 +396,15 @@ models_q2 %>%
 # Interpretation: https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/
 ```
 
+## Exploratory figure
+
+```{r figure_boxplot_nodules_spcode_by_treatment}
+boxplot_plot_pmap(data = data_nodules_cleaned,
+                                y = number_of_root_nodulation,
+                                x = spcode,
+                                fill = treatment)
+```
+
 
 ## ANOVAs
 
