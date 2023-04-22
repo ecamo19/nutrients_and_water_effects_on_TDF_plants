@@ -160,11 +160,11 @@ data_nodules_cleaned <-
 
 
 ```{r}
-lm_nodule_treatment_spcode <- lm(number_of_root_nodulation ~ treatment * spcode +
-                                                              init_height,
-                                    data = data_nodules_cleaned)
+#https://www.dataquest.io/blog/tutorial-poisson-regression-in-r/
+lm_nodule_treat_spcode <- lm(number_of_root_nodulation ~ treatment * spcode +
+                                                            init_height,
+                                data = data_nodules_cleaned)
 ```
-
 
 
 ```{r}
@@ -207,7 +207,7 @@ map(models_q2, check_collinearity)
 ```
 
 ```{r}
-check_collinearity(lm_nodule_treatment_spcode )
+check_collinearity(lm_nodule_treat_spcode)
 ```
 
 ## Assumptions
@@ -233,9 +233,8 @@ less useful for the model validation process."
 ```
 
 
-
-```{r nudule_model_assumptions}
-check_model(lm_nodule_treatment_spcode)
+```{r lm_nodule_model_assumptions}
+check_model(lm_nodule_treat_spcode)
 ```
 
 # Refit models that showed violation of any assumptions
@@ -305,5 +304,5 @@ names(models_q2)
 saveRDS(models_q2, file = "./processed_data/models_q2.RData")
 
 # Save nodule count model
-saveRDS(lm_nodule_treatment_spcode, file = "./processed_data/model_nodule_interaction.RData")
+saveRDS(lm_nodule_treat_spcode, file = "./processed_data/model_nodule_interaction.RData")
 ```

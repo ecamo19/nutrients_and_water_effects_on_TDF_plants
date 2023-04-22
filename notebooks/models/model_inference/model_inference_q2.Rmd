@@ -401,25 +401,16 @@ boxplot_plot_pmap(data = data_nodules_cleaned,
                                 fill = treatment)
 ```
 
-```{r}
-#https://www.dataquest.io/blog/tutorial-poisson-regression-in-r/
-poisson_nodule <- glm(number_of_root_nodulation ~ treatment*spcode + init_height ,
-                                family = poisson(link = "log"),
-                                data = data_nodules_cleaned)
-
-
-```
-
 ## ANOVAs
 
 ```{r}
-car::Anova(poisson_nodule, type = "III")
+car::Anova(model_nodule_count, type = "III")
 ```
 
 ## Tuckey comparisons
 
 ```{r}
-as.data.frame(emmeans(poisson_nodule,
+as.data.frame(emmeans(model_nodule_count,
                            specs = pairwise ~ "treatment|spcode",
                            type = "response",
                            adjust =  "tukey")$contrast) %>%
@@ -429,9 +420,9 @@ as.data.frame(emmeans(poisson_nodule,
 
 
 ```{r}
-eff_size(emmeans(gamma_nodule, ~treatment|spcode),
-         sigma = sigma(gamma_nodule),
-         edf = df.residual(gamma_nodule))
+eff_size(emmeans(model_nodule_count, ~treatment|spcode),
+         sigma = sigma(model_nodule_count),
+         edf = df.residual(model_nodule_count))
 ```
 
 ## Percentage of change
@@ -439,5 +430,5 @@ eff_size(emmeans(gamma_nodule, ~treatment|spcode),
 ```{r}
 # Percentage difference
 emmeans_table_tidy(model_nodule_count,
-                        formula = "treatment")
+                        formula = "treatment|spcode")
 ```
