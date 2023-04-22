@@ -394,8 +394,8 @@ vars_q2 %>%
       # Gererate plots
       pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
                                 y = !!sym(..1), x = !!sym(..2),
-                                fill = !!sym(..3))) %>%
-      cowplot::plot_grid(plotlist = ., ncol = 2)
+                                fill = !!sym(..3)))
+      #cowplot::plot_grid(plotlist = ., ncol = 2)
 
 ```
 
