@@ -27,7 +27,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       cache.comments = TRUE,
 
                       # Save figures as pdf ?
-                      # dev = c( "png", "pdf"),
+                      dev = c( "png", "pdf"),
 
                       # Include code?
                       echo           = TRUE,
