@@ -376,6 +376,7 @@ data_pred_traits <-
                         pred_nitrogen_log, pred_wue_log))
 ```
 
+## Figures n-fixer by treatment
 
 ```{r}
 vars_q2 <-
@@ -389,15 +390,43 @@ vars_q2 <-
     group_var = dplyr::select(data_pred_traits, treatment) %>%  names)
 ```
 
-```{r fig_2_traits_q2_boxplot, fig.height = 6, fig.width = 7, fig.align = 'center'}
+```{r fig_traits_q2_boxplot_interaction, fig.height = 6, fig.width = 7, fig.align = 'center'}
 vars_q2 %>%
-      # Gererate plots
-      pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
+        filter(V1 %in% c('pred_amax', 'pred_wue')) %>%
+
+        # Gererate plots
+        pmap( ~ boxplot_plot_pmap(data = data_pred_traits,
                                 y = !!sym(..1), x = !!sym(..2),
                                 fill = !!sym(..3)))
+```
+
+
+## Figures by treatment
+
+```{r}
+vars_q2_treat <-
+  crossing(
+
+    # Get all numeric variables to plot (all y)
+    as_tibble(t(combn(dplyr::select(data_pred_traits, where(is.numeric)) %>% names, 1))),
+
+    # Select factor variables to plot
+    x_axis_var = dplyr::select(data_pred_traits, treatment) %>%  names)
+```
+
+```{r fig_traits_q2_boxplot_treatments, fig.height = 6, fig.width = 7, fig.align = 'center'}
+vars_q2_treat %>%
+
+        filter(V1 %in% c('pred_gs', 'pred_nitrogen', 'pred_pnue')) %>%
+
+        # Gererate plots
+        pmap( ~boxplot_plot_pmap(data = data_pred_traits,
+                                y = !!sym(..1), x = !!sym(..2),
+                                 fill = !!sym(..2)))
       #cowplot::plot_grid(plotlist = ., ncol = 2)
 
 ```
+
 
 # Nodule Count
 
