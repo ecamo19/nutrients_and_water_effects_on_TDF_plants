@@ -686,9 +686,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="2"
-     inkscape:cx="1364.5"
-     inkscape:cy="41.75"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="725.49156"
+     inkscape:cy="574.87781"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="1920"
@@ -700,7 +700,10 @@
        y="0"
        id="page1533"
        width="2271"
-       height="900" />
+       height="900"
+       inkscape:export-filename="../../../../../../Desktop/figure_traits_treatments.pdf"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
   </sodipodi:namedview>
   <g
      id="g1535"
@@ -930,9 +933,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,397.04384,833.65115)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8693"><tspan
+         id="tspan12125"><tspan
            style="fill:#000000"
-           id="tspan8691">ac</tspan></tspan></text>
+           id="tspan12123">ac</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -942,9 +945,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,89.540739,842.43319)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8697"><tspan
+         id="tspan12129"><tspan
            style="fill:#000000"
-           id="tspan8695">a</tspan></tspan></text>
+           id="tspan12127">a</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -954,9 +957,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,297.37089,860.96964)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8701"><tspan
+         id="tspan12133"><tspan
            style="fill:#000000"
-           id="tspan8699">a</tspan></tspan></text>
+           id="tspan12131">a</tspan></tspan></text>
     <path
        d="m 742.25607,361.94101 c 0,1.08 0.88,1.96 1.95,1.96 1.08,0 1.96,-0.88 1.96,-1.96 0,-1.07 -0.88,-1.95 -1.96,-1.95 -1.07,0 -1.95,0.88 -1.95,1.95"
        style="fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:#333333;stroke-width:0.71;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -1267,9 +1270,9 @@
        y="681.77899"><tspan
          x="142.7419"
          y="681.77899"
-         id="tspan8705">N-area (g / m<tspan
+         id="tspan12137">N-area (g / m<tspan
    style="baseline-shift:super"
-   id="tspan8703">2</tspan>)</tspan></text>
+   id="tspan12135">2</tspan>)</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0,1,1,0,-640.19691,-37.220512)"
@@ -1279,11 +1282,11 @@
        y="681.77899"><tspan
          x="142.7419"
          y="681.77899"
-         id="tspan8711">g<tspan
+         id="tspan12143">g<tspan
    style="baseline-shift:sub"
-   id="tspan8707">s</tspan> (mol / m<tspan
+   id="tspan12139">s</tspan> (mol / m<tspan
    style="baseline-shift:super"
-   id="tspan8709">2</tspan> * s )</tspan></text>
+   id="tspan12141">2</tspan> * s )</tspan></text>
     <path
        d="m 1412.6175,286.01988 v 60.42"
        style="fill:none;stroke:#333333;stroke-width:1.07;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -1473,7 +1476,7 @@
        y="681.77899"><tspan
          x="142.7419"
          y="681.77899"
-         id="tspan8713">PNUE (µmol / mol * s)</tspan></text>
+         id="tspan12145">PNUE (µmol / mol * s)</tspan></text>
     <path
        d="m 138.82218,239.67189 v 65.15"
        style="fill:none;stroke:#333333;stroke-width:1.07;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
@@ -1648,7 +1651,7 @@
        xml:space="preserve"><tspan
          x="435.5954"
          y="203.16978"
-         id="tspan8715">No additions</tspan></text>
+         id="tspan12147">No additions</tspan></text>
     <text
        transform="matrix(9.0277846e-4,-0.27508267,-0.32742755,-0.00107458,248.37734,25.978565)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1926.07;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1658,7 +1661,7 @@
        inkscape:transform-center-y="-20.176644"><tspan
          x="0"
          y="0"
-         id="tspan8717">Plus Nutrients </tspan></text>
+         id="tspan12149">Plus Nutrients </tspan></text>
     <text
        transform="matrix(0.00372991,-0.27505886,-0.32739922,-0.00443967,352.61975,25.81494)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1950.31;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1666,7 +1669,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan8719">Plus Water </tspan></text>
+         id="tspan12151">Plus Water </tspan></text>
     <text
        transform="matrix(0.00474796,-0.27504318,-0.32738053,-0.00565144,456.85708,25.755974)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1990.86;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1674,7 +1677,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan8721">Plus Water + Nutrients</tspan></text>
+         id="tspan12153">Plus Water + Nutrients</tspan></text>
     <text
        transform="matrix(-7.8357758e-5,-2.5982015,-3.0926074,9.323813e-5,1335.6922,1157.7769)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;writing-mode:lr-tb;white-space:pre;inline-size:178.215;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.105875"
@@ -1684,7 +1687,7 @@
        xml:space="preserve"><tspan
          x="435.5954"
          y="203.16978"
-         id="tspan8723">No additions</tspan></text>
+         id="tspan12155">No additions</tspan></text>
     <text
        transform="matrix(9.0277846e-4,-0.27508267,-0.32742755,-0.00107458,810.99693,25.978565)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1926.07;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1694,7 +1697,7 @@
        inkscape:transform-center-y="-20.176644"><tspan
          x="0"
          y="0"
-         id="tspan8725">Plus Nutrients </tspan></text>
+         id="tspan12157">Plus Nutrients </tspan></text>
     <text
        transform="matrix(0.00372991,-0.27505886,-0.32739922,-0.00443967,915.23934,25.81494)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1950.31;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1702,7 +1705,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan8727">Plus Water </tspan></text>
+         id="tspan12159">Plus Water </tspan></text>
     <text
        transform="matrix(0.00474796,-0.27504318,-0.32738053,-0.00565144,1019.4767,25.755974)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1990.86;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1710,7 +1713,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan8729">Plus Water + Nutrients</tspan></text>
+         id="tspan12161">Plus Water + Nutrients</tspan></text>
     <text
        transform="matrix(-7.8357758e-5,-2.5982015,-3.0926074,9.323813e-5,1915.1358,1157.7769)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;writing-mode:lr-tb;white-space:pre;inline-size:178.215;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.105875"
@@ -1720,7 +1723,7 @@
        xml:space="preserve"><tspan
          x="435.5954"
          y="203.16978"
-         id="tspan8731">No additions</tspan></text>
+         id="tspan12163">No additions</tspan></text>
     <text
        transform="matrix(9.0277846e-4,-0.27508267,-0.32742755,-0.00107458,1390.4406,25.978565)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1926.07;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1730,7 +1733,7 @@
        inkscape:transform-center-y="-20.176644"><tspan
          x="0"
          y="0"
-         id="tspan8733">Plus Nutrients </tspan></text>
+         id="tspan12165">Plus Nutrients </tspan></text>
     <text
        transform="matrix(0.00372991,-0.27505886,-0.32739922,-0.00443967,1494.683,25.81494)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1950.31;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1738,7 +1741,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan8735">Plus Water </tspan></text>
+         id="tspan12167">Plus Water </tspan></text>
     <text
        transform="matrix(0.00474796,-0.27504318,-0.32738053,-0.00565144,1598.9203,25.755974)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:66.6405px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:1990.86;display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -1746,7 +1749,7 @@
        xml:space="preserve"><tspan
          x="0"
          y="0"
-         id="tspan8737">Plus Water + Nutrients</tspan></text>
+         id="tspan12169">Plus Water + Nutrients</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1756,9 +1759,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,-473.18116,780.05054)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8741"><tspan
+         id="tspan12173"><tspan
            style="fill:#000000"
-           id="tspan8739">a</tspan></tspan></text>
+           id="tspan12171">a</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1768,9 +1771,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,-369.65294,705.58542)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8745"><tspan
+         id="tspan12177"><tspan
            style="fill:#000000"
-           id="tspan8743">a</tspan></tspan></text>
+           id="tspan12175">a</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1780,9 +1783,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,-266.18861,873.94872)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8749"><tspan
+         id="tspan12181"><tspan
            style="fill:#000000"
-           id="tspan8747">b</tspan></tspan></text>
+           id="tspan12179">b</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1792,9 +1795,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,771.03625,776.72006)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8753"><tspan
+         id="tspan12185"><tspan
            style="fill:#000000"
-           id="tspan8751">b</tspan></tspan></text>
+           id="tspan12183">b</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1804,9 +1807,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,187.62047,876.16288)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8757"><tspan
+         id="tspan12189"><tspan
            style="fill:#000000"
-           id="tspan8755">bc</tspan></tspan></text>
+           id="tspan12187">bc</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1816,9 +1819,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,-162.20396,839.57789)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8761"><tspan
+         id="tspan12193"><tspan
            style="fill:#000000"
-           id="tspan8759">b</tspan></tspan></text>
+           id="tspan12191">b</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1828,9 +1831,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,669.36382,815.33311)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8765"><tspan
+         id="tspan12197"><tspan
            style="fill:#000000"
-           id="tspan8763">a</tspan></tspan></text>
+           id="tspan12195">a</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1840,9 +1843,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,874.4655,872.5846)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8769"><tspan
+         id="tspan12201"><tspan
            style="fill:#000000"
-           id="tspan8767">a</tspan></tspan></text>
+           id="tspan12199">a</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1852,9 +1855,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,976.95639,823.03423)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8773"><tspan
+         id="tspan12205"><tspan
            style="fill:#000000"
-           id="tspan8771">a</tspan></tspan></text>
+           id="tspan12203">a</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1864,9 +1867,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,-531.97631,909.95008)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8777"><tspan
+         id="tspan12209"><tspan
            style="fill:#000000"
-           id="tspan8775">A</tspan></tspan></text>
+           id="tspan12207">A</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1876,9 +1879,9 @@
        transform="matrix(2.8346458,0,0,-2.8346458,29.008691,909.94991)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8781"><tspan
+         id="tspan12213"><tspan
            style="fill:#000000"
-           id="tspan8779">B</tspan></tspan></text>
+           id="tspan12211">B</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;white-space:pre;inline-size:121.802;display:inline;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
@@ -1888,8 +1891,8 @@
        transform="matrix(2.8346458,0,0,-2.8346458,610.75201,909.68623)"><tspan
          x="219.241"
          y="180.6619"
-         id="tspan8785"><tspan
+         id="tspan12217"><tspan
            style="fill:#000000"
-           id="tspan8783">C</tspan></tspan></text>
+           id="tspan12215">C</tspan></tspan></text>
   </g>
 </svg>
