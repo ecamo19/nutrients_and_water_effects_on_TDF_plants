@@ -171,10 +171,6 @@ corrplot(traits_correlations_fixer, method = "color", col = col(200),
          diag = FALSE)
 ```
 
-```{r}
-data_for_models %>%
-    gro
-```
 
 # Load data
 
@@ -206,16 +202,20 @@ names(data_for_models_scaled)
 # RGR
 
 ```{r}
-lme_rgr_3way <- lme(rgr ~   treatment:nfixer:gs  +
-                            treatment:nfixer:wue +
-                            treatment:nfixer:pnue +
-                            treatment:nfixer:Narea_g_m2 +
+lme_rgr_3way <- lme(rgr ~   treatment*nfixer*gs  +
+                            treatment*nfixer*wue +
+                            treatment*nfixer*pnue +
+                            treatment*nfixer*Narea_g_m2 +
 
                             init_height,
                   random = ~1 | spcode,
                   data = data_for_models_scaled)
 ```
 
+
+```{r}
+anova(lme_rgr_3way)
+```
 
 ## Report
 
@@ -226,6 +226,10 @@ lme_rgr_3way <- lme(rgr ~   treatment:nfixer:gs  +
 ## R2
 ```{r}
 r.squaredGLMM(lme_rgr_3way)
+```
+
+```{r}
+#dredge(lme_rgr_3way)
 ```
 
 ## Bootstrap RGRh
@@ -395,10 +399,10 @@ report(lme_root_shoot_ratio_3way)
 # Total Biomass
 
 ```{r}
-lme_total_biom_3way <- lme(total_biomass ~  treatment:nfixer:Narea_g_m2 +
-                                            treatment:nfixer:pnue +
-                                            treatment:nfixer:gs  +
-                                            treatment:nfixer:wue +
+lme_total_biom_3way <- lme(total_biomass ~  treatment*nfixer*Narea_g_m2 +
+                                            treatment*nfixer*pnue +
+                                            treatment*nfixer*gs  +
+                                            treatment*nfixer*wue +
 
                                             init_height,
                             random = ~1 | spcode,

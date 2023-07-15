@@ -134,6 +134,10 @@ models_q1 %>%
 
 ```
 
+
+```{r}
+purrr::map(models_q1, r.squaredGLMM)
+```
 # Effect sizes
 
 #### Negligible [0,0.2)
