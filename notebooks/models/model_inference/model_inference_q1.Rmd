@@ -151,14 +151,13 @@ tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
 
 
 ```{r}
-data.frame(emmeans(models_q1$total_biomass, ~treatment|nfixer) %>%
-        pairs(adjust = "Tukey"))  %>%
-        reactable::reactable(.)
+tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
+                formula = "treatment*nfixer")
 ```
 
 
 ```{r}
-eff_size(emmeans(models_q1$total_biomass, ~treatment|nfixer),
+eff_size(emmeans(models_q1$total_biomass, ~treatment*nfixer),
          sigma = sigma(models_q1$total_biomass),
          edf = df.residual(models_q1$total_biomass))
 ```
@@ -178,7 +177,6 @@ emmeans_table_tidy(models_q1$total_biomass,
 tukey_table_tidy(models_q1$rgr, model_list = FALSE,
                 formula = "treatment|nfixer")
 ```
-
 
 
 ```{r}
