@@ -134,21 +134,65 @@ models_q1 %>%
 
 ```
 
-# Effect sizes
+# Post-Hoc
 
-#### Negligible [0,0.2)
-#### Small [0.2, 0.5)
-#### Medium [0.5, 0.8)
-#### Large [0.8, inf)
+## Total Biomass
 
-
-# Total Biomass
 
 ```{r}
-tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
-                formula = "treatment|nfixer")
+test <- emmeans(models_q1$total_biomass,
+                specs = ~nfixer*treatment)
+test
 ```
 
+```{r}
+
+nonfixer_no_additions =   c(1, 0, 0, 0, 0, 0, 0, 0)
+fixer_no_additions   =    c(0, 1, 0, 0, 0, 0, 0, 0)
+
+nonfixer_plus_nutrients = c(0, 0, 1, 0, 0, 0, 0, 0)
+fixer_plus_nutrients  =   c(0, 0, 0, 1, 0, 0, 0, 0)
+
+nonfixer_plus_water =     c(0, 0, 0, 0, 1, 0, 0, 0)
+fixer_plus_water =        c(0, 0, 0, 0, 0, 1, 0, 0)
+
+nonfixer_plus_water_nutrients =  c(0, 0, 0, 0, 0, 0, 1, 0)
+fixer_plus_water_nutrients =     c(0, 0, 0, 0, 0, 0, 0, 1)
+```
+
+```{r}
+#contrast(emm1, method = list("A2 - B2" = A2 - B2) )
+contrast(test, method = list(
+
+
+            # Comparisons between nfixer-nonfixer
+            "fixer_no_additions-nonfixer_no_additions" = fixer_no_additions - nonfixer_no_additions,
+            "fixer_plus_nutrients-nonfixer_plus_nutrients" = fixer_plus_nutrients - nonfixer_plus_nutrients,
+            "fixer_plus_water-nonfixer_plus_water" = fixer_plus_water - nonfixer_plus_water,
+            "fixer_plus_water_nutrients-nonfixer_plus_water_nutrients" = fixer_plus_water_nutrients - nonfixer_plus_water_nutrients,
+
+            # Comparisons within nfixer
+            "fixer_no_additions-fixer_plus_nutrients" = fixer_no_additions - fixer_plus_nutrients,
+            "fixer_no_additions-fixer_plus_water" =     fixer_no_additions - fixer_plus_water,
+            "fixer_no_additions-fixer_plus_water_nutrients" = fixer_no_additions - fixer_plus_water_nutrients,
+
+            "fixer_plus_nutrients-fixer_plus_water" = fixer_plus_nutrients - fixer_plus_water,
+            "fixer_plus_nutrients-fixer_plus_water_nutrients" = fixer_plus_nutrients - fixer_plus_water_nutrients,
+
+            "fixer_plus_water-fixer_plus_water_nutrients" = fixer_plus_water - fixer_plus_water_nutrients,
+
+
+            # Comparisons within nonfixer
+            "nonfixer_no_additions-nonfixer_plus_nutrients" = nonfixer_no_additions - nonfixer_plus_nutrients,
+            "nonfixer_no_additions-nonfixer_plus_water" =     nonfixer_no_additions - nonfixer_plus_water,
+            "nonfixer_no_additions-nonfixer_plus_water_nutrients" = nonfixer_no_additions - nonfixer_plus_water_nutrients,
+
+            "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
+            "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
+
+            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
+            ))
+```
 
 ```{r}
 tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
@@ -157,6 +201,13 @@ tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
 
 
 ```{r}
+# Effect sizes
+
+## Negligible [0,0.2)
+## Small [0.2, 0.5)
+## Medium [0.5, 0.8)
+## Large [0.8, inf)
+
 eff_size(emmeans(models_q1$total_biomass, ~treatment*nfixer),
          sigma = sigma(models_q1$total_biomass),
          edf = df.residual(models_q1$total_biomass))
@@ -171,7 +222,7 @@ emmeans_table_tidy(models_q1$total_biomass,
 
 
 
-# RGR
+## RGR
 
 ```{r}
 tukey_table_tidy(models_q1$rgr, model_list = FALSE,
@@ -200,7 +251,7 @@ emmeans_table_tidy(models_q1$rgr,
 ```
 
 
-# Root shoot ratio
+## Root shoot ratio
 ```{r}
 # I did this because is a log model
 tukey_table_tidy(models_q1$root_shoot_ratio_log,  formula = "treatment|nfixer")
@@ -225,6 +276,7 @@ emmeans_table_tidy(models_q1$root_shoot_ratio_log,
                         formula = "treatment|nfixer",
                         grouping_var = "nfixer")
 ```
+
 
 # Plots Biomass and growth boxplot
 
