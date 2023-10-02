@@ -136,16 +136,18 @@ models_q1 %>%
 
 # Post-Hoc
 
+
 ## Total Biomass
 
-
 ```{r}
-test <- emmeans(models_q1$total_biomass,
-                specs = ~nfixer*treatment)
-test
+total_biomass_emmeans <- emmeans(models_q1$total_biomass,
+                                specs = ~nfixer*treatment)
+total_biomass_emmeans
 ```
 
 ```{r}
+# Code the emmean position. For example the (0, 0, 0, 1, 0, 0, 0, 0) means that
+# fixer_plus_nutrients emmean is in the 4th row.
 
 nonfixer_no_additions =   c(1, 0, 0, 0, 0, 0, 0, 0)
 fixer_no_additions   =    c(0, 1, 0, 0, 0, 0, 0, 0)
@@ -160,9 +162,10 @@ nonfixer_plus_water_nutrients =  c(0, 0, 0, 0, 0, 0, 1, 0)
 fixer_plus_water_nutrients =     c(0, 0, 0, 0, 0, 0, 0, 1)
 ```
 
+
 ```{r}
 #contrast(emm1, method = list("A2 - B2" = A2 - B2) )
-contrast(test, method = list(
+contrast(total_biomass_emmeans, method = list(
 
 
             # Comparisons between nfixer-nonfixer
@@ -181,7 +184,6 @@ contrast(test, method = list(
 
             "fixer_plus_water-fixer_plus_water_nutrients" = fixer_plus_water - fixer_plus_water_nutrients,
 
-
             # Comparisons within nonfixer
             "nonfixer_no_additions-nonfixer_plus_nutrients" = nonfixer_no_additions - nonfixer_plus_nutrients,
             "nonfixer_no_additions-nonfixer_plus_water" =     nonfixer_no_additions - nonfixer_plus_water,
@@ -192,11 +194,6 @@ contrast(test, method = list(
 
             "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
             ))
-```
-
-```{r}
-tukey_table_tidy(models_q1$total_biomass, model_list = FALSE,
-                formula = "treatment*nfixer")
 ```
 
 
@@ -221,24 +218,50 @@ emmeans_table_tidy(models_q1$total_biomass,
 ```
 
 
-
 ## RGR
 
 ```{r}
-tukey_table_tidy(models_q1$rgr, model_list = FALSE,
-                formula = "treatment|nfixer")
+rgr_emmeans <- emmeans(models_q1$rgr,
+                      specs = ~nfixer*treatment)
+
+rgr_emmeans
+```
+
+```{r}
+contrast(rgr_emmeans, method = list(
+
+            # Comparisons between nfixer-nonfixer
+            "fixer_no_additions-nonfixer_no_additions" = fixer_no_additions - nonfixer_no_additions,
+            "fixer_plus_nutrients-nonfixer_plus_nutrients" = fixer_plus_nutrients - nonfixer_plus_nutrients,
+            "fixer_plus_water-nonfixer_plus_water" = fixer_plus_water - nonfixer_plus_water,
+            "fixer_plus_water_nutrients-nonfixer_plus_water_nutrients" = fixer_plus_water_nutrients - nonfixer_plus_water_nutrients,
+
+            # Comparisons within nfixer
+            "fixer_no_additions-fixer_plus_nutrients" = fixer_no_additions - fixer_plus_nutrients,
+            "fixer_no_additions-fixer_plus_water" =     fixer_no_additions - fixer_plus_water,
+            "fixer_no_additions-fixer_plus_water_nutrients" = fixer_no_additions - fixer_plus_water_nutrients,
+
+            "fixer_plus_nutrients-fixer_plus_water" = fixer_plus_nutrients - fixer_plus_water,
+            "fixer_plus_nutrients-fixer_plus_water_nutrients" = fixer_plus_nutrients - fixer_plus_water_nutrients,
+
+            "fixer_plus_water-fixer_plus_water_nutrients" = fixer_plus_water - fixer_plus_water_nutrients,
+
+            # Comparisons within nonfixer
+            "nonfixer_no_additions-nonfixer_plus_nutrients" = nonfixer_no_additions - nonfixer_plus_nutrients,
+            "nonfixer_no_additions-nonfixer_plus_water" =     nonfixer_no_additions - nonfixer_plus_water,
+            "nonfixer_no_additions-nonfixer_plus_water_nutrients" = nonfixer_no_additions - nonfixer_plus_water_nutrients,
+
+            "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
+            "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
+
+            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
+            ))
 ```
 
 
-```{r}
-data.frame(emmeans(models_q1$rgr, ~treatment|nfixer) %>%
-        pairs(adjust = "Tukey"))  %>%
-        reactable::reactable(.)
-```
-
 
 ```{r}
-eff_size(emmeans(models_q1$rgr, ~treatment|nfixer),
+eff_size(emmeans(models_q1$rgr, ~treatment*nfixer),
          sigma = sigma(models_q1$rgr),
          edf = df.residual(models_q1$rgr))
 ```
@@ -252,20 +275,53 @@ emmeans_table_tidy(models_q1$rgr,
 
 
 ## Root shoot ratio
+
+
 ```{r}
-# I did this because is a log model
-tukey_table_tidy(models_q1$root_shoot_ratio_log,  formula = "treatment|nfixer")
+root_shoot_ratio_emmeans <- emmeans(models_q1$root_shoot_ratio_log,
+                                    specs = ~nfixer*treatment)
+
+root_shoot_ratio_emmeans
 ```
 
+
+
 ```{r}
-data.frame(emmeans(models_q1$root_shoot_ratio_log, ~treatment|nfixer) %>%
-        pairs(adjust = "Tukey"))  %>%
-        reactable::reactable(.)
+contrast(rgr_emmeans, method = list(
+
+
+            # Comparisons between nfixer-nonfixer
+            "fixer_no_additions-nonfixer_no_additions" = fixer_no_additions - nonfixer_no_additions,
+            "fixer_plus_nutrients-nonfixer_plus_nutrients" = fixer_plus_nutrients - nonfixer_plus_nutrients,
+            "fixer_plus_water-nonfixer_plus_water" = fixer_plus_water - nonfixer_plus_water,
+            "fixer_plus_water_nutrients-nonfixer_plus_water_nutrients" = fixer_plus_water_nutrients - nonfixer_plus_water_nutrients,
+
+            # Comparisons within nfixer
+            "fixer_no_additions-fixer_plus_nutrients" = fixer_no_additions - fixer_plus_nutrients,
+            "fixer_no_additions-fixer_plus_water" =     fixer_no_additions - fixer_plus_water,
+            "fixer_no_additions-fixer_plus_water_nutrients" = fixer_no_additions - fixer_plus_water_nutrients,
+
+            "fixer_plus_nutrients-fixer_plus_water" = fixer_plus_nutrients - fixer_plus_water,
+            "fixer_plus_nutrients-fixer_plus_water_nutrients" = fixer_plus_nutrients - fixer_plus_water_nutrients,
+
+            "fixer_plus_water-fixer_plus_water_nutrients" = fixer_plus_water - fixer_plus_water_nutrients,
+
+            # Comparisons within nonfixer
+            "nonfixer_no_additions-nonfixer_plus_nutrients" = nonfixer_no_additions - nonfixer_plus_nutrients,
+            "nonfixer_no_additions-nonfixer_plus_water" =     nonfixer_no_additions - nonfixer_plus_water,
+            "nonfixer_no_additions-nonfixer_plus_water_nutrients" = nonfixer_no_additions - nonfixer_plus_water_nutrients,
+
+            "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
+            "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
+
+            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
+            ))
 ```
 
 
+
 ```{r}
-eff_size(emmeans(models_q1$root_shoot_ratio_log, ~treatment|nfixer),
+eff_size(emmeans(models_q1$root_shoot_ratio_log, ~treatment*nfixer),
          sigma = sigma(models_q1$root_shoot_ratio_log),
          edf = df.residual(models_q1$root_shoot_ratio_log))
 ```
