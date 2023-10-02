@@ -73,11 +73,14 @@ library(ggplot2)
 # For effect sizes
 library(effectsize)
 library(emmeans)
+# For cleaning names
+library(janitor)
 ```
 
 # Load functions and data
 
 ```{r message=FALSE, warning=FALSE}
+options(scipen = 999)
 # Load dataset for adding predictions
 source("./scripts/code_join_data_full_dataset.R")
 ```
@@ -136,7 +139,6 @@ models_q1 %>%
 
 # Post-Hoc
 
-
 ## Total Biomass
 
 ```{r}
@@ -164,8 +166,7 @@ fixer_plus_water_nutrients =     c(0, 0, 0, 0, 0, 0, 0, 1)
 
 
 ```{r}
-#contrast(emm1, method = list("A2 - B2" = A2 - B2) )
-contrast(total_biomass_emmeans, method = list(
+data.frame(contrast(total_biomass_emmeans, method = list(
 
 
             # Comparisons between nfixer-nonfixer
@@ -192,10 +193,15 @@ contrast(total_biomass_emmeans, method = list(
             "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
             "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
 
-            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
-            ))
+            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients))) %>%
+
+          dplyr::select(!c(SE, df)) %>%
+          mutate(across(where(is.numeric), round, 12)) %>%
+          clean_names() %>%
+          reactable()
 ```
 
+### Effect Sizes
 
 ```{r}
 # Effect sizes
@@ -205,12 +211,20 @@ contrast(total_biomass_emmeans, method = list(
 ## Medium [0.5, 0.8)
 ## Large [0.8, inf)
 
-eff_size(emmeans(models_q1$total_biomass, ~treatment*nfixer),
-         sigma = sigma(models_q1$total_biomass),
-         edf = df.residual(models_q1$total_biomass))
+
+data.frame(eff_size(emmeans(models_q1$total_biomass, ~treatment*nfixer),
+         sigma = test_var,
+
+         edf = df.residual(models_q1$total_biomass))) %>%
+
+      mutate(across(where(is.numeric), round, 5)) %>%
+      clean_names() %>%
+      reactable()
 ```
 
-## Percentage of Change
+
+### Percentage of Change
+
 ```{r}
 emmeans_table_tidy(models_q1$total_biomass,
                         formula = "treatment|nfixer",
@@ -228,7 +242,7 @@ rgr_emmeans
 ```
 
 ```{r}
-contrast(rgr_emmeans, method = list(
+data.frame(contrast(rgr_emmeans, method = list(
 
             # Comparisons between nfixer-nonfixer
             "fixer_no_additions-nonfixer_no_additions" = fixer_no_additions - nonfixer_no_additions,
@@ -254,19 +268,35 @@ contrast(rgr_emmeans, method = list(
             "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
             "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
 
-            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
-            ))
+            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients))) %>%
+
+          dplyr::select(!c(SE, df)) %>%
+          mutate(across(where(is.numeric), round, 12)) %>%
+          clean_names() %>%
+          reactable()
 ```
 
 
+### Effect Sizes
 
 ```{r}
-eff_size(emmeans(models_q1$rgr, ~treatment*nfixer),
+# Effect sizes
+
+## Negligible [0,0.2)
+## Small [0.2, 0.5)
+## Medium [0.5, 0.8)
+## Large [0.8, inf)
+
+data.frame(eff_size(emmeans(models_q1$rgr, ~treatment*nfixer),
          sigma = sigma(models_q1$rgr),
-         edf = df.residual(models_q1$rgr))
+         edf = df.residual(models_q1$rgr))) %>%
+
+      mutate(across(where(is.numeric), round, 5)) %>%
+      clean_names() %>%
+      reactable()
 ```
 
-## Percentage of Change
+### Percentage of Change
 ```{r}
 emmeans_table_tidy(models_q1$rgr,
                         formula = "treatment|nfixer",
@@ -279,7 +309,8 @@ emmeans_table_tidy(models_q1$rgr,
 
 ```{r}
 root_shoot_ratio_emmeans <- emmeans(models_q1$root_shoot_ratio_log,
-                                    specs = ~nfixer*treatment)
+                                    specs = ~nfixer*treatment,
+                                    type = "response")
 
 root_shoot_ratio_emmeans
 ```
@@ -287,7 +318,7 @@ root_shoot_ratio_emmeans
 
 
 ```{r}
-contrast(rgr_emmeans, method = list(
+data.frame(contrast(root_shoot_ratio_emmeans, method = list(
 
 
             # Comparisons between nfixer-nonfixer
@@ -314,19 +345,36 @@ contrast(rgr_emmeans, method = list(
             "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
             "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
 
-            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
-            ))
+            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients)))  %>%
+
+          dplyr::select(!c(SE, df)) %>%
+          mutate(across(where(is.numeric), round, 12)) %>%
+          clean_names() %>%
+          reactable()
 ```
 
 
+### Effect Sizes
 
 ```{r}
-eff_size(emmeans(models_q1$root_shoot_ratio_log, ~treatment*nfixer),
+# Effect sizes
+
+## Negligible [0,0.2)
+## Small [0.2, 0.5)
+## Medium [0.5, 0.8)
+## Large [0.8, inf)
+
+data.frame(eff_size(emmeans(models_q1$root_shoot_ratio_log, ~treatment*nfixer),
          sigma = sigma(models_q1$root_shoot_ratio_log),
-         edf = df.residual(models_q1$root_shoot_ratio_log))
+         edf = df.residual(models_q1$root_shoot_ratio_log))) %>%
+
+      mutate(across(where(is.numeric), round, 5)) %>%
+      reactable()
 ```
 
-## Percentage of Change
+
+### Percentage of Change
+
 ```{r}
 emmeans_table_tidy(models_q1$root_shoot_ratio_log,
                         formula = "treatment|nfixer",
