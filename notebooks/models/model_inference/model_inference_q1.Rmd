@@ -140,6 +140,12 @@ models_q1 %>%
 ## Total Biomass
 
 ```{r}
+emmeans(models_q1$total_biomass,
+        pairwise ~ treatment*nfixer,
+        adjust = "tukey")
+```
+
+```{r}
 total_biomass_emmeans <- emmeans(models_q1$total_biomass,
                                 specs = ~nfixer*treatment)
 total_biomass_emmeans
