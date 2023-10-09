@@ -270,12 +270,12 @@ as.data.frame(emmeans::emmeans(models_q2$nitrogen_log,
 
 ## Tukey
 ```{r}
-tukey_table_tidy(models_q2$wue_log, formula = "treatment|nfixer")
+tukey_table_tidy(models_q2$wue_log, formula = "treatment*nfixer")
 ```
 
 
 ```{r}
-data.frame(emmeans(models_q2$wue_log, ~treatment|nfixer) %>%
+data.frame(emmeans(models_q2$wue_log, ~treatment*nfixer) %>%
         pairs(adjust = "Tukey"))  %>%
         reactable::reactable(.)
 ```
@@ -300,7 +300,7 @@ emmeans_table_tidy(models_q2$wue_log,
 
 ## Tukey
 ```{r}
-tukey_table_tidy(models_q2$amax, formula = "treatment|nfixer")
+tukey_table_tidy(models_q2$amax, formula = "treatment*nfixer")
 ```
 
 

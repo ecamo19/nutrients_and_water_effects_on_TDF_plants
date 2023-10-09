@@ -139,6 +139,8 @@ models_q1 %>%
 
 ## Total Biomass
 
+
+
 ```{r}
 emmeans(models_q1$total_biomass,
         pairwise ~ treatment*nfixer,
