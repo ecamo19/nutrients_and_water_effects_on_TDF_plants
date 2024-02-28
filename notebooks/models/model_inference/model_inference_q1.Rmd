@@ -42,6 +42,9 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       fig.height     = 7,
                       message        = FALSE,
                       warning        = FALSE)
+
+# set to two decimal
+options(scipen = 1, digits = 4)
 ```
 
 ```{r cleanup-docs, cache = FALSE,echo = FALSE}
@@ -107,6 +110,7 @@ models_q1 <- readRDS("./processed_data/models_q1.RData")
 
 
 ```{r}
+# Model available
 names(models_q1)
 ```
 
@@ -125,6 +129,8 @@ data_for_predictions <-
 
 # ANOVAs
 
+All models show a significant two-way interaction between Nfixer and Treatment
+
 ```{r}
 models_q1 %>%
 
@@ -136,94 +142,47 @@ models_q1 %>%
 
 # Post-Hoc
 
+The main argument of the paper is:
+
+_Results from our shade house experiment show that nutrient addition had a
+stronger effect on tropical dry forest seedling biomass and growth than water
+addition. Moreover, we demonstrate that N-fixing species have a higher capacity
+to take advantage of increased resource availability, particularly for nutrients,
+and to a lesser degree water..._
+
+
+__however I think this is not true since there are not significant differences
+when the same treatment are compared (i.e. plus nutrients nfixer vrs plus nutrients non-nfixer)__
 
 ## Total Biomass
 
-```{r}
-total_biomass_log_weights <- lme(log(total_biomass) ~ treatment*nfixer + scale(init_height),
-                                    random = ~1|spcode,
-                                    #weights = varIdent(form = ~1|spcode),
-                                    data = data_for_models)
-```
+
+### How I reported in the paper
 
 ```{r}
-emmeans(total_biomass_log_weights,
+as_data_frame(emmeans(models_q1$total_biomass,
+        pairwise ~ treatment|nfixer,
+        adjust = "tukey"
+        )$contrast)  %>%
+        select(-c(df, SE)) %>%
+        reactable()
+```
+
+
+### How it should be done
+
+```{r}
+as_data_frame(emmeans(models_q1$total_biomass,
         pairwise ~ treatment*nfixer,
-        adjust = "tukey")
-```
+        adjust = "tukey"
+        )$contrast)  %>%
+        select(-c(df, SE)) %>%
+        reactable()
 
-```{r}
-total_biomass_emmeans <- emmeans(models_q1$total_biomass,
-                                specs = ~nfixer*treatment)
-total_biomass_emmeans
-```
-
-```{r}
-# Code the emmean position. For example the (0, 0, 0, 1, 0, 0, 0, 0) means that
-# fixer_plus_nutrients emmean is in the 4th row.
-
-nonfixer_no_additions =   c(1, 0, 0, 0, 0, 0, 0, 0)
-fixer_no_additions   =    c(0, 1, 0, 0, 0, 0, 0, 0)
-
-nonfixer_plus_nutrients = c(0, 0, 1, 0, 0, 0, 0, 0)
-fixer_plus_nutrients  =   c(0, 0, 0, 1, 0, 0, 0, 0)
-
-nonfixer_plus_water =     c(0, 0, 0, 0, 1, 0, 0, 0)
-fixer_plus_water =        c(0, 0, 0, 0, 0, 1, 0, 0)
-
-nonfixer_plus_water_nutrients =  c(0, 0, 0, 0, 0, 0, 1, 0)
-fixer_plus_water_nutrients =     c(0, 0, 0, 0, 0, 0, 0, 1)
 ```
 
 
-```{r}
-#contrast(emm1, method = list("A2 - B2" = A2 - B2) )
-contrast(total_biomass_emmeans, method = list(
-
-
-            # Comparisons between nfixer-nonfixer
-            "fixer_no_additions-nonfixer_no_additions" = fixer_no_additions - nonfixer_no_additions,
-            "fixer_plus_nutrients-nonfixer_plus_nutrients" = fixer_plus_nutrients - nonfixer_plus_nutrients,
-            "fixer_plus_water-nonfixer_plus_water" = fixer_plus_water - nonfixer_plus_water,
-            "fixer_plus_water_nutrients-nonfixer_plus_water_nutrients" = fixer_plus_water_nutrients - nonfixer_plus_water_nutrients,
-
-            # Comparisons within nfixer
-            "fixer_no_additions-fixer_plus_nutrients" = fixer_no_additions - fixer_plus_nutrients,
-            "fixer_no_additions-fixer_plus_water" =     fixer_no_additions - fixer_plus_water,
-            "fixer_no_additions-fixer_plus_water_nutrients" = fixer_no_additions - fixer_plus_water_nutrients,
-
-            "fixer_plus_nutrients-fixer_plus_water" = fixer_plus_nutrients - fixer_plus_water,
-            "fixer_plus_nutrients-fixer_plus_water_nutrients" = fixer_plus_nutrients - fixer_plus_water_nutrients,
-
-            "fixer_plus_water-fixer_plus_water_nutrients" = fixer_plus_water - fixer_plus_water_nutrients,
-
-            # Comparisons within nonfixer
-            "nonfixer_no_additions-nonfixer_plus_nutrients" = nonfixer_no_additions - nonfixer_plus_nutrients,
-            "nonfixer_no_additions-nonfixer_plus_water" =     nonfixer_no_additions - nonfixer_plus_water,
-            "nonfixer_no_additions-nonfixer_plus_water_nutrients" = nonfixer_no_additions - nonfixer_plus_water_nutrients,
-
-            "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
-            "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
-
-            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
-            ))
-```
-
-
-```{r}
-# Effect sizes
-
-## Negligible [0,0.2)
-## Small [0.2, 0.5)
-## Medium [0.5, 0.8)
-## Large [0.8, inf)
-
-eff_size(emmeans(models_q1$total_biomass, ~treatment*nfixer),
-         sigma = sigma(models_q1$total_biomass),
-         edf = df.residual(models_q1$total_biomass))
-```
-
-## Percentage of Change
+### Percentage of Change
 ```{r}
 emmeans_table_tidy(models_q1$total_biomass,
                         formula = "treatment|nfixer",
@@ -233,53 +192,34 @@ emmeans_table_tidy(models_q1$total_biomass,
 
 ## RGR
 
-```{r}
-rgr_emmeans <- emmeans(models_q1$rgr,
-                      specs = ~nfixer*treatment)
 
-rgr_emmeans
-```
+### How I reported in the paper
 
 ```{r}
-contrast(rgr_emmeans, method = list(
+as_data_frame(emmeans(models_q1$rgr,
+        pairwise ~ treatment|nfixer,
+        adjust = "tukey"
+        )$contrast)  %>%
+        select(-c(df, SE)) %>%
+        reactable()
 
-            # Comparisons between nfixer-nonfixer
-            "fixer_no_additions-nonfixer_no_additions" = fixer_no_additions - nonfixer_no_additions,
-            "fixer_plus_nutrients-nonfixer_plus_nutrients" = fixer_plus_nutrients - nonfixer_plus_nutrients,
-            "fixer_plus_water-nonfixer_plus_water" = fixer_plus_water - nonfixer_plus_water,
-            "fixer_plus_water_nutrients-nonfixer_plus_water_nutrients" = fixer_plus_water_nutrients - nonfixer_plus_water_nutrients,
-
-            # Comparisons within nfixer
-            "fixer_no_additions-fixer_plus_nutrients" = fixer_no_additions - fixer_plus_nutrients,
-            "fixer_no_additions-fixer_plus_water" =     fixer_no_additions - fixer_plus_water,
-            "fixer_no_additions-fixer_plus_water_nutrients" = fixer_no_additions - fixer_plus_water_nutrients,
-
-            "fixer_plus_nutrients-fixer_plus_water" = fixer_plus_nutrients - fixer_plus_water,
-            "fixer_plus_nutrients-fixer_plus_water_nutrients" = fixer_plus_nutrients - fixer_plus_water_nutrients,
-
-            "fixer_plus_water-fixer_plus_water_nutrients" = fixer_plus_water - fixer_plus_water_nutrients,
-
-            # Comparisons within nonfixer
-            "nonfixer_no_additions-nonfixer_plus_nutrients" = nonfixer_no_additions - nonfixer_plus_nutrients,
-            "nonfixer_no_additions-nonfixer_plus_water" =     nonfixer_no_additions - nonfixer_plus_water,
-            "nonfixer_no_additions-nonfixer_plus_water_nutrients" = nonfixer_no_additions - nonfixer_plus_water_nutrients,
-
-            "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
-            "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
-
-            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
-            ))
 ```
 
 
+### How it should be done
 
 ```{r}
-eff_size(emmeans(models_q1$rgr, ~treatment*nfixer),
-         sigma = sigma(models_q1$rgr),
-         edf = df.residual(models_q1$rgr))
+as_data_frame(emmeans(models_q1$rgr,
+        pairwise ~ treatment*nfixer,
+        adjust = "tukey"
+        )$contrast) %>%
+        select(-c(df, SE)) %>%
+        reactable()
 ```
 
-## Percentage of Change
+
+### Percentage of Change
+
 ```{r}
 emmeans_table_tidy(models_q1$rgr,
                         formula = "treatment|nfixer",
@@ -287,59 +227,35 @@ emmeans_table_tidy(models_q1$rgr,
 ```
 
 
+
 ## Root shoot ratio
 
+### How I reported in the paper
 
 ```{r}
-root_shoot_ratio_emmeans <- emmeans(models_q1$root_shoot_ratio_log,
-                                    specs = ~nfixer*treatment)
-
-root_shoot_ratio_emmeans
+as_data_frame(emmeans(models_q1$root_shoot_ratio_log,
+        pairwise ~ treatment|nfixer,
+        adjust = "tukey"
+        )$contrast)  %>%
+        select(-c(df, SE)) %>%
+        reactable()
 ```
 
 
+### How it should be done
 
 ```{r}
-contrast(rgr_emmeans, method = list(
-
-
-            # Comparisons between nfixer-nonfixer
-            "fixer_no_additions-nonfixer_no_additions" = fixer_no_additions - nonfixer_no_additions,
-            "fixer_plus_nutrients-nonfixer_plus_nutrients" = fixer_plus_nutrients - nonfixer_plus_nutrients,
-            "fixer_plus_water-nonfixer_plus_water" = fixer_plus_water - nonfixer_plus_water,
-            "fixer_plus_water_nutrients-nonfixer_plus_water_nutrients" = fixer_plus_water_nutrients - nonfixer_plus_water_nutrients,
-
-            # Comparisons within nfixer
-            "fixer_no_additions-fixer_plus_nutrients" = fixer_no_additions - fixer_plus_nutrients,
-            "fixer_no_additions-fixer_plus_water" =     fixer_no_additions - fixer_plus_water,
-            "fixer_no_additions-fixer_plus_water_nutrients" = fixer_no_additions - fixer_plus_water_nutrients,
-
-            "fixer_plus_nutrients-fixer_plus_water" = fixer_plus_nutrients - fixer_plus_water,
-            "fixer_plus_nutrients-fixer_plus_water_nutrients" = fixer_plus_nutrients - fixer_plus_water_nutrients,
-
-            "fixer_plus_water-fixer_plus_water_nutrients" = fixer_plus_water - fixer_plus_water_nutrients,
-
-            # Comparisons within nonfixer
-            "nonfixer_no_additions-nonfixer_plus_nutrients" = nonfixer_no_additions - nonfixer_plus_nutrients,
-            "nonfixer_no_additions-nonfixer_plus_water" =     nonfixer_no_additions - nonfixer_plus_water,
-            "nonfixer_no_additions-nonfixer_plus_water_nutrients" = nonfixer_no_additions - nonfixer_plus_water_nutrients,
-
-            "nonfixer_plus_nutrients-nonfixer_plus_water" = nonfixer_plus_nutrients - nonfixer_plus_water,
-            "nonfixer_plus_nutrients-nonfixer_plus_water_nutrients" = nonfixer_plus_nutrients - nonfixer_plus_water_nutrients,
-
-            "nonfixer_plus_water-nonfixer_plus_water_nutrients" = nonfixer_plus_water - nonfixer_plus_water_nutrients
-            ))
+as_data_frame(emmeans(models_q1$root_shoot_ratio_log,
+        pairwise ~ treatment*nfixer,
+        adjust = "tukey"
+        )$contrast)  %>%
+        select(-c(df, SE)) %>%
+        reactable()
 ```
 
-
-
-```{r}
-eff_size(emmeans(models_q1$root_shoot_ratio_log, ~treatment*nfixer),
-         sigma = sigma(models_q1$root_shoot_ratio_log),
-         edf = df.residual(models_q1$root_shoot_ratio_log))
-```
 
 ## Percentage of Change
+
 ```{r}
 emmeans_table_tidy(models_q1$root_shoot_ratio_log,
                         formula = "treatment|nfixer",
@@ -357,7 +273,7 @@ string <- c("models_q1")
 data_pred_biomass_growth <-
 
         # Get models prediction
-        gather_predictions(data_for_models,
+        gather_predictions(data_for_predictions,
 
                            # Return predictions of:
                             models_q1$rgr,
