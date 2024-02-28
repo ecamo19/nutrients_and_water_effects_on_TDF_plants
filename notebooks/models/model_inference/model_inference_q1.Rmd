@@ -113,7 +113,7 @@ names(models_q1)
 ```{r echo=FALSE}
 
 # Step done for getting predictions from models for Q1
-data_for_models <-
+data_for_predictions <-
     data_for_models %>%
 
         rownames_to_column("id") %>%
@@ -139,10 +139,15 @@ models_q1 %>%
 
 ## Total Biomass
 
-
+```{r}
+total_biomass_log_weights <- lme(log(total_biomass) ~ treatment*nfixer + scale(init_height),
+                                    random = ~1|spcode,
+                                    #weights = varIdent(form = ~1|spcode),
+                                    data = data_for_models)
+```
 
 ```{r}
-emmeans(models_q1$total_biomass,
+emmeans(total_biomass_log_weights,
         pairwise ~ treatment*nfixer,
         adjust = "tukey")
 ```
