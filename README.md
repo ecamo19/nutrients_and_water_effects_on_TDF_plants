@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ecamo19/water_and_nutrients_effects/HEAD)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ecamo19/nutrients_and_water_effects_on_TDF_plants/main)
 
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
